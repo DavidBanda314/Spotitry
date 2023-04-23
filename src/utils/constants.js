@@ -59,6 +59,7 @@ export const hash = window.location.hash
     }
     if(initial.access_token){
       localStorage.setItem("token", initial.access_token)
+      localStorage.setItem("expiration", (new Date().getTime() + 24 * 60 * 10 * 1000))
     }
     return initial;
 }, {});

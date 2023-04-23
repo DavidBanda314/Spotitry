@@ -10,6 +10,14 @@ const App = (props) => {
   const [isLoggedIn] = useState(hash.access_token)
   const history = useHistory()
   var domain = window.location.pathname
+
+  const currentTime = new Date().getTime();
+  const expiration = localStorage.getItem('expiration');
+
+  if (expiration && currentTime > expiration) {
+    localStorage.removeItem('token');
+    localStorage.removeItem('expiration');
+  }
   if(isLoggedIn || localStorage.getItem("token")){
     return(
       <AuthenticatedApp/>

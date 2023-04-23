@@ -1,70 +1,22 @@
-# Getting Started with Create React App
+======= Welcome to Team Sinister Six! =======
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Project Team Members: 
+Ethan Walters, David Banda, Kyra Moran, Aditya Gopalan, John Wilson, and Sandra   Griffin
+ 
+Project Description: 
+SpotiTRY uses the Spotify API to access user’s information including top songs, top artists, and listening history via tokens authenticated by the user upon login. The user must login to their Spotify account to access our application, and the SpotiTRY application comes fully equipped with routing guards that protect our users. The user's top songs and artists are displayed on our home page, allowing the user to play any of their top songs or songs from their top artists directly from our application. Our history page is a feature that was adapted by Spotify during the time when we were developing SpotiTRY and is similar in the respect that it allows the user to view recent song or listening history. This page includes a search bar so the user can quickly find that great song they were just listening to. Our timestamp feature is wholly unique to the SpotiTRY application and allows users to save any point in a song or podcast. The user can search for any song or podcast on our discover page, begin playing it from that page, and then hit the timestamp button to save that point in the song or podcast. The timestamp page allows the user to play a song or podcast within our application at the exact point that they saved by pulling from the saved timestamps in our database. They can also search through their timestamps using a search bar on our timestamps page. Our application is hosted on Heroku and can be accessed via spo-ti-try.herokuapp.com
 
-## Available Scripts
+Repo Structure:
+Milestones - PDF Milestone write-ups of project process.
 
-In the project directory, you can run:
+Team_Meeting_Logs - Has a log of all the group meetings that took place this semester.
 
-### `yarn start`
+Spotitry - Main project folder [npm install and npm start to run]
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+README -  Project info and link to deployment site.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+.idea/ yarn.lock / .DS_Store / node_modules - auxillary files for our app to reference.
 
-### `yarn test`
+Remaining files are wireframes and architectual diagrams and their updates throughout the project.
+Latest architecture diagram : https://github.com/CSCI-3308-CU-Boulder/3308SP21_section012_2/blob/main/archtechture_diagram_updated.PNG
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
