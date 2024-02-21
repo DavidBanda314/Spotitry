@@ -1,5 +1,7 @@
 ======= Welcome to Team Sinister Six! =======
 
+[Live site here](https://spotitry-4ca96.web.app/home)
+
 Project Team Members: 
 Ethan Walters, David Banda, Kyra Moran, Aditya Gopalan, John Wilson, and Sandra   Griffin
  
@@ -19,4 +21,3 @@ README -  Project info and link to deployment site.
 
 Remaining files are wireframes and architectual diagrams and their updates throughout the project.
 Latest architecture diagram : https://github.com/CSCI-3308-CU-Boulder/3308SP21_section012_2/blob/main/archtechture_diagram_updated.PNG
-
