@@ -37,7 +37,8 @@ function sanitizeKey(key){
 
 export async function saveTimestamp(userId,song,progress_ms,note){
   try{
-      const ref = db.ref('users/' + userId + `/timestamps/${sanitizeKey(song.name)}`)
+      const songKey = sanitizeKey(song.name)
+      const ref = db.ref('users/' + userId + `/timestamps/${songKey}`)
       const data = {
         position_ms:progress_ms,
         song:song
@@ -45,10 +46,12 @@ export async function saveTimestamp(userId,song,progress_ms,note){
       if (note) {
         data.note = note;
       }
-      await ref.push(data);
+      const newRef = await ref.push(data);
+      return { songKey, pushId: newRef.key }
   }
   catch(error){
     console.log(error)
+    return null
   }
 }
 export async function updateTimestampNote(userId, songKey, pushId, note) {

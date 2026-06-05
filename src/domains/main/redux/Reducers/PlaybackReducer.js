@@ -15,6 +15,7 @@ const InitialState =
     },
     loading:false,
     errors:{},
+    lastCreatedTimestamp: null,
 }
 
 function playbackReducer(state = InitialState, action){
@@ -63,6 +64,13 @@ function playbackReducer(state = InitialState, action){
             return{
                 ...state,
                 errors:errors
+            }
+        }
+        case playbackActions.timestampCreated: {
+            const { songKey, pushId } = action
+            return {
+                ...state,
+                lastCreatedTimestamp: { songKey, pushId }
             }
         }
         case playbackActions.setSelectedSong: {

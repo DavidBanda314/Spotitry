@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHome, faHistory, faBookmark, faSearch, faUser, faChartBar, faPlus, faCheck } from '@fortawesome/free-solid-svg-icons'
 import { getPlaybackInfoRequested } from '../../domains/main/redux/Actions/PlaybackActions.js'
+import { updateTimestampNote } from '../../firebase'
 
 const tabs = [
     { path: 'home', label: 'Home', icon: faHome },
@@ -16,7 +17,7 @@ const tabs = [
 ]
 
 const NavBar = (props) => {
-    const { token, userId, selectedSong, getPlaybackInfo } = props
+    const { token, userId, selectedSong, getPlaybackInfo, lastCreatedTimestamp } = props
     const history = useHistory()
     const location = useLocation()
     const current = location.pathname.replace('/', '').toLowerCase()
@@ -31,20 +32,21 @@ const NavBar = (props) => {
     const canSave = !!(token && userId && selectedSong?.songURI)
     const handleCreate = () => {
         if (canSave) {
+            getPlaybackInfo(token, 1, userId)
+            setSaved(true)
+            clearTimeout(savedTimer.current)
+            savedTimer.current = setTimeout(() => setSaved(false), 2000)
             setShowNote(true)
             setTimeout(() => { if (noteInputRef.current) noteInputRef.current.focus() }, 50)
         }
     }
 
-    const saveWithNote = () => {
-        if (canSave) {
-            getPlaybackInfo(token, 1, userId, noteText || undefined)
-            setSaved(true)
-            setShowNote(false)
-            setNoteText('')
-            clearTimeout(savedTimer.current)
-            savedTimer.current = setTimeout(() => setSaved(false), 2000)
+    const saveWithNote = async () => {
+        if (noteText.trim() && lastCreatedTimestamp) {
+            await updateTimestampNote(userId, lastCreatedTimestamp.songKey, lastCreatedTimestamp.pushId, noteText)
         }
+        setShowNote(false)
+        setNoteText('')
     }
 
     const cancelNote = () => {
@@ -116,6 +118,7 @@ const mapStateToProps = (state) => {
         token: state.User.token,
         userId: state.User.databaseUser.userId,
         selectedSong: state.Player.selectedSong,
+        lastCreatedTimestamp: state.Player.lastCreatedTimestamp,
     }
 }
 const mapDispatchToProps = (dispatch) => {

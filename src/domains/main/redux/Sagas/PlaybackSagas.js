@@ -24,7 +24,10 @@ export function* getPlaybackInfo({ token, createTimestamp, userId, note}) {
             const devices = availableDevices.data
             yield put(Actions.getPlaybackInfoSucceeded(playback,devices))
             if(createTimestamp === 1){
-                yield call(saveTimestamp, userId, playback.item, playback.progress_ms, note)
+                const tsResult = yield call(saveTimestamp, userId, playback.item, playback.progress_ms, note)
+                if (tsResult) {
+                    yield put(Actions.timestampCreated(tsResult.songKey, tsResult.pushId))
+                }
                 const user = yield call(fetchUser, userId)
                 if(user){
                     yield put(setDatabaseUserSucceeded(user))
