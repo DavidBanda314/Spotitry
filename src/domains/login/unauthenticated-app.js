@@ -38,12 +38,12 @@ const UnauthenticatedApp = () => {
         <br></br>
         <Box display="flex" justifyContent="space-between">
           {!accessToken && (
-            <Button style={{height: '50px', width: '100px', margin: "20px"}} className={styles.dumb} variant="contained" onClick={handleLogin}>
-              Login
+            <Button style={{margin: "20px"}} className={styles.dumb} variant="contained" onClick={handleLogin}>
+              Log in
             </Button>
           )}
           {!accessToken && (
-            <Button style={{height: '50px', width: '100px', margin: "20px"}} variant="contained" href={`${signUp}`}>
+            <Button style={{margin: "20px"}} className={styles.signUpButton} variant="outlined" href={`${signUp}`}>
               Sign Up
             </Button>
           )}
