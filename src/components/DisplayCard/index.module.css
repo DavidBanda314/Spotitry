@@ -1,31 +1,32 @@
 .card {
     background-color: #1a1a1a;
     border-radius: 12px;
-    padding: 16px;
     cursor: pointer;
-    transition: border-color 0.2s ease;
+    transition: border-color 0.2s ease, transform 0.15s ease;
     border: 1px solid rgba(255, 255, 255, 0.06);
-    width: 100%;
-    height: auto;
+    overflow: hidden;
 }
 
 .card:hover {
-    border-color: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.18);
+}
+
+.card:active {
+    transform: scale(0.98);
 }
 
 .cardImage {
     width: 100%;
     aspect-ratio: 1;
     object-fit: cover;
-    border-radius: 0;
-    margin-bottom: 16px;
+    display: block;
 }
 
 .cardTitle {
     color: #FFFFFF;
     font-size: 14px;
     font-weight: 700;
-    margin: 0 0 4px;
+    margin: 10px 12px 4px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -35,8 +36,14 @@
     color: rgba(255, 255, 255, 0.6);
     font-size: 13px;
     font-weight: 400;
-    margin: 0 0 2px;
+    margin: 0 12px 2px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.cardSubtitle:last-child {
+    margin-bottom: 14px;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 12px;
 }
