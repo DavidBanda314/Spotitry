@@ -42,7 +42,7 @@ export function* setDatabaseUser({data}) {
 
     try{
         const parsedId = parseSpecialCharacters(id)
-        const user = yield fetchUser(parsedId)
+        let user = yield fetchUser(parsedId)
         if(!user){
             yield call(createAndFetchUser(parsedId,display_name,email))
             user = {
@@ -137,7 +137,7 @@ export function* searchSongs({token,searchValue = ''}) {
     }
 }
 
-export default function* () {
+function* userSaga() {
     yield all([
         yield takeLatest(Actions.UserDataActions.GET_PROFILE_Requested, getProfile),
         yield takeLatest(Actions.UserDataActions.STORE_TOKEN, initializeUserData),
@@ -147,3 +147,4 @@ export default function* () {
         yield takeLatest(Actions.UserDataActions.searchSongsRequested, searchSongs)
     ]);
 }
+export default userSaga

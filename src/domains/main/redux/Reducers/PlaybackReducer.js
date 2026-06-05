@@ -17,7 +17,7 @@ const InitialState =
     errors:{},
 }
 
-export default function(state = InitialState, action){
+function playbackReducer(state = InitialState, action){
     const {type} = action
     switch(type){
         case playbackActions.getPlaybackInfoRequested :{
@@ -87,3 +87,4 @@ export default function(state = InitialState, action){
         }
     }
 }
+export default playbackReducer

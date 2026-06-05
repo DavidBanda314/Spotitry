@@ -10,7 +10,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons'
 
 
 const Timestamps = (props) => {
-    const {token, timestamps, refetchUser,playSong, setSelectedSong, selectedSong} = props
+    const {token, timestamps, playSong, setSelectedSong, selectedSong} = props
     const [timestampsBySong,setTimeStampsBySong] = useState([])
     const [searchValue, setSearchValue] = useState('')
     const [allTimeStampsBySong,setAllTimeStampsBySong] = useState('')
@@ -49,13 +49,11 @@ const Timestamps = (props) => {
             </div>
             <div>
                 <Row>    
-                    {timestampsBySong?.length != 0 && 
+                    {timestampsBySong?.length !== 0 && 
                     timestampsBySong?.map((timestamps, key) => {
-                        var timestamps = Object.values(timestamps)
+                        timestamps = Object.values(timestamps)
                         var song = timestamps[0]?.song
                         var album = song?.album
-                        var artist = song?.artists[0]
-                        var featuredArtists = song?.artists.splice(0,1)
                         var songName = song?.name
                         var albumCover = album?.images[0]?.url
                         return(

@@ -1,14 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import styles from './index.module.css'
-import TextField from '@material-ui/core/TextField';
-import { InputGroup, InputGroupAddon, Input, Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button} from 'reactstrap'
+import React from 'react'
+import { InputGroup, InputGroupAddon, Input, Button} from 'reactstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 
 const SearchBar = (props) => {
-    const { setSearchValue, token } = props
-    const [query, setQuery] = useState('')
+    const { setSearchValue } = props
     return(
 
             // <TextField
