@@ -48,6 +48,7 @@
     right: 0;
     bottom: calc(58px + env(safe-area-inset-bottom, 0px));
     z-index: 150;
+    padding-bottom: 12px;
 }
 
 .playerRow {

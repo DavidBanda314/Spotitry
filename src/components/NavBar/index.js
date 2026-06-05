@@ -57,18 +57,19 @@ const NavBar = (props) => {
     return (
         <nav className={styles.nav}>
             {tabs.slice(0, mid).map(renderTab)}
-            <div className={styles.centerSlot}>
-                <button
-                    type="button"
-                    className={`${styles.centerButton} ${saved ? styles.centerButtonSaved : ''}`}
-                    onClick={handleCreate}
-                    disabled={!canSave}
-                    aria-label={saved ? 'Timestamp saved' : 'Save a timestamp of the current song'}
-                    title={canSave ? 'Save a timestamp of the current song' : 'Play a song to save a timestamp'}
-                >
-                    <FontAwesomeIcon icon={saved ? faCheck : faPlus} className={styles.centerIcon} />
-                </button>
-            </div>
+            {canSave && (
+                <div className={styles.centerSlot}>
+                    <button
+                        type="button"
+                        className={`${styles.centerButton} ${saved ? styles.centerButtonSaved : ''}`}
+                        onClick={handleCreate}
+                        aria-label={saved ? 'Timestamp saved' : 'Save a timestamp of the current song'}
+                        title="Save a timestamp of the current song"
+                    >
+                        <FontAwesomeIcon icon={saved ? faCheck : faPlus} className={styles.centerIcon} />
+                    </button>
+                </div>
+            )}
             {tabs.slice(mid).map(renderTab)}
         </nav>
     )
