@@ -32,8 +32,9 @@ function formatMs(ms) {
 }
 
 const AuthenticatedApp = (props) => {
-  var {token, storeToken, selectedSong, getPlaybackInfo, userId, storeDeviceId} = props
+  var {token, storeToken, selectedSong, getPlaybackInfo, userId, playbackInfo, storeDeviceId} = props
   const {position_ms, song, songURI, startPositionMs} = selectedSong
+  const displaySong = (playbackInfo && playbackInfo.item) || song
   const [timestampSaved, setTimestampSaved] = useState(false)
   const [showNoteInput, setShowNoteInput] = useState(false)
   const [noteText, setNoteText] = useState('')
@@ -127,10 +128,10 @@ const AuthenticatedApp = (props) => {
         <span className={styles.brand}>Spoti<span className={styles.brandAccent}>try</span></span>
         <GlobalSearch/>
       </header>
-      <div className={`${styles.player} ${expanded ? styles.playerExpanded : ''} ${!song ? styles.playerHidden : ''}`}>
-        {song && expanded && (
+      <div className={`${styles.player} ${expanded ? styles.playerExpanded : ''} ${displaySong ? '' : styles.playerHidden}`}>
+        {displaySong && expanded && (
           <NowPlaying
-            song={song}
+            song={displaySong}
             saved={timestampSaved}
             onCollapse={() => setExpanded(false)}
             onSave={handleTimestamp}
@@ -198,7 +199,7 @@ const AuthenticatedApp = (props) => {
           </div>
         )}
         <div className={styles.playerRow}>
-          {song && !expanded && (
+          {displaySong && !expanded && (
             <>
             <button
               onClick={() => setExpanded(true)}
@@ -209,12 +210,12 @@ const AuthenticatedApp = (props) => {
               <FontAwesomeIcon icon={faChevronUp} />
             </button>
             <div className={styles.miniInfo} onClick={() => setExpanded(true)}>
-              {song?.album?.images?.[0]?.url && (
-                <img className={styles.miniArt} src={song.album.images[0].url} alt="" />
+              {displaySong?.album?.images?.[0]?.url && (
+                <img className={styles.miniArt} src={displaySong.album.images[0].url} alt="" />
               )}
               <div className={styles.miniMeta}>
-                <span className={styles.miniTitle}>{song?.name}</span>
-                <span className={styles.miniArtist}>{song?.artists?.[0]?.name}</span>
+                <span className={styles.miniTitle}>{displaySong?.name}</span>
+                <span className={styles.miniArtist}>{displaySong?.artists?.[0]?.name}</span>
               </div>
               <span className={styles.miniTime}>
                 {formatMs(progressMs)}{durationMs ? ' / ' + formatMs(durationMs) : ''}
@@ -268,7 +269,7 @@ const AuthenticatedApp = (props) => {
 
         </div>
       </div>
-      <main className={`${styles.content} ${song ? styles.withPlayer : ''}`}>
+      <main className={`${styles.content} ${displaySong ? styles.withPlayer : ''}`}>
       <TransitionGroup component={null}>
         <CSSTransition
           key={location.pathname}
@@ -343,6 +344,7 @@ const mapStateToProps = (state) => {
   return{
     token:state.User.token,
     selectedSong:state.Player.selectedSong,
+    playbackInfo:state.Player.playbackInfo,
     userId: state.User.databaseUser.userId,
   }
 }

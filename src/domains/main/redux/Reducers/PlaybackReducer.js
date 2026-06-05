@@ -92,9 +92,10 @@ function playbackReducer(state = InitialState, action){
             }
         }
         case playbackActions.setDeviceId: {
+            const {deviceId} = action
             return {
                 ...state,
-                deviceId: action.deviceId
+                deviceId:deviceId
             }
         }
         default : {

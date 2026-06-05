@@ -40,7 +40,6 @@ const Profile = (props) => {
 
     const handlePlayTimestamp = (ts) => {
         if (token && ts.uri) {
-            selectSong(ts.position_ms, ts.uri, { name: ts.songName, uri: ts.uri })
             playSong(token, ts.position_ms, ts.uri, { name: ts.songName, uri: ts.uri })
         }
     }
