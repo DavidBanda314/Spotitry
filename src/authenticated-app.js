@@ -13,10 +13,14 @@ import GlobalSearch from './components/GlobalSearch';
 import Share from './domains/main/Share';
 import Profile from './domains/main/Profile';
 import Compare from './domains/main/Compare';
+import Artist from './domains/main/Artist';
 import { StoreToken } from './domains/main/redux/Actions/UserActions.js'
 import { getPlaybackInfoRequested, setDeviceId } from './domains/main/redux/Actions/PlaybackActions.js'
 import { connect } from 'react-redux'
 import SpotifyPlayer from 'react-spotify-web-playback';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronUp } from '@fortawesome/free-solid-svg-icons'
+import NowPlaying from './components/NowPlaying';
 import styles from './authenticated-app.module.css';
 
 const AuthenticatedApp = (props) => {
@@ -25,6 +29,7 @@ const AuthenticatedApp = (props) => {
   const [timestampSaved, setTimestampSaved] = useState(false)
   const [showNoteInput, setShowNoteInput] = useState(false)
   const [noteText, setNoteText] = useState('')
+  const [expanded, setExpanded] = useState(false)
   const location = useLocation()
 
   useEffect(() => {
@@ -63,7 +68,15 @@ const AuthenticatedApp = (props) => {
         <GlobalSearch/>
       </header>
       {song && 
-      <div className={styles.player}>
+      <div className={`${styles.player} ${expanded ? styles.playerExpanded : ''}`}>
+        {expanded && (
+          <NowPlaying
+            song={song}
+            saved={timestampSaved}
+            onCollapse={() => setExpanded(false)}
+            onSave={handleTimestamp}
+          />
+        )}
         {showNoteInput && (
           <div style={{
             backgroundColor: '#282828',
@@ -122,12 +135,17 @@ const AuthenticatedApp = (props) => {
             </button>
           </div>
         )}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          backgroundColor: '#000000',
-          borderTop: '1px solid rgba(255,255,255,0.1)',
-        }}>
+        <div className={styles.playerRow}>
+          {!expanded && (
+            <button
+              onClick={() => setExpanded(true)}
+              aria-label="Expand player"
+              title="Expand"
+              className={styles.expandButton}
+            >
+              <FontAwesomeIcon icon={faChevronUp} />
+            </button>
+          )}
           <div style={{flex: 1}}>
             <SpotifyPlayer
               styles={{
@@ -216,6 +234,9 @@ const AuthenticatedApp = (props) => {
             </Route>
             <Route exact path='/compare'>
               <Compare/>
+            </Route>
+            <Route exact path='/artist/:id'>
+              <Artist/>
             </Route>
           </Switch>
         </CSSTransition>
