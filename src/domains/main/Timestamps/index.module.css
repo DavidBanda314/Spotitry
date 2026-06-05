@@ -9,6 +9,29 @@
     color: #FFFFFF;
 }
 
+.createPlaylistBtn {
+    align-self: flex-start;
+    background: transparent;
+    color: #FFFFFF;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 500px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.createPlaylistBtn:hover:not(:disabled) {
+    background: #1DB954;
+    border-color: #1DB954;
+}
+
+.createPlaylistBtn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
 .searchWrapper {
     width: 100%;
 }

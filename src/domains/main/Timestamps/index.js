@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import styles from '../Timestamps/index.module.css'
 import { connect } from 'react-redux'
 import { getProfileRequested } from '../redux/Actions/UserActions'
@@ -6,15 +6,30 @@ import { playSongRequested, setSelectedSong } from '../redux/Actions/PlaybackAct
 import { InputGroup, InputGroupAddon, Input, Button } from 'reactstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faSearch, faListUl } from '@fortawesome/free-solid-svg-icons'
 import { Card, CardImg, CardBody, CardTitle, CardSubtitle, CardText } from 'reactstrap'
+import CreatePlaylistModal from '../../../components/CreatePlaylistModal'
 
 
 const Timestamps = (props) => {
-    const {token, timestamps, playSong, setSelectedSong, selectedSong} = props
+    const {token, timestamps, playSong, setSelectedSong, selectedSong, userId} = props
     const [timestampsBySong,setTimeStampsBySong] = useState([])
     const [searchValue, setSearchValue] = useState('')
     const [allTimeStampsBySong,setAllTimeStampsBySong] = useState('')
+    const [showPlaylistModal, setShowPlaylistModal] = useState(false)
+
+    const uniqueTrackUris = useMemo(() => {
+        if (!timestamps) return []
+        const uris = new Set()
+        Object.values(timestamps).forEach((songGroup) => {
+            Object.values(songGroup).forEach((entry) => {
+                if (entry.song && entry.song.uri) {
+                    uris.add(entry.song.uri)
+                }
+            })
+        })
+        return Array.from(uris)
+    }, [timestamps])
     useEffect(() => {   
         if(!searchValue && timestamps){
             var tempArr2 = []
@@ -33,7 +48,23 @@ const Timestamps = (props) => {
     }
     return(
     
-        <div className={styles.container}>     
+        <div className={styles.container}>
+            <button
+                className={styles.createPlaylistBtn}
+                onClick={() => setShowPlaylistModal(true)}
+                disabled={uniqueTrackUris.length === 0}
+            >
+                <FontAwesomeIcon icon={faListUl} style={{marginRight: '8px'}} />
+                Create Playlist
+            </button>
+            <CreatePlaylistModal
+                isOpen={showPlaylistModal}
+                onClose={() => setShowPlaylistModal(false)}
+                defaultName="My Spotitry Timestamps"
+                token={token}
+                userId={userId}
+                trackUris={uniqueTrackUris}
+            />
             <div className={styles.searchWrapper}>
                 <InputGroup>
                     <InputGroupAddon addonType="append">
@@ -123,7 +154,8 @@ const mapStateToProps = (state) => {
     return {
         timestamps:state.User.databaseUser.timestamps,
         token:state.User.token,
-        selectedSong: state.Player.selectedSong
+        selectedSong: state.Player.selectedSong,
+        userId: state.User.profile?.id
     }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Timestamps);
