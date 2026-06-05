@@ -49,7 +49,7 @@ const Home = (props) => {
                                     className={styles.timestampCard}
                                     key={idx}
                                     onClick={function() {
-                                        setSelectedSong(0, song?.uri, song);
+                                        setSelectedSong(0, song?.uri, song, ts.position_ms);
                                         playSong(token, ts.position_ms, song?.uri, song);
                                     }}
                                 >
@@ -140,7 +140,7 @@ const Home = (props) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         playSong: (token, deviceId, songURI, song) => dispatch(playSongRequested(token, deviceId, songURI,song)),
-        setSelectedSong: (token, songURI, song) => dispatch(setSelectedSong(token, songURI, song)),
+        setSelectedSong: (token, songURI, song, startPositionMs) => dispatch(setSelectedSong(token, songURI, song, startPositionMs)),
         getPlaybackInfo: (token,create,userId) => dispatch(getPlaybackInfoRequested(token,create,userId)),
     }
 }

@@ -9,7 +9,8 @@ export const playbackActions = {
     getRecentlyPlayedRequested: 'Get Recently Played Requested',
     getRecentlyPlayedSucceeded: 'Get Recently Played Succeeded',
     getRecentlyPlayedFailed: 'Get Recently Played Failed',
-    setSelectedSong: 'Set Selected Song'
+    setSelectedSong: 'Set Selected Song',
+    setDeviceId: 'Set Device Id'
 }
 
 export function getPlaybackInfoRequested(token,createTimestamp,userId,note){
@@ -79,11 +80,18 @@ export function getRecentlyPlayedRequested(token){
         token
     }
 }
-export function setSelectedSong(position_ms = 0,songURI,song){
+export function setSelectedSong(position_ms = 0,songURI,song,startPositionMs = 0){
     return{
         type:playbackActions.setSelectedSong,
         position_ms,
         songURI,
-        song
+        song,
+        startPositionMs
+    }
+}
+export function setDeviceId(deviceId){
+    return{
+        type:playbackActions.setDeviceId,
+        deviceId
     }
 }

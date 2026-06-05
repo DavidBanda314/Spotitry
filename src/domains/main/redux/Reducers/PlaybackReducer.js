@@ -12,7 +12,9 @@ const InitialState =
         position_ms:0,
         songURI:'',
         song:'',
+        startPositionMs:0,
     },
+    deviceId:'',
     loading:false,
     errors:{},
 }
@@ -66,18 +68,25 @@ function playbackReducer(state = InitialState, action){
             }
         }
         case playbackActions.setSelectedSong: {
-            const {position_ms, song, songURI} = action
+            const {position_ms, song, songURI, startPositionMs} = action
             return {
                 ...state,
                 selectedSong:{
                     position_ms:position_ms,
                     songURI:songURI,
-                    song:song
+                    song:song,
+                    startPositionMs:startPositionMs || 0
                 },
                 playbackInfo:{
                     ...state.playbackInfo,
                     item:song
                 }
+            }
+        }
+        case playbackActions.setDeviceId: {
+            return {
+                ...state,
+                deviceId: action.deviceId
             }
         }
         default : {

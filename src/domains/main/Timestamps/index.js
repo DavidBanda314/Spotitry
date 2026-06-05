@@ -411,7 +411,7 @@ const Timestamps = (props) => {
                                                             if(!selectedSong) {
                                                             }
                                                             else{
-                                                                setSelectedSong(0,track?.uri,track);
+                                                                setSelectedSong(0,track?.uri,track,timeSet);
                                                                 playSong(token,timeSet,track?.uri,track)
                                                             }
                                                         }}
@@ -545,7 +545,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         playSong: (token, deviceId, songURI, song) => dispatch(playSongRequested(token, deviceId, songURI,song)),
         refetchUser: (token) => dispatch(getProfileRequested(token)),
-        setSelectedSong: (token, songURI, song) => dispatch(setSelectedSong(token, songURI, song))
+        setSelectedSong: (token, songURI, song, startPositionMs) => dispatch(setSelectedSong(token, songURI, song, startPositionMs))
     }
 }
 const mapStateToProps = (state) => {

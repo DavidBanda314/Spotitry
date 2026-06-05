@@ -15,7 +15,7 @@ import Profile from './domains/main/Profile';
 import Compare from './domains/main/Compare';
 import Artist from './domains/main/Artist';
 import { StoreToken } from './domains/main/redux/Actions/UserActions.js'
-import { getPlaybackInfoRequested } from './domains/main/redux/Actions/PlaybackActions.js'
+import { getPlaybackInfoRequested, setDeviceId } from './domains/main/redux/Actions/PlaybackActions.js'
 import { connect } from 'react-redux'
 import SpotifyPlayer from 'react-spotify-web-playback';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -31,8 +31,8 @@ function formatMs(ms) {
 }
 
 const AuthenticatedApp = (props) => {
-  var {token, storeToken, selectedSong, getPlaybackInfo, userId} = props
-  const {position_ms, song, songURI} = selectedSong
+  var {token, storeToken, selectedSong, getPlaybackInfo, userId, storeDeviceId} = props
+  const {position_ms, song, songURI, startPositionMs} = selectedSong
   const [timestampSaved, setTimestampSaved] = useState(false)
   const [showNoteInput, setShowNoteInput] = useState(false)
   const [noteText, setNoteText] = useState('')
@@ -51,7 +51,9 @@ const AuthenticatedApp = (props) => {
 
   useEffect(() => {
     if(selectedSong?.songURI){
-      setPlay(true)
+      // For positioned (timestamp) plays, do NOT let the component auto-start
+      // from 0:00 — the saga's device-targeted play starts it at the saved time.
+      setPlay(!selectedSong?.startPositionMs)
     }
   },[selectedSong])
 
@@ -82,9 +84,8 @@ const AuthenticatedApp = (props) => {
         <span className={styles.brand}>Spoti<span className={styles.brandAccent}>try</span></span>
         <GlobalSearch/>
       </header>
-      {song && 
-      <div className={`${styles.player} ${expanded ? styles.playerExpanded : ''}`}>
-        {expanded && (
+      <div className={`${styles.player} ${expanded ? styles.playerExpanded : ''} ${!song ? styles.playerHidden : ''}`}>
+        {song && expanded && (
           <NowPlaying
             song={song}
             saved={timestampSaved}
@@ -92,7 +93,7 @@ const AuthenticatedApp = (props) => {
             onSave={handleTimestamp}
           />
         )}
-        {showNoteInput && (
+        {song && showNoteInput && (
           <div style={{
             backgroundColor: 'var(--surface)',
             padding: '12px 16px',
@@ -154,7 +155,7 @@ const AuthenticatedApp = (props) => {
           </div>
         )}
         <div className={styles.playerRow}>
-          {!expanded && (
+          {song && !expanded && (
             <>
             <button
               onClick={() => setExpanded(true)}
@@ -178,7 +179,7 @@ const AuthenticatedApp = (props) => {
             </div>
             </>
           )}
-          <div style={{flex: 1, display: expanded ? 'block' : 'none'}}>
+          <div style={{flex: 1, display: (song && expanded) ? 'block' : 'none'}}>
             <SpotifyPlayer
               styles={{
                 bgColor:'transparent',
@@ -190,12 +191,14 @@ const AuthenticatedApp = (props) => {
                 sliderTrackColor:'var(--border-strong-2)',
               }}
               token={token}
-              uris={[songURI]}
+              uris={songURI ? [songURI] : []}
               offset={position_ms}
               play={play}
-              autoPlay={true}
+              autoPlay={!startPositionMs}
               callback={(state) => {
                 setPlay(state.isPlaying)
+                const id = state.currentDeviceId || state.deviceId
+                if (id) { storeDeviceId(id) }
                 if (state.progressMs !== undefined) { setProgressMs(state.progressMs) }
                 if (state.track && state.track.durationMs) { setDurationMs(state.track.durationMs) }
               }}
@@ -206,7 +209,6 @@ const AuthenticatedApp = (props) => {
 
         </div>
       </div>
-      }
       <main className={`${styles.content} ${song ? styles.withPlayer : ''}`}>
       <TransitionGroup component={null}>
         <CSSTransition
@@ -275,6 +277,7 @@ const mapDispatchToProps = (dispatch) => {
   return{
       storeToken: (token) => dispatch(StoreToken(token)),
       getPlaybackInfo: (token, create, userId, note) => dispatch(getPlaybackInfoRequested(token, create, userId, note)),
+      storeDeviceId: (deviceId) => dispatch(setDeviceId(deviceId)),
   }
 }
 const mapStateToProps = (state) => {

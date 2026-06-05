@@ -50,6 +50,14 @@
     z-index: 150;
 }
 
+/* Player stays mounted (so the Web Playback device pre-registers) but is hidden
+   and non-interactive until a song is selected. */
+.playerHidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(120%);
+}
+
 .playerRow {
     display: flex;
     align-items: center;
