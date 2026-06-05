@@ -1,43 +1,41 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import styles from './index.module.css'
-import {Tabs, Tab, Paper} from '@material-ui/core'
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHome, faHistory, faBookmark, faSearch, faUser } from '@fortawesome/free-solid-svg-icons'
 
+const tabs = [
+    { path: 'home', label: 'Home', icon: faHome },
+    { path: 'history', label: 'History', icon: faHistory },
+    { path: 'discover', label: 'Discover', icon: faSearch },
+    { path: 'timestamps', label: 'Saved', icon: faBookmark },
+    { path: 'account', label: 'Profile', icon: faUser },
+]
 
 const NavBar = () => {
-    const [tab,setTab] = useState(0);
     const history = useHistory()
-    const tabs = ['home','history','timestamps','discover','account']
+    const location = useLocation()
+    const current = location.pathname.replace('/', '').toLowerCase()
 
-    useEffect(() => {
-        const path = window.location.pathname;
-        const tab = path.substring(1, 2).toLowerCase() + path.substring(2)
-        setTab(tabs.indexOf(tab));
-        history.push(tab)
-
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      }, []);
-    return(
-        <>
-        <Paper className={styles.paper}>
-            <Tabs
-                className={styles.tabs}
-                value={tab}
-                onChange={(event,value)=>{
-                    setTab(value);
-                    history.push(tabs[value]);
-                }}
-                indicatorColor='primary'
-                centered
-            >
-                <Tab label="Home" />
-                <Tab label="History"/>
-                <Tab label="Timestamps"/>
-                <Tab label="Discover"/>
-                <Tab label="Account"/>
-            </Tabs>
-        </Paper>
-        </>
+    return (
+        <nav className={styles.nav}>
+            {tabs.map((tab) => {
+                const active = current === tab.path
+                return (
+                    <button
+                        key={tab.path}
+                        type="button"
+                        className={`${styles.item} ${active ? styles.active : ''}`}
+                        onClick={() => history.push(`/${tab.path}`)}
+                        aria-label={tab.label}
+                        aria-current={active ? 'page' : undefined}
+                    >
+                        <FontAwesomeIcon icon={tab.icon} className={styles.icon} />
+                        <span className={styles.label}>{tab.label}</span>
+                    </button>
+                )
+            })}
+        </nav>
     )
 }
 

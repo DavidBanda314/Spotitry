@@ -1,94 +1,124 @@
-.header {
-    font-size: 18px;
-    font-weight: 600;
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+    max-width: 600px;
+    margin: 0 auto;
     color: #FFFFFF;
-    margin-top: 16px;
-    margin-left: 16px;
+}
+
+.nowPlaying {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 16px;
 }
 
 .pic {
-    width: 240px;
-    height: 200px;
-    border-radius: 8px;
+    width: 88px;
+    height: 88px;
+    border-radius: 12px;
     object-fit: cover;
-    position: fixed;
-    top: 55px;
-    left: 200px;
+    flex-shrink: 0;
 }
 
-.column {
+.nowPlayingMeta {
     display: flex;
-    justify-content: left;
-    align-items: center;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
 }
 
-.row {
-    flex-direction: row;
-    display: flex;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    background-color: #1a1a1a;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+.nowPlayingLabel {
+    font-size: 12px;
+    font-weight: 600;
+    color: #1DB954;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
 }
 
-.smallPic {
-    width: 50px;
-    height: 50px;
-    border-radius: 8px;
-}
-
-.row1 {
-    flex-direction: row;
-    display: flex;
-    min-height: calc(100vh - 48px);
-    color: #FFFFFF;
-    background-color: #000000;
-    justify-content: space-around;
-    align-items: center;
-    overflow: auto;
-}
-
-.timestamp {
-    margin-top: 100px;
-    height: 200px;
-    margin-right: 500px;
-    left: 300px;
-    position: relative;
-    background-color: #000000;
-}
-
-.timestampButton {
-    height: 100px;
-    background-color: #1DB954;
-    color: #000000;
+.header {
+    font-size: 18px;
     font-weight: 700;
-    border-radius: 500px;
-    font-size: 16px;
-}
-
-.timestampButton:hover {
-    background-color: #1ed760;
-    color: #000000;
+    color: #FFFFFF;
 }
 
 .searchBar {
-    position: fixed;
-    top: 300px;
-    width: 377px;
-    overflow: auto;
-    left: 126px;
+    width: 100%;
 }
 
 .searchResults {
-    margin-top: 10px;
     display: flex;
     flex-direction: column;
-    top: 440px;
-    max-height: 325px;
-    border-radius: 8px;
-    left: 125px;
-    overflow: auto;
+    gap: 8px;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px;
     background-color: #1a1a1a;
     border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, transform 0.15s ease;
+}
+
+.row:hover {
+    border-color: rgba(255, 255, 255, 0.18);
+}
+
+.row:active {
+    transform: scale(0.99);
+}
+
+.smallPic {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.rowMeta {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.rowTitle {
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.rowSubtitle {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.timestampButton {
+    background-color: #1DB954 !important;
+    color: #000000 !important;
+    font-weight: 700 !important;
+    border-radius: 500px !important;
+    font-size: 16px !important;
+    padding: 12px 0 !important;
+    text-transform: none !important;
+    box-shadow: none !important;
+}
+
+.timestampButton:hover {
+    background-color: #1ed760 !important;
 }

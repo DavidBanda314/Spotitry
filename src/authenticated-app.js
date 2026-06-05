@@ -9,6 +9,7 @@ import History from './domains/main/History';
 import { StoreToken } from './domains/main/redux/Actions/UserActions.js'
 import { connect } from 'react-redux'
 import SpotifyPlayer from 'react-spotify-web-playback';
+import styles from './authenticated-app.module.css';
 
 const AuthenticatedApp = (props) => {
   var {token, storeToken, selectedSong} = props
@@ -27,11 +28,11 @@ const AuthenticatedApp = (props) => {
       <div>
       {token &&
       <>
-      <NavBar/>
+      <header className={styles.topBar}>
+        <span className={styles.brand}>Spoti<span className={styles.brandAccent}>try</span></span>
+      </header>
       {song && 
-      <div
-        style={{position:'fixed', width:'100%', zIndex:'100', bottom: '0px'}}
-      >
+      <div className={styles.player}>
         <SpotifyPlayer
             styles={{
               bgColor:'#000000',
@@ -52,6 +53,7 @@ const AuthenticatedApp = (props) => {
 
       </div>
       }
+      <main className={styles.content}>
       <Switch>
         <Route
           exact
@@ -86,6 +88,8 @@ const AuthenticatedApp = (props) => {
           <History/>
         </Route>
       </Switch>
+      </main>
+      <NavBar/>
       </>
       }
     </div>

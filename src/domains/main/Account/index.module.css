@@ -1,57 +1,66 @@
-.profilePic {
-    margin-left: 20px;
-    border-radius: 50%;
-    max-width: 180px;
-    max-height: 180px;
-    object-fit: cover;
-    border: 3px solid #1DB954;
+.header {
+    background-color: #000000;
+    padding: 24px 16px;
+    color: #FFFFFF;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
-.name {
-    color: #FFFFFF;
-    margin-left: 24px;
-    margin-bottom: 12px;
-    font-size: 32px;
-    font-weight: 900;
-    letter-spacing: -0.03em;
+.banner {
+    width: 100%;
 }
 
 .row {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
-    margin-bottom: 20px;
-    margin-top: 20px;
-    padding: 40px;
+    text-align: center;
+    gap: 8px;
+    padding: 32px 24px;
     background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
     border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.header {
-    background-color: #000000;
-    min-height: calc(100vh - 48px);
-    display: flex;
-    flex-direction: column;
-    padding: 32px 48px;
+.profilePic {
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border: 3px solid #1DB954;
+    margin-bottom: 8px;
+}
+
+.name {
     color: #FFFFFF;
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.email {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    font-weight: 500;
 }
 
 .followers {
-    color: rgba(255, 255, 255, 0.6);
-    margin-left: 24px;
-    font-size: 16px;
-    font-weight: 500;
+    color: #1DB954;
+    font-size: 15px;
+    font-weight: 700;
+    margin-top: 4px;
 }
 
 .column {
     flex-direction: column;
 }
 
-.email {
-    color: rgba(255, 255, 255, 0.6);
-    margin-left: 24px;
-    margin-bottom: 8px;
-    font-size: 16px;
-    font-weight: 500;
+@media (min-width: 600px) {
+    .profilePic {
+        width: 150px;
+        height: 150px;
+    }
+    .name {
+        font-size: 28px;
+    }
 }
