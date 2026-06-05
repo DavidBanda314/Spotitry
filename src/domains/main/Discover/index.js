@@ -7,30 +7,111 @@ import { getPlaybackInfoRequested, playSongRequested, setSelectedSong } from '..
 import { Button } from '@material-ui/core'
 import { SkeletonCard } from '../../../components/Skeleton'
 
+const DEBOUNCE_MS = 300
 
 const Discover = (props) => {
-    const {searchSongs, getPlaybackInfo, token, searchedSongs, currentlyPlaying,userId, setSelectedSong, playbackInfo} = props
-    const [searchValue, setSearchValue] = useState('')
+    const {searchSongs, getPlaybackInfo, token, searchedSongs, currentlyPlaying, userId, setSelectedSong, playbackInfo, searchLoading, searchError} = props
+    const [query, setQuery] = useState('')
+    const [debouncedQuery, setDebouncedQuery] = useState('')
+    const [selectedKey, setSelectedKey] = useState(null)
     const [playbackLoaded, setPlaybackLoaded] = useState(false)
     const playbackInfoRef = useRef(playbackInfo)
+
     useEffect(() => {
         if (playbackInfoRef.current !== playbackInfo) {
             setPlaybackLoaded(true)
         }
         playbackInfoRef.current = playbackInfo
     }, [playbackInfo])
+
     useEffect(() => {
         getPlaybackInfo(token)
-        if(searchValue){
-            searchSongs(token,searchValue)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    useEffect(() => {
+        const handle = setTimeout(() => setDebouncedQuery(query.trim()), DEBOUNCE_MS)
+        return () => clearTimeout(handle)
+    }, [query])
+
+    useEffect(() => {
+        if (debouncedQuery) {
+            searchSongs(token, debouncedQuery)
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[searchValue])
+    }, [debouncedQuery])
+
+    const handleClear = () => {
+        setQuery('')
+        setDebouncedQuery('')
+        setSelectedKey(null)
+    }
+
+    const handleSelect = (song, key) => {
+        setSelectedSong(song.track_number - 1, song.album.uri, song)
+        setSelectedKey(key)
+    }
+
+    const hasQuery = debouncedQuery.length > 0
+
+    const renderResults = () => {
+        if (!hasQuery) {
+            return (
+                <div className={styles.placeholder}>
+                    Search for a song to play it or save a timestamp.
+                </div>
+            )
+        }
+        if (searchLoading) {
+            return (
+                <>
+                    {[0, 1, 2, 3].map((i) => (
+                        <SkeletonCard key={i} width="100%" height="64px" borderRadius="12px" />
+                    ))}
+                </>
+            )
+        }
+        if (searchError) {
+            return (
+                <div className={styles.placeholder}>
+                    Something went wrong while searching. Please try again.
+                </div>
+            )
+        }
+        if (!searchedSongs || searchedSongs.length === 0) {
+            return (
+                <div className={styles.placeholder}>
+                    No songs match “{debouncedQuery}”.
+                </div>
+            )
+        }
+        return searchedSongs.map((song, key) => (
+            <div
+                className={`${styles.row} ${selectedKey === key ? styles.rowSelected : ''}`}
+                key={key}
+                onClick={() => handleSelect(song, key)}
+            >
+                {song.album?.images?.[0]?.url ? (
+                    <img alt="" src={song.album.images[0].url} className={styles.smallPic}/>
+                ) : (
+                    <div className={styles.smallPicFallback}>♪</div>
+                )}
+                <div className={styles.rowMeta}>
+                    <span className={styles.rowTitle}>{song.name}</span>
+                    <span className={styles.rowSubtitle}>{song.artists?.[0]?.name}</span>
+                </div>
+                {selectedKey === key && (
+                    <span className={styles.playingTag}>Playing</span>
+                )}
+            </div>
+        ))
+    }
+
     return(
         <div className={styles.container}>
             {currentlyPlaying ? (
                 <div className={styles.nowPlaying}>
-                    <img alt="" src={currentlyPlaying?.album?.images[1]?.url} className={styles.pic}/>
+                    <img alt="" src={currentlyPlaying?.album?.images?.[1]?.url || currentlyPlaying?.album?.images?.[0]?.url} className={styles.pic}/>
                     <div className={styles.nowPlayingMeta}>
                         <span className={styles.nowPlayingLabel}>Now playing</span>
                         <span className={styles.header}>{currentlyPlaying?.name}</span>
@@ -41,36 +122,27 @@ const Discover = (props) => {
             ) : null}
 
             <div className={styles.searchBar}>
-                <SearchBar setSearchValue={setSearchValue}/>
+                <SearchBar
+                    value={query}
+                    onChange={setQuery}
+                    onClear={handleClear}
+                    onSubmit={(v) => setDebouncedQuery(v.trim())}
+                />
             </div>
 
             <div className={styles.searchResults}>
-                { searchValue &&
-                    searchedSongs.map((song, key) => (
-                        <div
-                            className={styles.row} key={key}
-                            onClick={() => {
-                                setSelectedSong(song.track_number-1,song.album.uri,song)
-                                setSearchValue('')
-                            }}
-                        >
-                            <img alt="" src={song.album.images[0].url} className={styles.smallPic}/>
-                            <div className={styles.rowMeta}>
-                                <span className={styles.rowTitle}>{song.name}</span>
-                                <span className={styles.rowSubtitle}>{song.artists?.[0]?.name}</span>
-                            </div>
-                        </div>
-                    ))
-                }
+                {renderResults()}
             </div>
 
-            <Button
-                variant='contained'
-                className={styles.timestampButton}
-                onClick={() => getPlaybackInfo(token,1,userId)}
-            >
-                Save Timestamp
-            </Button>
+            {currentlyPlaying && (
+                <Button
+                    variant='contained'
+                    className={styles.timestampButton}
+                    onClick={() => getPlaybackInfo(token,1,userId)}
+                >
+                    Save Timestamp
+                </Button>
+            )}
         </div>
     )
 }
@@ -88,6 +160,8 @@ const mapStateToProps = (state) => {
     return {
         token:state.User.token,
         searchedSongs:state.User.searchedSongs,
+        searchLoading:state.User.searchLoading,
+        searchError:state.User.searchError,
         availableDevices: state.Player.availableDevices.devices,
         playbackInfo: state.Player.playbackInfo,
         currentlyPlaying: state.Player.playbackInfo?.item,

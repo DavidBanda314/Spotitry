@@ -1,7 +1,52 @@
 .SearchBar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     width: 100%;
+    box-sizing: border-box;
     background-color: #1a1a1a;
     border-radius: 500px;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 10px 16px;
+    transition: border-color 0.2s ease;
+}
+
+.SearchBar:focus-within {
+    border-color: #1DB954;
+}
+
+.searchIcon {
+    color: rgba(255, 255, 255, 0.6);
+    flex-shrink: 0;
+}
+
+.input {
+    flex: 1;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #FFFFFF;
+    font-size: 15px;
+}
+
+.input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.clearButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    padding: 4px;
+    flex-shrink: 0;
+    transition: color 0.2s ease;
+}
+
+.clearButton:hover {
     color: #FFFFFF;
 }
