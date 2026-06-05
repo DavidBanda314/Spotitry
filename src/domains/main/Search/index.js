@@ -3,11 +3,11 @@ import { connect } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { searchSongsRequested } from '../redux/Actions/UserActions.js'
-import { setSelectedSong, playSongRequested } from '../redux/Actions/PlaybackActions.js'
+import { setSelectedSong } from '../redux/Actions/PlaybackActions.js'
 import styles from './index.module.css'
 
 const Search = (props) => {
-    const { token, searchedSongs, searchSongs, setSelectedSong, playSong } = props
+    const { token, searchedSongs, searchSongs, setSelectedSong } = props
     const [query, setQuery] = useState('')
 
     useEffect(() => {
@@ -24,7 +24,6 @@ const Search = (props) => {
 
     const selectSong = (song) => {
         setSelectedSong(song.track_number - 1, song.album.uri, song)
-        playSong(token, song.track_number - 1, song.album.uri, song)
     }
 
     const hasQuery = query.trim().length > 0
@@ -86,7 +85,6 @@ const mapDispatchToProps = (dispatch) => {
     return {
         searchSongs: (token, searchValue) => dispatch(searchSongsRequested(token, searchValue)),
         setSelectedSong: (position_ms, songURI, song) => dispatch(setSelectedSong(position_ms, songURI, song)),
-        playSong: (token, position_ms, songURI, song) => dispatch(playSongRequested(token, position_ms, songURI, song)),
     }
 }
 
