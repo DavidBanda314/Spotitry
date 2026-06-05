@@ -104,3 +104,75 @@
 .centerIcon {
     font-size: 22px;
 }
+
+.noteOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 199;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: calc(62px + env(safe-area-inset-bottom, 0px));
+}
+
+.noteBar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background-color: var(--surface);
+    border-top: 1px solid var(--border-2);
+    animation: slideUp 0.15s ease;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.noteInput {
+    flex: 1;
+    min-width: 0;
+    background-color: var(--bg);
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    padding: 9px 14px;
+    color: var(--text);
+    font-size: 14px;
+    outline: none;
+    font-family: inherit;
+}
+
+.noteInput::placeholder {
+    color: var(--text-secondary);
+}
+
+.noteInput:focus {
+    border-color: var(--accent);
+}
+
+.noteSaveBtn {
+    flex-shrink: 0;
+    background-color: var(--accent);
+    color: var(--on-accent);
+    border: none;
+    border-radius: 500px;
+    padding: 9px 18px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.noteCancelBtn {
+    flex-shrink: 0;
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-strong-2);
+    border-radius: 500px;
+    padding: 9px 14px;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: inherit;
+}
