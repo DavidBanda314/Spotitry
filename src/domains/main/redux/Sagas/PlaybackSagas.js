@@ -1,4 +1,4 @@
-import { all, takeLatest, call, put } from 'redux-saga/effects';
+import { all, takeLatest, call, put, select, delay } from 'redux-saga/effects';
 import * as Actions from '../Actions/PlaybackActions'
 import { setDatabaseUserSucceeded } from '../Actions/UserActions'
 import axios from 'axios'
@@ -42,18 +42,20 @@ export function* getPlaybackInfo({ token, createTimestamp, userId, note}) {
 
 export function* playSong({token, position_ms, songURI, song}){
     try{
-        // console.log(songURI)
-        // if(songURI.includes('artist')){
-        //     console.log('yeet')
-        //     yield call(axios.put, `${PLAYER_ENDPOINT}/play`,{context_uri:songURI, position_ms: position_ms},{headers:{'Authorization': 'Bearer ' + token}})
-        //     yield put(Actions.playSongSucceeded())
-        //     yield put(Actions.setPlaybackInfo(song))
-        // }
-        // else{
-            yield call(axios.put, `${PLAYER_ENDPOINT}/play`,{uris: [songURI], position_ms: position_ms},{headers:{'Authorization': 'Bearer ' + token}})
-            yield put(Actions.playSongSucceeded())
-            yield put(Actions.setPlaybackInfo(song))
-        // }
+        // Wait briefly for the in-app Web Playback device to register so we can
+        // target it directly. Targeting the device lets a single play request
+        // start at position_ms, instead of starting at 0 and seeking after.
+        let deviceId = yield select(state => state.Player.deviceId)
+        for (let i = 0; i < 10 && !deviceId; i++) {
+            yield delay(300)
+            deviceId = yield select(state => state.Player.deviceId)
+        }
+        const url = deviceId
+            ? `${PLAYER_ENDPOINT}/play?device_id=${deviceId}`
+            : `${PLAYER_ENDPOINT}/play`
+        yield call(axios.put, url, {uris: [songURI], position_ms: position_ms}, {headers:{'Authorization': 'Bearer ' + token}})
+        yield put(Actions.playSongSucceeded())
+        yield put(Actions.setPlaybackInfo(song))
     }
     catch(error){
         console.log(error)
