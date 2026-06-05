@@ -29,10 +29,10 @@ const AuthenticatedApp = (props) => {
   },[])
 
   useEffect(() => {
-    if(songURI){
+    if(selectedSong?.songURI){
       setPlay(true)
     }
-  },[songURI, position_ms])
+  },[selectedSong])
 
   const handleTimestamp = () => {
     if (token && userId) {

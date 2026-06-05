@@ -14,7 +14,7 @@ const Timestamps = (props) => {
     const {token, timestamps, playSong, setSelectedSong, selectedSong, userId} = props
     const [timestampsBySong,setTimeStampsBySong] = useState([])
     const [searchValue, setSearchValue] = useState('')
-    const [allTimeStampsBySong,setAllTimeStampsBySong] = useState('')
+    const [allTimeStampsBySong,setAllTimeStampsBySong] = useState([])
     const [showPlaylistModal, setShowPlaylistModal] = useState(false)
 
     const uniqueTrackUris = useMemo(() => {
