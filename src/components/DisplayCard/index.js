@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
-import {Card, CardImg, CardBody, CardTitle, CardSubtitle, Col, CardHeader} from 'reactstrap'
+import styles from './index.module.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useHistory } from 'react-router-dom';
 
 
 const DisplayCard = (props) => {
     const {token, track, artistName,albumName, albumCover, trackName, setSelectedSong, selectedSong} = props;
     return(
-        <Col style={{height: '50%', display: 'flex', marginTop: "10px"}}
+        <div
+            className={styles.card}
             onClick={() => {
                 selectedSong?.song?.album?.uri == track.album.uri ?
                     setSelectedSong(0,track.uri,track)
@@ -15,17 +15,15 @@ const DisplayCard = (props) => {
                     setSelectedSong(track.track_number-1,track.album?.uri,track);        
             }}
         >
-            <Card style={{cursor:'pointer', width: '210px', height: "500px"}}>
-                <CardImg top width="100%" alt="Album Cover" style={{width:'210px'}} src={albumCover}/>
-                <CardHeader>
-                    <CardTitle tag="h5">{trackName}</CardTitle>
-                </CardHeader>
-                <CardBody>
-                    <CardSubtitle tag="h6" className="mb-2 text-muted">{artistName}</CardSubtitle>
-                    <CardSubtitle tag="h6" className="mb-2 text-muted">{albumName}</CardSubtitle>
-                </CardBody>
-            </Card>
-        </Col>
+            <img
+                className={styles.cardImage}
+                src={albumCover}
+                alt="Album Cover"
+            />
+            <p className={styles.cardTitle}>{trackName}</p>
+            <p className={styles.cardSubtitle}>{artistName}</p>
+            <p className={styles.cardSubtitle}>{albumName}</p>
+        </div>
     )
 }
 

@@ -1,51 +1,87 @@
+.App {
+    min-height: 100vh;
+    background: linear-gradient(to bottom, #1DB954 0%, #121212 40%);
+}
+
 .AppLogo {
-  height: 40vmin;
-  pointer-events: none;
+    height: 120px;
+    pointer-events: none;
+    filter: brightness(0) invert(1);
+    margin-bottom: 32px;
 }
 
-.AppName {
-  background-color: #282c34;
-  text-align: center;
-  font-size: xx-large;
-  color: white;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .AppLogo {
-    animation: AppLogo-spin infinite 20s linear;
-  }
-}
 .AppHeader {
-  background-color: #282c34;
-  min-height: 94.2vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    padding: 0 24px;
 }
 
-.AppLink {
-  color: black;
-  font-family: Arial, Helvetica, sans-serif;
-  text-decoration: none;
-  background-color: #1DB954;
-  border-radius: 1vw;
-  margin-bottom: 1vw;
-  margin-top: 1vw;
-  padding: 10px;
-}
 .header {
-  color: #1DB954;
-  background-color: black;
+    background-color: #000000;
+    padding: 12px 0;
+}
+
+.header :global(.MuiTab-root) {
+    color: #FFFFFF;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    text-transform: none;
+}
+
+.header :global(.MuiTabs-indicator) {
+    display: none;
+}
+
+.dumb {
+    background-color: #1DB954 !important;
+    color: #000000 !important;
+    border-radius: 500px !important;
+    font-weight: 700 !important;
+    font-size: 16px !important;
+    padding: 12px 48px !important;
+    text-transform: none !important;
+    letter-spacing: 0.1em;
+    transition: transform 0.2s ease, background-color 0.2s ease !important;
+    border: none !important;
+    min-width: 160px !important;
+    height: 56px !important;
+}
+
+.dumb:hover {
+    background-color: #1ed760 !important;
+    transform: scale(1.04);
+}
+
+.signUpButton {
+    background-color: transparent !important;
+    color: #FFFFFF !important;
+    border: 1px solid rgba(255, 255, 255, 0.7) !important;
+    border-radius: 500px !important;
+    font-weight: 700 !important;
+    font-size: 16px !important;
+    padding: 12px 48px !important;
+    text-transform: none !important;
+    letter-spacing: 0.1em;
+    transition: transform 0.2s ease, border-color 0.2s ease !important;
+    min-width: 160px !important;
+    height: 56px !important;
+}
+
+.signUpButton:hover {
+    border-color: #FFFFFF !important;
+    transform: scale(1.04);
 }
 
 @keyframes AppLogo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }

@@ -3,7 +3,7 @@ import styles from '../History/index.module.css'
 import { connect } from 'react-redux'
 import { getProfileRequested, StoreToken } from '../redux/Actions/UserActions'
 import { playSongRequested, setSelectedSong } from '../redux/Actions/PlaybackActions'
-import { InputGroup, InputGroupAddon,Input, Button, Row } from 'reactstrap'
+import { InputGroup, InputGroupAddon,Input, Button } from 'reactstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
@@ -25,14 +25,14 @@ const History = (props) => {
     return(
         <>
         <div className={styles.container}>     
-            <div>
-                <InputGroup style={{width: '50%'}}>
+            <div className={styles.searchWrapper}>
+                <InputGroup>
                     <InputGroupAddon addonType="append">
                         <Button>
                             <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
                         </Button>
                     </InputGroupAddon>
-                    <Input placeholder = "Search" onChange={(event) => {
+                    <Input placeholder = "Search your history..." onChange={(event) => {
                         var temp = history?.filter((track) => (track.track.name.toLowerCase().includes(event.target.value.toLowerCase())))
                         setMyHistory(temp)
                         setSearchValue(event.target.value)
@@ -40,7 +40,7 @@ const History = (props) => {
                 </InputGroup>
             </div>
 
-            <Row>
+            <div className={styles.cardGrid}>
                 { myHistory.length != 0 && myHistory.slice(0,20).map((track,key) => {
                     var song = track.track
                     var album = song?.album
@@ -49,21 +49,20 @@ const History = (props) => {
                     var songName = song?.name
                     var albumCover = album?.images[0]?.url
                     return(
-                        <div className={styles.outerDiv} key={key}>
-                            <DisplayCard
-                                trackName = {songName}
-                                albumCover = {albumCover}
-                                artistName = {artist?.name ? artist.name:album.artists[0].name}
-                                albumName = {album.name}
-                                token = {token}
-                                track = {song}
-                                setSelectedSong = {setSelectedSong}
-                                selectedSong={selectedSong}
-                            />
-                        </div>
+                        <DisplayCard
+                            key={key}
+                            trackName = {songName}
+                            albumCover = {albumCover}
+                            artistName = {artist?.name ? artist.name:album.artists[0].name}
+                            albumName = {album.name}
+                            token = {token}
+                            track = {song}
+                            setSelectedSong = {setSelectedSong}
+                            selectedSong={selectedSong}
+                        />
                     )
                 })}
-            </Row> 
+            </div> 
         </div>
         </>
     )
