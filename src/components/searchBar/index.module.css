@@ -4,19 +4,19 @@
     gap: 10px;
     width: 100%;
     box-sizing: border-box;
-    background-color: #1a1a1a;
+    background-color: var(--surface);
     border-radius: 500px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-2);
     padding: 10px 16px;
     transition: border-color 0.2s ease;
 }
 
 .SearchBar:focus-within {
-    border-color: #1DB954;
+    border-color: var(--accent);
 }
 
 .searchIcon {
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-secondary);
     flex-shrink: 0;
 }
 
@@ -26,12 +26,12 @@
     background: transparent;
     border: none;
     outline: none;
-    color: #FFFFFF;
+    color: var(--text);
     font-size: 15px;
 }
 
 .input::placeholder {
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--text-muted);
 }
 
 .clearButton {
@@ -40,7 +40,7 @@
     justify-content: center;
     background: transparent;
     border: none;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-secondary);
     cursor: pointer;
     padding: 4px;
     flex-shrink: 0;
@@ -48,5 +48,5 @@
 }
 
 .clearButton:hover {
-    color: #FFFFFF;
+    color: var(--text);
 }

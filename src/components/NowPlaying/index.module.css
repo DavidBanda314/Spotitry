@@ -12,8 +12,8 @@
     height: 40px;
     border-radius: 50%;
     border: none;
-    background-color: #1a1a1a;
-    color: #FFFFFF;
+    background-color: var(--surface);
+    color: var(--text);
     font-size: 18px;
     display: flex;
     align-items: center;
@@ -24,7 +24,7 @@
 }
 
 .collapse:hover {
-    background-color: #2a2a2a;
+    background-color: var(--surface-3);
 }
 
 .collapse:active {
@@ -50,7 +50,7 @@
 }
 
 .artPlaceholder {
-    background-color: #1a1a1a;
+    background-color: var(--surface);
 }
 
 .meta {
@@ -67,19 +67,19 @@
     font-size: 24px;
     font-weight: 800;
     letter-spacing: -0.02em;
-    color: #FFFFFF;
+    color: var(--text);
     line-height: 1.2;
 }
 
 .artist {
     font-size: 16px;
     font-weight: 500;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-secondary);
 }
 
 .save {
-    background-color: #1DB954;
-    color: #000000;
+    background-color: var(--accent);
+    color: var(--on-accent);
     border: none;
     border-radius: 500px;
     padding: 14px 32px;
@@ -91,7 +91,7 @@
 }
 
 .save:hover {
-    background-color: #1ed760;
+    background-color: var(--accent-hover);
 }
 
 .save:active {

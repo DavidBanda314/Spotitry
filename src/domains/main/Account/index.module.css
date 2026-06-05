@@ -1,7 +1,7 @@
 .header {
-    background-color: #000000;
+    background-color: var(--bg);
     padding: 24px 16px;
-    color: #FFFFFF;
+    color: var(--text);
     max-width: 600px;
     margin: 0 auto;
 }
@@ -17,9 +17,9 @@
     text-align: center;
     gap: 8px;
     padding: 32px 24px;
-    background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+    background: linear-gradient(135deg, var(--surface) 0%, var(--bg) 100%);
     border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-soft);
 }
 
 .profilePic {
@@ -27,25 +27,25 @@
     width: 120px;
     height: 120px;
     object-fit: cover;
-    border: 3px solid #1DB954;
+    border: 3px solid var(--accent);
     margin-bottom: 8px;
 }
 
 .name {
-    color: #FFFFFF;
+    color: var(--text);
     font-size: 24px;
     font-weight: 800;
     letter-spacing: -0.02em;
 }
 
 .email {
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-secondary);
     font-size: 14px;
     font-weight: 500;
 }
 
 .followers {
-    color: #1DB954;
+    color: var(--accent);
     font-size: 15px;
     font-weight: 700;
     margin-top: 4px;
@@ -63,9 +63,9 @@
     width: 100%;
     margin-top: 16px;
     padding: 16px 8px;
-    background: rgba(255, 255, 255, 0.04);
+    background: var(--overlay-fill);
     border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-soft);
 }
 
 .stat {
@@ -76,14 +76,14 @@
 }
 
 .statNumber {
-    color: #FFFFFF;
+    color: var(--text);
     font-size: 20px;
     font-weight: 800;
     line-height: 1.2;
 }
 
 .statLabel {
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-secondary);
     font-size: 12px;
     font-weight: 600;
     text-transform: uppercase;
@@ -111,7 +111,7 @@
 
 .compareButton:hover {
     background: var(--yellow);
-    color: #000000;
+    color: var(--on-accent);
 }
 
 .logoutButton {
@@ -120,11 +120,11 @@
     margin-top: 20px;
     padding: 14px 24px;
     background: transparent;
-    color: #FFFFFF;
+    color: var(--text);
     font-size: 15px;
     font-weight: 700;
     letter-spacing: 0.02em;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid var(--border-3);
     border-radius: 500px;
     cursor: pointer;
     transition: transform 0.1s ease, border-color 0.2s ease, background 0.2s ease;
@@ -132,8 +132,8 @@
 
 .logoutButton:hover {
     transform: scale(1.02);
-    border-color: #FFFFFF;
-    background: rgba(255, 255, 255, 0.06);
+    border-color: var(--text);
+    background: var(--overlay-fill-hover);
 }
 
 .publicProfileSection {
@@ -162,15 +162,15 @@
     height: 26px;
     border-radius: 13px;
     border: 1px solid var(--line);
-    background: #333;
+    background: var(--surface-3);
     cursor: pointer;
     padding: 0;
     transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .toggle.toggleOn {
-    background: #1DB954;
-    border-color: #1DB954;
+    background: var(--accent);
+    border-color: var(--accent);
 }
 
 .toggleKnob {
@@ -180,7 +180,7 @@
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: #FFFFFF;
+    background: var(--text);
     transition: transform 0.2s ease;
 }
 
@@ -205,8 +205,8 @@
 }
 
 .copyButton {
-    background: #1DB954;
-    color: #000;
+    background: var(--accent);
+    color: var(--on-accent);
     border: none;
     border-radius: 0;
     padding: 8px 16px;
@@ -220,7 +220,49 @@
 }
 
 .copyButton:hover {
-    background: #1ed760;
+    background: var(--accent-hover);
+}
+
+.themeSection {
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.themeRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.themeLabel {
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.themeToggleBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 500px;
+    border: 1px solid var(--border-3);
+    background: transparent;
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.themeToggleBtn:hover {
+    border-color: var(--text);
+    background: var(--overlay-fill-hover);
+}
+
+.themeToggleIcon {
+    color: var(--accent);
+    font-size: 16px;
 }
 
 @media (min-width: 600px) {

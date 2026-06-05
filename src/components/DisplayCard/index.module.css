@@ -1,14 +1,14 @@
 .card {
-    background-color: #1a1a1a;
+    background-color: var(--surface);
     border-radius: 12px;
     cursor: pointer;
     transition: border-color 0.2s ease, transform 0.15s ease;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-soft);
     overflow: hidden;
 }
 
 .card:hover {
-    border-color: rgba(255, 255, 255, 0.18);
+    border-color: var(--border-strong);
 }
 
 .card:active {
@@ -23,7 +23,7 @@
 }
 
 .cardTitle {
-    color: #FFFFFF;
+    color: var(--text);
     font-size: 14px;
     font-weight: 700;
     margin: 10px 12px 4px;
@@ -33,7 +33,7 @@
 }
 
 .cardSubtitle {
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-secondary);
     font-size: 13px;
     font-weight: 400;
     margin: 0 12px 2px;
@@ -44,6 +44,6 @@
 
 .cardSubtitle:last-child {
     margin-bottom: 14px;
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--text-tertiary);
     font-size: 12px;
 }

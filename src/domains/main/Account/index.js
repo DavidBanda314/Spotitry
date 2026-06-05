@@ -1,16 +1,24 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons'
 import styles from './index.module.css'
 import { connect } from 'react-redux'
 import emptyProfile from '../../../images/empty_profile.jpeg'
 import { setProfilePublic, updatePublicProfile, getIsPublic } from '../../../firebase'
+import { getTheme, toggleTheme } from '../../../utils/theme'
 
 const Account = (props) => {
     const { profile, databaseUser, topArtists, topTracks } = props
     const [isPublic, setIsPublic] = useState(false)
     const [loading, setLoading] = useState(true)
     const [copied, setCopied] = useState(false)
+    const [theme, setThemeState] = useState(getTheme())
     const history = useHistory()
+
+    const handleThemeToggle = () => {
+        setThemeState(toggleTheme())
+    }
 
     const userId = databaseUser?.userId
 
@@ -125,6 +133,24 @@ const Account = (props) => {
                             <div className={styles.statNumber}>{topArtistsCount}</div>
                             <div className={styles.statLabel}>Top Artists</div>
                         </div>
+                    </div>
+                </div>
+
+                <div className={styles.themeSection}>
+                    <div className={styles.themeRow}>
+                        <span className={styles.themeLabel}>Theme</span>
+                        <button
+                            className={styles.themeToggleBtn}
+                            onClick={handleThemeToggle}
+                            aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
+                            title={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
+                        >
+                            <FontAwesomeIcon
+                                icon={theme === 'light' ? faMoon : faSun}
+                                className={styles.themeToggleIcon}
+                            />
+                            {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
+                        </button>
                     </div>
                 </div>
 

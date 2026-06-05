@@ -1,6 +1,6 @@
 .container {
     min-height: 100vh;
-    background-color: #000000;
+    background-color: var(--bg);
     display: flex;
     align-items: flex-start;
     justify-content: center;
@@ -8,14 +8,14 @@
 }
 
 .loading {
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--text-muted);
     font-size: 16px;
     margin-top: 60px;
 }
 
 .card {
-    background-color: #1a1a1a;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background-color: var(--surface);
+    border: 1px solid var(--border-soft);
     border-radius: 16px;
     max-width: 500px;
     width: 100%;
@@ -24,7 +24,7 @@
 }
 
 .privateMessage {
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--text-muted);
     font-size: 16px;
     text-align: center;
     padding: 60px 24px;
@@ -35,7 +35,7 @@
     flex-direction: column;
     align-items: center;
     padding: 32px 24px 24px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid var(--border-soft);
 }
 
 .profileImage {
@@ -44,11 +44,11 @@
     border-radius: 50%;
     object-fit: cover;
     margin-bottom: 16px;
-    border: 2px solid #1DB954;
+    border: 2px solid var(--accent);
 }
 
 .displayName {
-    color: #FFFFFF;
+    color: var(--text);
     font-size: 24px;
     font-weight: 800;
     margin: 0;
@@ -57,7 +57,7 @@
 
 .section {
     padding: 20px 24px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid var(--border-soft);
 }
 
 .section:last-child {
@@ -65,7 +65,7 @@
 }
 
 .sectionTitle {
-    color: #1DB954;
+    color: var(--accent);
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.05em;
@@ -99,7 +99,7 @@
 }
 
 .trackName {
-    color: #FFFFFF;
+    color: var(--text);
     font-size: 14px;
     font-weight: 600;
     white-space: nowrap;
@@ -108,7 +108,7 @@
 }
 
 .trackArtist {
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--text-muted);
     font-size: 12px;
     white-space: nowrap;
     overflow: hidden;
@@ -123,8 +123,8 @@
 }
 
 .playBtn {
-    background: #1DB954;
-    color: #000;
+    background: var(--accent);
+    color: var(--on-accent);
     border: none;
     border-radius: 50%;
     width: 32px;
@@ -138,18 +138,18 @@
 }
 
 .playBtn:hover {
-    background: #1ed760;
+    background: var(--accent-hover);
 }
 
 .spotifyLink {
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--text-muted);
     font-size: 18px;
     text-decoration: none;
     transition: color 0.2s ease;
 }
 
 .spotifyLink:hover {
-    color: #FFFFFF;
+    color: var(--text);
 }
 
 .artistList {
@@ -175,7 +175,7 @@
 }
 
 .artistName {
-    color: #FFFFFF;
+    color: var(--text);
     font-size: 11px;
     font-weight: 600;
     text-align: center;
@@ -196,7 +196,7 @@
     align-items: center;
     gap: 12px;
     padding: 10px 12px;
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--overlay-fill);
     border-radius: 8px;
 }
 
@@ -206,7 +206,7 @@
 }
 
 .timestampSong {
-    color: #FFFFFF;
+    color: var(--text);
     font-size: 14px;
     font-weight: 600;
     white-space: nowrap;
@@ -215,12 +215,12 @@
 }
 
 .timestampArtist {
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--text-muted);
     font-size: 12px;
 }
 
 .timestampPosition {
-    color: #1DB954;
+    color: var(--accent);
     font-size: 12px;
     font-weight: 700;
     margin-top: 4px;
@@ -228,7 +228,7 @@
 }
 
 .timestampNote {
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-secondary);
     font-size: 12px;
     font-style: italic;
     margin-top: 4px;

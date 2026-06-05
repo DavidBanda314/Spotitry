@@ -6,6 +6,9 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter,Switch} from 'react-router-dom';
 import {store} from './store/index.js'
 import {Provider} from 'react-redux'
+import {initTheme} from './utils/theme'
+
+initTheme();
 
 ReactDOM.render(
   <React.StrictMode>

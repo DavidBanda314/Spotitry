@@ -79,12 +79,12 @@ const AuthenticatedApp = (props) => {
         )}
         {showNoteInput && (
           <div style={{
-            backgroundColor: '#1a1a1a',
+            backgroundColor: 'var(--surface)',
             padding: '12px 16px',
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
-            borderTop: '1px solid rgba(255,255,255,0.1)',
+            borderTop: '1px solid var(--border-2)',
           }}>
             <input
               type="text"
@@ -96,11 +96,11 @@ const AuthenticatedApp = (props) => {
               style={{
                 flex: 1,
                 minWidth: 0,
-                backgroundColor: '#000000',
-                border: '1px solid rgba(255,255,255,0.15)',
+                backgroundColor: 'var(--bg)',
+                border: '1px solid var(--border-strong)',
                 borderRadius: '8px',
                 padding: '9px 14px',
-                color: '#FFFFFF',
+                color: 'var(--text)',
                 fontSize: '14px',
                 outline: 'none',
               }}
@@ -109,8 +109,8 @@ const AuthenticatedApp = (props) => {
               onClick={saveTimestampWithNote}
               style={{
                 flexShrink: 0,
-                backgroundColor: '#1DB954',
-                color: '#000',
+                backgroundColor: 'var(--accent)',
+                color: 'var(--on-accent)',
                 border: 'none',
                 borderRadius: '500px',
                 padding: '9px 18px',
@@ -126,8 +126,8 @@ const AuthenticatedApp = (props) => {
               style={{
                 flexShrink: 0,
                 backgroundColor: 'transparent',
-                color: 'rgba(255,255,255,0.6)',
-                border: '1px solid rgba(255,255,255,0.2)',
+                color: 'var(--text-secondary)',
+                border: '1px solid var(--border-strong-2)',
                 borderRadius: '500px',
                 padding: '9px 14px',
                 fontSize: '14px',
@@ -152,13 +152,13 @@ const AuthenticatedApp = (props) => {
           <div style={{flex: 1}}>
             <SpotifyPlayer
               styles={{
-                bgColor:'#000000',
-                color:'#FFFFFF',
-                trackNameColor:'#FFFFFF',
-                trackArtistColor:'rgba(255, 255, 255, 0.6)',
-                sliderColor:'#1DB954',
-                sliderHandleColor:'#FFFFFF',
-                sliderTrackColor:'rgba(255, 255, 255, 0.2)',
+                bgColor:'var(--bg)',
+                color:'var(--text)',
+                trackNameColor:'var(--text)',
+                trackArtistColor:'var(--text-secondary)',
+                sliderColor:'var(--accent)',
+                sliderHandleColor:'var(--text)',
+                sliderTrackColor:'var(--border-strong-2)',
               }}
               token={token}
               callback={(state) => {

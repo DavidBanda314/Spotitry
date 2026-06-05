@@ -11,10 +11,10 @@
     gap: 12px;
     padding-left: 16px;
     padding-right: 16px;
-    background-color: rgba(0, 0, 0, 0.95);
+    background-color: var(--bar-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid var(--border);
     padding-top: env(safe-area-inset-top, 0px);
 }
 
@@ -22,11 +22,11 @@
     font-size: 20px;
     font-weight: 800;
     letter-spacing: -0.02em;
-    color: #FFFFFF;
+    color: var(--text);
 }
 
 .brandAccent {
-    color: #1DB954;
+    color: var(--accent);
 }
 
 .content {
@@ -34,7 +34,7 @@
     /* room for the bottom nav */
     padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px));
     min-height: 100vh;
-    background-color: #000000;
+    background-color: var(--bg);
 }
 
 /* when a song is selected, also clear the fixed player (~90px) above the nav */
@@ -54,8 +54,8 @@
 .playerRow {
     display: flex;
     align-items: center;
-    background-color: #000000;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--bg);
+    border-top: 1px solid var(--border-2);
 }
 
 .expandButton {
@@ -64,14 +64,14 @@
     cursor: pointer;
     padding: 8px 16px;
     font-size: 16px;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--text-secondary);
     transition: color 0.2s ease;
     flex-shrink: 0;
     -webkit-tap-highlight-color: transparent;
 }
 
 .expandButton:hover {
-    color: #FFFFFF;
+    color: var(--text);
 }
 
 /* Full-screen Now-Playing reel */
@@ -81,7 +81,7 @@
     left: 0;
     right: 0;
     z-index: 300;
-    background-color: #000000;
+    background-color: var(--bg);
     display: flex;
     flex-direction: column;
     padding-bottom: env(safe-area-inset-bottom, 0px);
