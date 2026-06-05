@@ -15,7 +15,7 @@ const App = (props) => {
 
   const [authCode] = useState(() => new URLSearchParams(window.location.search).get('code'))
   const [isLoggedIn, setIsLoggedIn] = useState(hash.access_token || !!localStorage.getItem("token"))
-  const [isExchanging, setIsExchanging] = useState(false)
+  const [isExchanging, setIsExchanging] = useState(!!authCode && !localStorage.getItem('token'))
   const history = useHistory()
   var domain = window.location.pathname
 
