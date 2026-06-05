@@ -46,7 +46,7 @@ const History = (props) => {
                     var song = track.track
                     var album = song?.album
                     var artist = song?.artists[0]
-                    song?.artists.splice(0,1)
+                    
                     var songName = song?.name
                     var albumCover = album?.images[0]?.url
                     return(

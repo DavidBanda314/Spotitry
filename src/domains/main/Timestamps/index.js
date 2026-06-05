@@ -54,7 +54,6 @@ const Timestamps = (props) => {
                         timestamps = Object.values(timestamps)
                         var song = timestamps[0]?.song
                         var album = song?.album
-                        song?.artists.splice(0,1)
                         var songName = song?.name
                         var albumCover = album?.images[0]?.url
                         return(
