@@ -4,7 +4,8 @@ import { StoreToken } from './domains/main/redux/Actions/UserActions.js'
 import { useDispatch } from 'react-redux'
 import UnauthenticatedApp from './domains/login/unauthenticated-app'
 import AuthenticatedApp from './authenticated-app'
-import {useHistory } from "react-router-dom";
+import SharePage from './domains/main/Share'
+import {useHistory, useLocation } from "react-router-dom";
 
 const App = (props) => {
   const [authCode] = useState(() => new URLSearchParams(window.location.search).get('code'))
@@ -13,6 +14,7 @@ const App = (props) => {
   const [refreshCount, setRefreshCount] = useState(0)
   const dispatch = useDispatch()
   const history = useHistory()
+  const location = useLocation()
   var domain = window.location.pathname
 
   // Handle token expiration: try refresh before logging out
@@ -88,6 +90,10 @@ const App = (props) => {
 
   if (isExchanging) {
     return <div style={{color: 'white', textAlign: 'center', marginTop: '50px'}}>Logging in...</div>;
+  }
+
+  if (location.pathname === '/share' && !isLoggedIn && !localStorage.getItem("token")) {
+    return <SharePage />
   }
 
   if(isLoggedIn || localStorage.getItem("token")){

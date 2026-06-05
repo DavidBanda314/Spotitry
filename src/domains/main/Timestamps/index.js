@@ -6,7 +6,7 @@ import { playSongRequested, setSelectedSong } from '../redux/Actions/PlaybackAct
 import { InputGroup, InputGroupAddon, Input, Button } from 'reactstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch, faListUl } from '@fortawesome/free-solid-svg-icons'
+import { faSearch, faListUl, faLink } from '@fortawesome/free-solid-svg-icons'
 import CreatePlaylistModal from '../../../components/CreatePlaylistModal'
 import { SkeletonGrid } from '../../../components/Skeleton'
 
@@ -17,6 +17,18 @@ const Timestamps = (props) => {
     const [searchValue, setSearchValue] = useState('')
     const [allTimeStampsBySong,setAllTimeStampsBySong] = useState([])
     const [showPlaylistModal, setShowPlaylistModal] = useState(false)
+    const [copiedId, setCopiedId] = useState(null)
+
+    const handleShare = (trackUri, positionMs, note, id) => {
+        const baseUrl = window.location.origin
+        const params = new URLSearchParams({ track: trackUri, t: positionMs })
+        if (note) params.set('note', note)
+        const url = `${baseUrl}/share?${params.toString()}`
+        navigator.clipboard.writeText(url).then(() => {
+            setCopiedId(id)
+            setTimeout(() => setCopiedId(null), 2000)
+        })
+    }
 
     const uniqueTrackUris = useMemo(() => {
         if (!timestamps) return []
@@ -100,7 +112,7 @@ const Timestamps = (props) => {
                 </div>
             ) : (
             <div className={styles.grid}>
-                    {timestampsBySong?.map((tsGroup, key) => {
+                    {timestampsBySong?.map((tsGroup, cardIndex) => {
                         var entries = Object.values(tsGroup)
                         var song = entries[0]?.song
                         var album = song?.album
@@ -108,7 +120,7 @@ const Timestamps = (props) => {
                         var albumCover = album?.images[0]?.url
                         var artistName = entries[0]?.song.artists[0]?.name ? entries[0].song.artists[0].name : entries[0].song.album.artists[0].name
                         return(
-                            <div className={styles.card} key={key}>
+                            <div className={styles.card} key={cardIndex}>
                                 <div className={styles.cardHeader}>
                                     {albumCover &&
                                         <img src={albumCover} alt="" className={styles.cover}/>
@@ -120,26 +132,36 @@ const Timestamps = (props) => {
                                     </div>
                                 </div>
                                 <div className={styles.timestampList}>
-                                    {entries.map((timestamp, key) => {
+                                    {entries.map((timestamp, tsIndex) => {
                                         var totalTime = song.duration_ms
                                         var timeSet = timestamp.position_ms
                                         var track = song
+                                        var shareId = `${cardIndex}-${tsIndex}-${songName}`
                                         return(
-                                            <div className={styles.timestampItem} key={key}>
-                                                <button
-                                                    className={styles.timestampButton}
-                                                    onClick={() => {
-                                                        if(!selectedSong) {
-                                                        }
-                                                        else{
-                                                            setSelectedSong(0,track?.uri,track);
-                                                            playSong(token,timeSet,track?.uri,track)
-                                                        }
-                                                    }}
-                                                >
-                                                    <span className={styles.playIcon}>▶</span>
-                                                    <span className={styles.timeLabel}>{millisToMinutesAndSeconds(timeSet)} / {millisToMinutesAndSeconds(totalTime)}</span>
-                                                </button>
+                                            <div className={styles.timestampItem} key={tsIndex}>
+                                                <div className={styles.timestampRow}>
+                                                    <button
+                                                        className={styles.timestampButton}
+                                                        onClick={() => {
+                                                            if(!selectedSong) {
+                                                            }
+                                                            else{
+                                                                setSelectedSong(0,track?.uri,track);
+                                                                playSong(token,timeSet,track?.uri,track)
+                                                            }
+                                                        }}
+                                                    >
+                                                        <span className={styles.playIcon}>▶</span>
+                                                        <span className={styles.timeLabel}>{millisToMinutesAndSeconds(timeSet)} / {millisToMinutesAndSeconds(totalTime)}</span>
+                                                    </button>
+                                                    <button
+                                                        className={styles.shareBtn}
+                                                        onClick={() => handleShare(track?.uri, timeSet, timestamp.note, shareId)}
+                                                        title="Copy share link"
+                                                    >
+                                                        {copiedId === shareId ? '✓' : <FontAwesomeIcon icon={faLink} />}
+                                                    </button>
+                                                </div>
                                                 {timestamp.note && (
                                                     <span className={styles.note}>"{timestamp.note}"</span>
                                                 )}
