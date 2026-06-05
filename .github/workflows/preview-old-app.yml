@@ -1,0 +1,18 @@
+name: Preview old app (push)
+'on':
+  push:
+    branches:
+      - 'devin/**-old-app-working-login'
+jobs:
+  deploy_preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: yarn install --frozen-lockfile && CI=false yarn build
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_SPOTITRY_4CA96 }}'
+          projectId: spotitry-4ca96
+          channelId: old-app-login-preview
+          expires: 7d
