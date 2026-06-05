@@ -2,13 +2,14 @@ import React from 'react'
 import styles from './index.module.css'
 import { useHistory, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHome, faHistory, faBookmark, faSearch, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faHome, faHistory, faBookmark, faSearch, faUser, faChartBar } from '@fortawesome/free-solid-svg-icons'
 
 const tabs = [
     { path: 'home', label: 'Home', icon: faHome },
     { path: 'history', label: 'History', icon: faHistory },
     { path: 'discover', label: 'Discover', icon: faSearch },
     { path: 'timestamps', label: 'Saved', icon: faBookmark },
+    { path: 'stats', label: 'Stats', icon: faChartBar },
     { path: 'account', label: 'Profile', icon: faUser },
 ]
 
