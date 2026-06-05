@@ -13,6 +13,7 @@ import GlobalSearch from './components/GlobalSearch';
 import Share from './domains/main/Share';
 import Profile from './domains/main/Profile';
 import Compare from './domains/main/Compare';
+import Artist from './domains/main/Artist';
 import { StoreToken } from './domains/main/redux/Actions/UserActions.js'
 import { getPlaybackInfoRequested } from './domains/main/redux/Actions/PlaybackActions.js'
 import { connect } from 'react-redux'
@@ -223,6 +224,9 @@ const AuthenticatedApp = (props) => {
             </Route>
             <Route exact path='/compare'>
               <Compare/>
+            </Route>
+            <Route exact path='/artist/:id'>
+              <Artist/>
             </Route>
           </Switch>
         </CSSTransition>
