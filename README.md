@@ -21,3 +21,6 @@ README -  Project info and link to deployment site.
 
 Remaining files are wireframes and architectual diagrams and their updates throughout the project.
 Latest architecture diagram : https://github.com/CSCI-3308-CU-Boulder/3308SP21_section012_2/blob/main/archtechture_diagram_updated.PNG
+
+---
+*This is a test change to verify the PR workflow.*
