@@ -158,7 +158,7 @@ const AuthenticatedApp = (props) => {
           <div style={{flex: 1}}>
             <SpotifyPlayer
               styles={{
-                bgColor:'var(--bg)',
+                bgColor:'transparent',
                 color:'var(--text)',
                 trackNameColor:'var(--text)',
                 trackArtistColor:'var(--text-secondary)',
