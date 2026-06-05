@@ -105,20 +105,18 @@ const Discover = (props) => {
             )}
             <div className={styles.rowMeta}>
                 <span className={styles.rowTitle}>{album.name}</span>
-                <span className={styles.rowSubtitle}>
-                    {album.artists?.[0]?.name}
-                    {album.external_urls?.spotify && (
-                        <a
-                            href={album.external_urls.spotify}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={styles.openLink}
-                            onClick={(e) => e.stopPropagation()}
-                        >
-                            Open Album
-                        </a>
-                    )}
-                </span>
+                <span className={styles.rowSubtitle}>{album.artists?.[0]?.name}</span>
+                {album.external_urls?.spotify && (
+                    <a
+                        href={album.external_urls.spotify}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.openLink}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        Open Album
+                    </a>
+                )}
             </div>
             {selectedId === album.id && <span className={styles.playingTag}>Playing</span>}
         </div>
