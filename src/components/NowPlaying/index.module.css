@@ -1,0 +1,99 @@
+.reel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    padding: calc(16px + env(safe-area-inset-top, 0px)) 24px 8px 24px;
+}
+
+.collapse {
+    align-self: flex-start;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background-color: #1a1a1a;
+    color: #FFFFFF;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.collapse:hover {
+    background-color: #2a2a2a;
+}
+
+.collapse:active {
+    transform: scale(0.92);
+}
+
+.body {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+}
+
+.art {
+    width: min(70vw, 320px);
+    height: min(70vw, 320px);
+    border-radius: 12px;
+    object-fit: cover;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
+}
+
+.artPlaceholder {
+    background-color: #1a1a1a;
+}
+
+.meta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+    max-width: 100%;
+    padding: 0 8px;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #FFFFFF;
+    line-height: 1.2;
+}
+
+.artist {
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.save {
+    background-color: #1DB954;
+    color: #000000;
+    border: none;
+    border-radius: 500px;
+    padding: 14px 32px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.save:hover {
+    background-color: #1ed760;
+}
+
+.save:active {
+    transform: scale(0.96);
+}
