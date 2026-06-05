@@ -49,6 +49,7 @@ const Home = (props) => {
                                     className={styles.timestampCard}
                                     key={idx}
                                     onClick={function() {
+                                        setSelectedSong(ts.position_ms, song?.uri, song);
                                         playSong(token, ts.position_ms, song?.uri, song);
                                     }}
                                 >

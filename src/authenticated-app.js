@@ -23,6 +23,7 @@ import { faChevronUp, faPlay, faPause, faStepForward } from '@fortawesome/free-s
 import NowPlaying from './components/NowPlaying';
 import styles from './authenticated-app.module.css';
 import { PLAYER_ENDPOINT } from './utils/constants';
+import { setSelectedSong as setSelectedSongAction } from './domains/main/redux/Actions/PlaybackActions';
 
 function formatMs(ms) {
   var totalSec = Math.floor(ms / 1000)
@@ -32,7 +33,7 @@ function formatMs(ms) {
 }
 
 const AuthenticatedApp = (props) => {
-  var {token, storeToken, selectedSong, getPlaybackInfo, userId, playbackInfo, storeDeviceId} = props
+  var {token, storeToken, selectedSong, getPlaybackInfo, userId, updateSelectedSong, playbackInfo, storeDeviceId} = props
   const {position_ms, song, songURI} = selectedSong
   const displaySong = (playbackInfo && playbackInfo.item) || song
   const [timestampSaved, setTimestampSaved] = useState(false)
@@ -92,6 +93,42 @@ const AuthenticatedApp = (props) => {
     return () => clearInterval(timerRef.current)
   }, [play, expanded, durationMs])
 
+  // Periodic sync: poll Spotify player state to keep timer accurate
+  const syncRef = useRef(null)
+  const abortRef = useRef(null)
+  const songURIRef = useRef(songURI)
+  useEffect(() => { songURIRef.current = songURI }, [songURI])
+  useEffect(() => {
+    if (!play || !token) {
+      clearInterval(syncRef.current)
+      if (abortRef.current) abortRef.current.abort()
+      return
+    }
+    var doSync = function () {
+      if (abortRef.current) abortRef.current.abort()
+      var controller = new AbortController()
+      abortRef.current = controller
+      fetch(PLAYER_ENDPOINT, { headers: { 'Authorization': 'Bearer ' + token }, signal: controller.signal })
+        .then(function (res) { return res.ok && res.status !== 204 ? res.json() : null })
+        .then(function (data) {
+          if (!data) return
+          if (data.progress_ms !== undefined) setProgressMs(data.progress_ms)
+          if (data.item) {
+            setDurationMs(data.item.duration_ms || 0)
+            if (data.item.uri !== songURIRef.current) {
+              updateSelectedSong(data.progress_ms || 0, data.item.uri, data.item)
+            }
+          }
+        })
+        .catch(function () {})
+    }
+    syncRef.current = setInterval(doSync, 5000)
+    return function () {
+      clearInterval(syncRef.current)
+      if (abortRef.current) abortRef.current.abort()
+    }
+  }, [play, token, updateSelectedSong])
+
   // Reset progress when song changes
   useEffect(() => {
     if (position_ms !== undefined) {
@@ -113,10 +150,25 @@ const AuthenticatedApp = (props) => {
         method: 'POST',
         headers: { 'Authorization': 'Bearer ' + token },
       })
+      // Reset timer and fetch new track info after a short delay
+      setProgressMs(0)
+      setTimeout(async () => {
+        try {
+          var res = await fetch(PLAYER_ENDPOINT, { headers: { 'Authorization': 'Bearer ' + token } })
+          if (res.ok && res.status !== 204) {
+            var data = await res.json()
+            if (data.progress_ms !== undefined) setProgressMs(data.progress_ms)
+            if (data.item) {
+              setDurationMs(data.item.duration_ms || 0)
+              updateSelectedSong(data.progress_ms || 0, data.item.uri, data.item)
+            }
+          }
+        } catch (e) { /* ignore */ }
+      }, 500)
     } catch (err) {
       // ignore network errors
     }
-  }, [token])
+  }, [token, updateSelectedSong])
 
     return(
       <div>
@@ -199,6 +251,12 @@ const AuthenticatedApp = (props) => {
         <div className={styles.playerRow}>
           {displaySong && !expanded && (
             <>
+            <div className={styles.miniProgressTrack}>
+              <div
+                className={styles.miniProgressFill}
+                style={{ width: durationMs ? ((progressMs / durationMs) * 100) + '%' : '0%' }}
+              />
+            </div>
             <button
               onClick={() => setExpanded(true)}
               aria-label="Expand player"
@@ -334,6 +392,7 @@ const mapDispatchToProps = (dispatch) => {
   return{
       storeToken: (token) => dispatch(StoreToken(token)),
       getPlaybackInfo: (token, create, userId, note) => dispatch(getPlaybackInfoRequested(token, create, userId, note)),
+      updateSelectedSong: (position_ms, songURI, song) => dispatch(setSelectedSongAction(position_ms, songURI, song)),
       storeDeviceId: (deviceId) => dispatch(setDeviceId(deviceId)),
   }
 }
