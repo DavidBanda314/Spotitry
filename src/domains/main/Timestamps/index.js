@@ -9,10 +9,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faListUl } from '@fortawesome/free-solid-svg-icons'
 import { Card, CardImg, CardBody, CardTitle, CardSubtitle, CardText } from 'reactstrap'
 import CreatePlaylistModal from '../../../components/CreatePlaylistModal'
+import { SkeletonGrid } from '../../../components/Skeleton'
 
 
 const Timestamps = (props) => {
-    const {token, timestamps, playSong, setSelectedSong, selectedSong, userId} = props
+    const {token, timestamps, playSong, setSelectedSong, selectedSong, userId, databaseUserLoaded} = props
     const [timestampsBySong,setTimeStampsBySong] = useState([])
     const [searchValue, setSearchValue] = useState('')
     const [allTimeStampsBySong,setAllTimeStampsBySong] = useState('')
@@ -80,8 +81,9 @@ const Timestamps = (props) => {
                 </InputGroup>
             </div>
             <div className={styles.grid}>
-                    {timestampsBySong?.length !== 0 && 
-                    timestampsBySong?.map((tsGroup, key) => {
+                    {!databaseUserLoaded ? (
+                        <SkeletonGrid count={4} cardHeight="300px" />
+                    ) : timestampsBySong?.map((tsGroup, key) => {
                         var entries = Object.values(tsGroup)
                         var song = entries[0]?.song
                         var album = song?.album
@@ -155,7 +157,8 @@ const mapStateToProps = (state) => {
         timestamps:state.User.databaseUser.timestamps,
         token:state.User.token,
         selectedSong: state.Player.selectedSong,
-        userId: state.User.profile?.id
+        userId: state.User.profile?.id,
+        databaseUserLoaded: Object.keys(state.User.databaseUser).length > 0
     }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Timestamps);
