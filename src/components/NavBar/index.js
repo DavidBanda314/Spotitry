@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHome, faHistory, faBookmark, faSearch, faUser, faChartBar, faPlus, faCheck } from '@fortawesome/free-solid-svg-icons'
 import { getPlaybackInfoRequested } from '../../domains/main/redux/Actions/PlaybackActions.js'
+import { updateTimestampNote } from '../../firebase'
 
 const tabs = [
     { path: 'home', label: 'Home', icon: faHome },
@@ -16,23 +17,55 @@ const tabs = [
 ]
 
 const NavBar = (props) => {
-    const { token, userId, selectedSong, getPlaybackInfo } = props
+    const { token, userId, selectedSong, getPlaybackInfo, lastCreatedTimestamp } = props
     const history = useHistory()
     const location = useLocation()
     const current = location.pathname.replace('/', '').toLowerCase()
 
     const [saved, setSaved] = useState(false)
+    const [showNote, setShowNote] = useState(false)
+    const [noteText, setNoteText] = useState('')
+    const pendingNoteRef = useRef(null)
     const savedTimer = useRef(null)
+    const noteInputRef = useRef(null)
     useEffect(() => () => clearTimeout(savedTimer.current), [])
+
+    // When lastCreatedTimestamp arrives and we have a queued note, flush it
+    useEffect(() => {
+        if (lastCreatedTimestamp && pendingNoteRef.current) {
+            const note = pendingNoteRef.current
+            pendingNoteRef.current = null
+            updateTimestampNote(userId, lastCreatedTimestamp.songKey, lastCreatedTimestamp.pushId, note)
+        }
+    }, [lastCreatedTimestamp, userId])
 
     const canSave = !!(token && userId && selectedSong?.songURI)
     const handleCreate = () => {
-        if (canSave) {
+        if (canSave && !showNote) {
             getPlaybackInfo(token, 1, userId)
             setSaved(true)
             clearTimeout(savedTimer.current)
             savedTimer.current = setTimeout(() => setSaved(false), 2000)
+            setShowNote(true)
+            setTimeout(() => { if (noteInputRef.current) noteInputRef.current.focus() }, 50)
         }
+    }
+
+    const saveWithNote = async () => {
+        if (noteText.trim()) {
+            if (lastCreatedTimestamp) {
+                await updateTimestampNote(userId, lastCreatedTimestamp.songKey, lastCreatedTimestamp.pushId, noteText)
+            } else {
+                pendingNoteRef.current = noteText
+            }
+        }
+        setShowNote(false)
+        setNoteText('')
+    }
+
+    const cancelNote = () => {
+        setShowNote(false)
+        setNoteText('')
     }
 
     const renderTab = (tab) => {
@@ -55,6 +88,24 @@ const NavBar = (props) => {
     const mid = Math.ceil(tabs.length / 2)
 
     return (
+        <>
+        {showNote && (
+            <div className={styles.noteOverlay} onClick={cancelNote}>
+                <div className={styles.noteBar} onClick={(e) => e.stopPropagation()}>
+                    <input
+                        ref={noteInputRef}
+                        type="text"
+                        className={styles.noteInput}
+                        value={noteText}
+                        onChange={(e) => setNoteText(e.target.value)}
+                        onKeyDown={(e) => { if (e.key === 'Enter') saveWithNote(); if (e.key === 'Escape') cancelNote(); }}
+                        placeholder="Add a note (optional)..."
+                    />
+                    <button type="button" className={styles.noteSaveBtn} onClick={saveWithNote}>Save</button>
+                    <button type="button" className={styles.noteCancelBtn} onClick={cancelNote}>Skip</button>
+                </div>
+            </div>
+        )}
         <nav className={styles.nav}>
             {tabs.slice(0, mid).map(renderTab)}
             {canSave && (
@@ -72,6 +123,7 @@ const NavBar = (props) => {
             )}
             {tabs.slice(mid).map(renderTab)}
         </nav>
+        </>
     )
 }
 
@@ -80,11 +132,12 @@ const mapStateToProps = (state) => {
         token: state.User.token,
         userId: state.User.databaseUser.userId,
         selectedSong: state.Player.selectedSong,
+        lastCreatedTimestamp: state.Player.lastCreatedTimestamp,
     }
 }
 const mapDispatchToProps = (dispatch) => {
     return {
-        getPlaybackInfo: (token, create, userId) => dispatch(getPlaybackInfoRequested(token, create, userId)),
+        getPlaybackInfo: (token, create, userId, note) => dispatch(getPlaybackInfoRequested(token, create, userId, note)),
     }
 }
 
