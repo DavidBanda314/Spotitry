@@ -7,7 +7,7 @@ import { InputGroup, InputGroupAddon, Input, Button } from 'reactstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
-import { Card, CardImg, CardBody, CardTitle, CardSubtitle, CardText, Row } from 'reactstrap'
+import { Card, CardImg, CardBody, CardTitle, CardSubtitle, CardText } from 'reactstrap'
 
 
 const Timestamps = (props) => {
@@ -48,8 +48,7 @@ const Timestamps = (props) => {
                     }}></Input>
                 </InputGroup>
             </div>
-            <div>
-                <Row>    
+            <div className={styles.grid}>
                     {timestampsBySong?.length !== 0 && 
                     timestampsBySong?.map((tsGroup, key) => {
                         var entries = Object.values(tsGroup)
@@ -58,9 +57,9 @@ const Timestamps = (props) => {
                         var songName = song?.name
                         var albumCover = album?.images[0]?.url
                         return(
-                            <div className={styles.container} key={key}>
-                                <Card style={{width:'200px', backgroundColor: '#1a1a1a', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '12px', color: '#FFFFFF'}}>
-                                    <CardImg top width="100%" src={albumCover} alt="Album Cover" style={{width:'200px',padding:'none', borderRadius: '12px 12px 0 0'}} className={styles.image}/>
+                            <div className={styles.cardWrapper} key={key}>
+                                <Card style={{width:'100%', backgroundColor: '#1a1a1a', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '12px', color: '#FFFFFF'}}>
+                                    <CardImg top width="100%" src={albumCover} alt="Album Cover" style={{width:'100%', borderRadius: '12px 12px 0 0'}} className={styles.image}/>
                                     <CardBody>
                                         <CardTitle tag="h5" style={{color: '#FFFFFF', fontWeight: 700}}>{songName}</CardTitle>
                                         <CardSubtitle tag="h6" style={{color: 'rgba(255,255,255,0.6)', marginBottom: '8px'}}>{entries[0]?.song.artists[0]?.name ? entries[0].song.artists[0].name: entries[0].song.album.artists[0].name}</CardSubtitle>
@@ -97,7 +96,6 @@ const Timestamps = (props) => {
                             </div>
                         )
                     })}
-                </Row>
             </div>
         </div>
 
