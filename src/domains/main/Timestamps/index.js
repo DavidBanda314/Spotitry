@@ -52,7 +52,7 @@ const Timestamps = (props) => {
             <button
                 className={styles.createPlaylistBtn}
                 onClick={() => setShowPlaylistModal(true)}
-                disabled={uniqueTrackUris.length === 0}
+                disabled={uniqueTrackUris.length === 0 || !userId}
             >
                 <FontAwesomeIcon icon={faListUl} style={{marginRight: '8px'}} />
                 Create Playlist

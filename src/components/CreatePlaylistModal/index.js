@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import styles from './index.module.css'
 
 const CreatePlaylistModal = ({ isOpen, onClose, defaultName, token, userId, trackUris }) => {
@@ -7,10 +7,16 @@ const CreatePlaylistModal = ({ isOpen, onClose, defaultName, token, userId, trac
     const [status, setStatus] = useState('idle') // idle | loading | success | error
     const [playlistUrl, setPlaylistUrl] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
+    const abortRef = useRef(null)
 
     const handleCreate = async () => {
         if (!playlistName.trim()) return
         setStatus('loading')
+
+        const controller = new AbortController()
+        abortRef.current = controller
+        const signal = controller.signal
+
         try {
             const headers = {
                 Authorization: 'Bearer ' + token,
@@ -27,6 +33,7 @@ const CreatePlaylistModal = ({ isOpen, onClose, defaultName, token, userId, trac
                         public: isPublic,
                         description: 'Created with Spotitry',
                     }),
+                    signal,
                 }
             )
 
@@ -45,6 +52,7 @@ const CreatePlaylistModal = ({ isOpen, onClose, defaultName, token, userId, trac
                         method: 'POST',
                         headers,
                         body: JSON.stringify({ uris: batch }),
+                        signal,
                     }
                 )
                 if (!addRes.ok) {
@@ -55,12 +63,17 @@ const CreatePlaylistModal = ({ isOpen, onClose, defaultName, token, userId, trac
             setPlaylistUrl(playlist.external_urls.spotify)
             setStatus('success')
         } catch (err) {
+            if (err.name === 'AbortError') return
             setErrorMessage(err.message || 'Something went wrong')
             setStatus('error')
         }
     }
 
     const handleClose = () => {
+        if (abortRef.current) {
+            abortRef.current.abort()
+            abortRef.current = null
+        }
         setStatus('idle')
         setPlaylistName(defaultName)
         setIsPublic(false)
