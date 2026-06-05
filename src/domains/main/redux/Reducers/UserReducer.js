@@ -12,7 +12,7 @@ const InitialState =
     errors:{},
 }
 
-export default function(state = InitialState, action){
+function userReducer(state = InitialState, action){
     const {type} = action
     switch(type){
         case UserDataActions.STORE_TOKEN :{
@@ -131,3 +131,4 @@ export default function(state = InitialState, action){
         }
     }
 }
+export default userReducer

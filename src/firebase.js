@@ -1,5 +1,5 @@
 
-import { auth, db } from './utils/constants'
+import { db } from './utils/constants'
 
 export async function createAndFetchUser(userId,name,email){
   try{
@@ -33,7 +33,7 @@ export async function createAndFetchUser(userId,name,email){
 
 export async function saveTimestamp(userId,song,progress_ms){
   try{
-      const ref = db.ref('users/' + userId + '/timestamps' + `/${song.name}`)
+      const ref = db.ref('users/' + userId + `/timestamps/${song.name}`)
       await ref.push({
         position_ms:progress_ms,
         song:song

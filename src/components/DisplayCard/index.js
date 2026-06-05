@@ -1,15 +1,14 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {Card, CardImg, CardBody, CardTitle, CardSubtitle, Col, CardHeader} from 'reactstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useHistory } from 'react-router-dom';
 
 
 const DisplayCard = (props) => {
-    const {token, track, artistName,albumName, albumCover, trackName, setSelectedSong, selectedSong} = props;
+    const {track, artistName,albumName, albumCover, trackName, setSelectedSong, selectedSong} = props;
     return(
         <Col style={{height: '50%', display: 'flex', marginTop: "10px"}}
             onClick={() => {
-                selectedSong?.song?.album?.uri == track.album.uri ?
+                selectedSong?.song?.album?.uri === track.album.uri ?
                     setSelectedSong(0,track.uri,track)
                     :
                     setSelectedSong(track.track_number-1,track.album?.uri,track);        

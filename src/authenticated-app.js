@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import {hash} from './utils/constants'
 import { Switch, Route, Redirect} from 'react-router-dom';
 import Home from './domains/main/Home';
 import NavBar from './components/NavBar';
@@ -20,6 +19,7 @@ const AuthenticatedApp = (props) => {
       storeToken(localStorage.getItem("token"))
     }
     console.log("hello", token)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
   console.log("hello", token)
 

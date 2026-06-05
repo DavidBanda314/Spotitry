@@ -1,4 +1,4 @@
-import React, {useState, Component, useEffect } from 'react'
+import React, {useState, useEffect } from 'react'
 import styles from '../History/index.module.css'
 import { connect } from 'react-redux'
 import { getProfileRequested, StoreToken } from '../redux/Actions/UserActions'
@@ -10,11 +10,12 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import DisplayCard from '../../../components/DisplayCard';
 
 const History = (props) => {
-    const {token,history, playSong, StoreToken, setSelectedSong, selectedSong, refetchUser} = props
+    const {token,history, StoreToken, setSelectedSong, selectedSong} = props
     const [myHistory, setMyHistory] = useState(history)
     const [searchValue,setSearchValue] = useState('')
     useEffect(() => {
         StoreToken(token)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
     useEffect(() => {
         if(!searchValue){
@@ -41,11 +42,11 @@ const History = (props) => {
             </div>
 
             <Row>
-                { myHistory.length != 0 && myHistory.slice(0,20).map((track,key) => {
+                { myHistory.length !== 0 && myHistory.slice(0,20).map((track,key) => {
                     var song = track.track
                     var album = song?.album
                     var artist = song?.artists[0]
-                    var featuredArtists = song?.artists.splice(0,1)
+                    song?.artists.splice(0,1)
                     var songName = song?.name
                     var albumCover = album?.images[0]?.url
                     return(
