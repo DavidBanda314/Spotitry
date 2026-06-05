@@ -95,6 +95,8 @@ const AuthenticatedApp = (props) => {
 
   // Periodic sync: poll Spotify player state to keep timer accurate
   const syncRef = useRef(null)
+  const songURIRef = useRef(songURI)
+  useEffect(() => { songURIRef.current = songURI }, [songURI])
   useEffect(() => {
     if (!play || !token) {
       clearInterval(syncRef.current)
@@ -102,13 +104,15 @@ const AuthenticatedApp = (props) => {
     }
     var doSync = function () {
       fetch(PLAYER_ENDPOINT, { headers: { 'Authorization': 'Bearer ' + token } })
-        .then(function (res) { return res.ok ? res.json() : null })
+        .then(function (res) { return res.ok && res.status !== 204 ? res.json() : null })
         .then(function (data) {
           if (!data) return
           if (data.progress_ms !== undefined) setProgressMs(data.progress_ms)
           if (data.item) {
             setDurationMs(data.item.duration_ms || 0)
-            updateSelectedSong(data.progress_ms || 0, data.item.uri, data.item)
+            if (data.item.uri !== songURIRef.current) {
+              updateSelectedSong(data.progress_ms || 0, data.item.uri, data.item)
+            }
           }
         })
         .catch(function () {})
@@ -143,7 +147,7 @@ const AuthenticatedApp = (props) => {
       setTimeout(async () => {
         try {
           var res = await fetch(PLAYER_ENDPOINT, { headers: { 'Authorization': 'Bearer ' + token } })
-          if (res.ok) {
+          if (res.ok && res.status !== 204) {
             var data = await res.json()
             if (data.progress_ms !== undefined) setProgressMs(data.progress_ms)
             if (data.item) {
