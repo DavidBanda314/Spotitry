@@ -19,7 +19,7 @@ const NavBar = () => {
       }, []);
     return(
         <>
-        <Paper>
+        <Paper className={styles.paper}>
             <Tabs
                 className={styles.tabs}
                 value={tab}

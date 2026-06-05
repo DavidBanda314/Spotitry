@@ -1,0 +1,42 @@
+.card {
+    background-color: #1a1a1a;
+    border-radius: 12px;
+    padding: 16px;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    width: 100%;
+    height: auto;
+}
+
+.card:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.cardImage {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 0;
+    margin-bottom: 16px;
+}
+
+.cardTitle {
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0 0 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cardSubtitle {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
+    font-weight: 400;
+    margin: 0 0 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

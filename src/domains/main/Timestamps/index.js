@@ -3,10 +3,11 @@ import styles from '../Timestamps/index.module.css'
 import { connect } from 'react-redux'
 import { getProfileRequested } from '../redux/Actions/UserActions'
 import { playSongRequested, setSelectedSong } from '../redux/Actions/PlaybackActions'
-import { InputGroup, InputGroupAddon, Input, Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button, Row} from 'reactstrap'
+import { InputGroup, InputGroupAddon, Input, Button } from 'reactstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import { Card, CardImg, CardBody, CardTitle, CardSubtitle, CardText, Row } from 'reactstrap'
 
 
 const Timestamps = (props) => {
@@ -33,14 +34,14 @@ const Timestamps = (props) => {
     return(
     
         <div className={styles.container}>     
-            <div>
-                <InputGroup style={{width: '50%'}}>
+            <div className={styles.searchWrapper}>
+                <InputGroup>
                     <InputGroupAddon addonType="append">
                         <Button>
                             <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
                         </Button>
                     </InputGroupAddon>
-                    <Input placeholder = "Search" onChange={(event) => {
+                    <Input placeholder = "Search timestamps..." onChange={(event) => {
                         var temp = allTimeStampsBySong?.filter((timestamps) => (timestamps[0].song.name.toLowerCase().includes(event.target.value.toLowerCase())))
                         setTimeStampsBySong(temp)
                         setSearchValue(event.target.value)
@@ -50,22 +51,22 @@ const Timestamps = (props) => {
             <div>
                 <Row>    
                     {timestampsBySong?.length !== 0 && 
-                    timestampsBySong?.map((timestamps, key) => {
-                        timestamps = Object.values(timestamps)
-                        var song = timestamps[0]?.song
+                    timestampsBySong?.map((tsGroup, key) => {
+                        var entries = Object.values(tsGroup)
+                        var song = entries[0]?.song
                         var album = song?.album
                         var songName = song?.name
                         var albumCover = album?.images[0]?.url
                         return(
                             <div className={styles.container} key={key}>
-                                <Card style={{width:'200px'}}>
-                                    <CardImg top width="100%" src={albumCover} alt="Album Cover" style={{width:'200px',padding:'none'}} className={styles.image}/>
+                                <Card style={{width:'200px', backgroundColor: '#1a1a1a', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '12px', color: '#FFFFFF'}}>
+                                    <CardImg top width="100%" src={albumCover} alt="Album Cover" style={{width:'200px',padding:'none', borderRadius: '12px 12px 0 0'}} className={styles.image}/>
                                     <CardBody>
-                                        <CardTitle tag="h5">{songName}</CardTitle>
-                                        <CardSubtitle tag="h6" className="mb-2 text-muted">{timestamps[0]?.song.artists[0]?.name ? timestamps[0].song.artists[0].name: timestamps[0].song.album.artists[0].name}</CardSubtitle>
-                                        <CardSubtitle tag="h6" className="mb-2 text-muted">{album?.name}</CardSubtitle>
-                                        <CardText>Timestamps:</CardText>
-                                        {timestamps.map((timestamp, key) => {
+                                        <CardTitle tag="h5" style={{color: '#FFFFFF', fontWeight: 700}}>{songName}</CardTitle>
+                                        <CardSubtitle tag="h6" style={{color: 'rgba(255,255,255,0.6)', marginBottom: '8px'}}>{entries[0]?.song.artists[0]?.name ? entries[0].song.artists[0].name: entries[0].song.album.artists[0].name}</CardSubtitle>
+                                        <CardSubtitle tag="h6" style={{color: 'rgba(255,255,255,0.4)', marginBottom: '8px'}}>{album?.name}</CardSubtitle>
+                                        <CardText style={{color: 'rgba(255,255,255,0.6)'}}>Timestamps:</CardText>
+                                        {entries.map((timestamp, key) => {
                                             var totalTime = song.duration_ms
                                             var timeSet = timestamp.position_ms
                                             var track = song
@@ -75,8 +76,6 @@ const Timestamps = (props) => {
                                                         style={{backgroundColor:'#1a1a1a', color: '#FFFFFF', marginBottom:'10px', height: '50px', fontSize:'13px', borderRadius: '500px', border: '1px solid rgba(255,255,255,0.1)', fontWeight: 600}}
                                                         onClick={() => {
                                                             if(!selectedSong) {
-                                                                // setSelectedSong(0,track?.uri,track);
-                                                                // playSong(token,timeSet,track?.uri,track)
                                                             }
                                                             else{
                                                                 setSelectedSong(0,track?.uri,track);
@@ -98,7 +97,6 @@ const Timestamps = (props) => {
                             </div>
                         )
                     })}
-                    <br></br>
                 </Row>
             </div>
         </div>

@@ -50,15 +50,13 @@ const Discover = (props) => {
                 </div>
             </div>
             <div className={styles.timestamp}>
-            <Button
-                style={{height: '75px', width: '150px', margin: "20px"}}
-                variant='contained' 
-                className={styles.timestampButton}
-                onClick={() => getPlaybackInfo(token,1,userId)}
+                <Button
+                    variant='contained' 
+                    className={styles.timestampButton}
+                    onClick={() => getPlaybackInfo(token,1,userId)}
                 >
-                Timestamp
-            </Button>
-
+                    Timestamp
+                </Button>
             </div>
         </div>
         </>
