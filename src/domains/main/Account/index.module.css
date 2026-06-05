@@ -91,6 +91,29 @@
     margin-top: 4px;
 }
 
+.compareButton {
+    display: block;
+    width: calc(100% - 32px);
+    margin: 16px 16px 0;
+    padding: 14px 24px;
+    background: transparent;
+    color: var(--yellow);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    border: 1px solid var(--yellow);
+    border-radius: 0;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background 0.12s ease, color 0.12s ease;
+    font-family: var(--mono);
+}
+
+.compareButton:hover {
+    background: var(--yellow);
+    color: #000000;
+}
+
 .logoutButton {
     display: block;
     width: 100%;
