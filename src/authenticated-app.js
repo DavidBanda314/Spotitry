@@ -156,7 +156,7 @@ const AuthenticatedApp = (props) => {
         </div>
       </div>
       }
-      <main className={styles.content}>
+      <main className={`${styles.content} ${song ? styles.withPlayer : ''}`}>
       <Switch>
         <Route
           exact
