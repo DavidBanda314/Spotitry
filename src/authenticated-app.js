@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import Home from './domains/main/Home';
@@ -19,9 +19,10 @@ import { getPlaybackInfoRequested } from './domains/main/redux/Actions/PlaybackA
 import { connect } from 'react-redux'
 import SpotifyPlayer from 'react-spotify-web-playback';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronUp } from '@fortawesome/free-solid-svg-icons'
+import { faChevronUp, faPlay, faPause, faStepForward } from '@fortawesome/free-solid-svg-icons'
 import NowPlaying from './components/NowPlaying';
 import styles from './authenticated-app.module.css';
+import { PLAYER_ENDPOINT } from './utils/constants';
 
 function formatMs(ms) {
   var totalSec = Math.floor(ms / 1000)
@@ -73,6 +74,48 @@ const AuthenticatedApp = (props) => {
     setShowNoteInput(false);
     setNoteText('');
   };
+
+  // Local timer fallback: increment progressMs every second while playing
+  const timerRef = useRef(null)
+  useEffect(() => {
+    if (play && !expanded) {
+      timerRef.current = setInterval(() => {
+        setProgressMs((prev) => {
+          if (durationMs && prev >= durationMs) return prev
+          return prev + 1000
+        })
+      }, 1000)
+    } else {
+      clearInterval(timerRef.current)
+    }
+    return () => clearInterval(timerRef.current)
+  }, [play, expanded, durationMs])
+
+  // Reset progress when song changes
+  useEffect(() => {
+    if (position_ms !== undefined) {
+      setProgressMs(position_ms || 0)
+    }
+    if (song?.duration_ms) {
+      setDurationMs(song.duration_ms)
+    }
+  }, [songURI, position_ms, song])
+
+  const handlePlayPause = useCallback(() => {
+    setPlay((prev) => !prev)
+  }, [])
+
+  const handleSkipNext = useCallback(async () => {
+    if (!token) return
+    try {
+      await fetch(PLAYER_ENDPOINT + '/next', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token },
+      })
+    } catch (err) {
+      // ignore network errors
+    }
+  }, [token])
 
     return(
       <div>
@@ -175,6 +218,22 @@ const AuthenticatedApp = (props) => {
               <span className={styles.miniTime}>
                 {formatMs(progressMs)}{durationMs ? ' / ' + formatMs(durationMs) : ''}
               </span>
+            </div>
+            <div className={styles.miniControls}>
+              <button
+                className={styles.miniControlBtn}
+                onClick={handlePlayPause}
+                aria-label={play ? 'Pause' : 'Play'}
+              >
+                <FontAwesomeIcon icon={play ? faPause : faPlay} />
+              </button>
+              <button
+                className={styles.miniControlBtn}
+                onClick={handleSkipNext}
+                aria-label="Next track"
+              >
+                <FontAwesomeIcon icon={faStepForward} />
+              </button>
             </div>
             </>
           )}
