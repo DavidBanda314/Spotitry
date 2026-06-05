@@ -3,7 +3,7 @@ import styles from '../Timestamps/index.module.css'
 import { connect } from 'react-redux'
 import { getProfileRequested } from '../redux/Actions/UserActions'
 import { parseSpecialCharacters } from '../../../utils/constants'
-import { playSongRequested, setSelectedSong } from '../redux/Actions/PlaybackActions'
+import { setSelectedSong } from '../redux/Actions/PlaybackActions'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faListUl, faLink, faPlus, faMinus, faTrash, faCopy, faShareAlt } from '@fortawesome/free-solid-svg-icons'
@@ -21,7 +21,7 @@ import {
 
 
 const Timestamps = (props) => {
-    const {token, timestamps, playSong, setSelectedSong, userId, databaseUserLoaded, refetchUser} = props
+    const {token, timestamps, setSelectedSong, userId, databaseUserLoaded, refetchUser} = props
     const [timestampsBySong,setTimeStampsBySong] = useState([])
     const [searchValue, setSearchValue] = useState('')
     const [allTimeStampsBySong,setAllTimeStampsBySong] = useState([])
@@ -419,8 +419,7 @@ const Timestamps = (props) => {
                                                     <button
                                                         className={styles.timestampButton}
                                                         onClick={() => {
-                                                            setSelectedSong(timeSet,track?.uri,track);
-                                                            playSong(token,timeSet,track?.uri,track)
+                                                            setSelectedSong(timeSet,track?.uri,track)
                                                         }}
                                                     >
                                                         <span className={styles.playIcon}>&#9654;</span>
@@ -570,7 +569,6 @@ const Timestamps = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        playSong: (token, position_ms, songURI, song) => dispatch(playSongRequested(token, position_ms, songURI,song)),
         setSelectedSong: (position_ms, songURI, song) => dispatch(setSelectedSong(position_ms, songURI, song)),
         refetchUser: (token) => dispatch(getProfileRequested(token)),
     }
