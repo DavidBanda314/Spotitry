@@ -6,7 +6,7 @@ import { parseSpecialCharacters } from '../../../utils/constants'
 import { playSongRequested, setSelectedSong } from '../redux/Actions/PlaybackActions'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch, faListUl, faLink, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
+import { faSearch, faListUl, faLink, faPlus, faMinus, faTrash } from '@fortawesome/free-solid-svg-icons'
 import CreatePlaylistModal from '../../../components/CreatePlaylistModal'
 import { SkeletonGrid } from '../../../components/Skeleton'
 import {
@@ -16,6 +16,7 @@ import {
     deleteCollection as fbDeleteCollection,
     fetchCollections as fbFetchCollections,
     updateTimestampNote as fbUpdateTimestampNote,
+    deleteTimestamp as fbDeleteTimestamp,
 } from '../../../firebase'
 
 
@@ -35,6 +36,16 @@ const Timestamps = (props) => {
     const [collectionDropdownId, setCollectionDropdownId] = useState(null)
     const [addedConfirmId, setAddedConfirmId] = useState(null)
     const [deleteConfirm, setDeleteConfirm] = useState(false)
+
+    // Delete confirmation state (keyed by ts._pushId)
+    const [deleteConfirmId, setDeleteConfirmId] = useState(null)
+
+    const handleDeleteTimestamp = useCallback(async (timestamp) => {
+        if (!userId) return
+        await fbDeleteTimestamp(parseSpecialCharacters(userId), timestamp._songKey, timestamp._pushId)
+        setDeleteConfirmId(null)
+        if (refetchUser) refetchUser(token)
+    }, [userId, refetchUser, token])
 
     // Note editing state (keyed by ts._pushId)
     const [noteEditingId, setNoteEditingId] = useState(null)
@@ -440,6 +451,21 @@ const Timestamps = (props) => {
                                                             </div>
                                                         )}
                                                     </div>
+                                                    {deleteConfirmId === timestamp._pushId ? (
+                                                        <span className={styles.deleteConfirmInline}>
+                                                            <span className={styles.deleteConfirmLabel}>Delete?</span>
+                                                            <button className={styles.deleteYes} onClick={() => handleDeleteTimestamp(timestamp)}>Yes</button>
+                                                            <button className={styles.deleteNo} onClick={() => setDeleteConfirmId(null)}>No</button>
+                                                        </span>
+                                                    ) : (
+                                                        <button
+                                                            className={styles.deleteBtn}
+                                                            onClick={() => setDeleteConfirmId(timestamp._pushId)}
+                                                            title="Delete timestamp"
+                                                        >
+                                                            <FontAwesomeIcon icon={faTrash} />
+                                                        </button>
+                                                    )}
                                                 </div>
                                                 {noteEditingId === timestamp._pushId ? (
                                                     <div className={styles.noteEditor} onClick={(e) => e.stopPropagation()}>
