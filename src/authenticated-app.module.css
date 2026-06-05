@@ -28,10 +28,15 @@
 
 .content {
     padding-top: calc(52px + env(safe-area-inset-top, 0px));
-    /* leave room for the fixed player (when visible) + bottom nav */
+    /* room for the bottom nav */
     padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px));
     min-height: 100vh;
     background-color: #000000;
+}
+
+/* when a song is selected, also clear the fixed player (~90px) above the nav */
+.withPlayer {
+    padding-bottom: calc(58px + 90px + env(safe-area-inset-bottom, 0px));
 }
 
 .player {
