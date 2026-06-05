@@ -1,5 +1,5 @@
 .container {
-    padding: 0 0 32px;
+    padding: 16px 16px 32px;
     background-color: #000000;
     max-width: 1100px;
     margin: 0 auto;
@@ -8,15 +8,14 @@
 .sectionHeader {
     display: flex;
     align-items: center;
-    padding: 20px 16px 12px;
-    border-bottom: 1px solid var(--line);
+    margin: 24px 0 16px;
 }
 
 .sectionTitle {
-    color: var(--yellow);
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.02em;
+    color: #FFFFFF;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
     flex: 1;
     margin: 0;
 }
@@ -24,26 +23,24 @@
 .grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 0;
-    border-top: 1px solid var(--line);
+    gap: 12px;
 }
 
 .card {
-    position: relative;
-    background-color: #000000;
-    border-right: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
+    background-color: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
     overflow: hidden;
     cursor: pointer;
-    transition: background 0.12s ease;
+    transition: border-color 0.2s ease, transform 0.15s ease;
 }
 
 .card:hover {
-    background-color: #0a0a0a;
+    border-color: rgba(255, 255, 255, 0.18);
 }
 
-.card:hover .cardTitle {
-    color: var(--fg-bright);
+.card:active {
+    transform: scale(0.98);
 }
 
 .cardImage {
@@ -51,16 +48,12 @@
     aspect-ratio: 1;
     object-fit: cover;
     display: block;
-    filter: grayscale(1) contrast(1.05);
-    transition: filter 0.15s ease;
-}
-
-.card:hover .cardImage {
-    filter: grayscale(0);
 }
 
 .artistImage {
-    border-radius: 0;
+    width: calc(100% - 32px);
+    margin: 16px auto 0;
+    border-radius: 50%;
 }
 
 .cardBody {
@@ -68,45 +61,40 @@
 }
 
 .cardTitle {
-    color: var(--fg);
-    font-size: 13px;
+    color: #FFFFFF;
+    font-size: 14px;
     font-weight: 700;
     margin: 0 0 4px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    text-transform: uppercase;
-    transition: color 0.12s ease;
 }
 
 .cardSubtitle {
-    color: var(--fg);
-    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
     margin: 0 0 2px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    text-transform: uppercase;
 }
 
 .cardMeta {
-    color: var(--fg);
-    font-size: 11px;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 12px;
     margin: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    text-transform: uppercase;
 }
 
 .timestampRow {
     display: flex;
     overflow-x: auto;
-    gap: 0;
-    padding: 0;
-    border-top: 1px solid var(--line);
+    gap: 12px;
+    padding-bottom: 8px;
     scrollbar-width: thin;
-    scrollbar-color: var(--fg) transparent;
+    scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
 }
 
 .timestampRow::-webkit-scrollbar {
@@ -114,8 +102,8 @@
 }
 
 .timestampRow::-webkit-scrollbar-thumb {
-    background: var(--fg);
-    border-radius: 0;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
 }
 
 .timestampCard {
@@ -123,33 +111,30 @@
     align-items: center;
     min-width: 220px;
     max-width: 260px;
-    background-color: #000000;
-    border-right: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-    border-radius: 0;
+    background-color: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
     padding: 10px;
     cursor: pointer;
     flex-shrink: 0;
-    transition: background 0.12s ease;
+    transition: border-color 0.2s ease, transform 0.15s ease;
 }
 
 .timestampCard:hover {
-    background-color: #0a0a0a;
+    border-color: rgba(255, 255, 255, 0.18);
 }
 
-.timestampCard:hover .timestampSong {
-    color: var(--fg-bright);
+.timestampCard:active {
+    transform: scale(0.98);
 }
 
 .timestampArt {
     width: 48px;
     height: 48px;
-    border-radius: 0;
+    border-radius: 6px;
     object-fit: cover;
     flex-shrink: 0;
     margin-right: 10px;
-    border: 1px solid var(--line);
-    filter: grayscale(1) contrast(1.05);
 }
 
 .timestampInfo {
@@ -158,38 +143,39 @@
 }
 
 .timestampSong {
-    color: var(--fg);
+    color: #FFFFFF;
     font-size: 13px;
     font-weight: 700;
     margin: 0 0 2px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    text-transform: uppercase;
-    transition: color 0.12s ease;
 }
 
 .timestampTime {
-    color: var(--yellow);
+    color: #1DB954;
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 600;
     margin: 0 0 2px;
-    font-variant-numeric: tabular-nums;
 }
 
 .timestampNote {
-    color: var(--fg);
+    color: rgba(255, 255, 255, 0.5);
     font-size: 11px;
+    font-style: italic;
     margin: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    text-transform: uppercase;
 }
 
 @media (min-width: 600px) {
     .grid {
         grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+    }
+    .sectionTitle {
+        font-size: 26px;
     }
 }
 
