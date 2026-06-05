@@ -422,7 +422,7 @@ const Timestamps = (props) => {
                                                             if(!selectedSong) {
                                                             }
                                                             else{
-                                                                setSelectedSong(0,track?.uri,track);
+                                                                setSelectedSong(timeSet,track?.uri,track);
                                                                 playSong(token,timeSet,track?.uri,track)
                                                             }
                                                         }}
