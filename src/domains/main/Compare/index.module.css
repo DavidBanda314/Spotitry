@@ -1,69 +1,85 @@
 .container {
     max-width: 640px;
     margin: 0 auto;
-    padding: 0;
-    color: var(--fg);
+    padding: 16px;
+    color: #FFFFFF;
+}
+
+.helpSection {
+    background-color: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.helpTitle {
+    color: #1DB954;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.helpText {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0;
 }
 
 .inputSection {
-    padding: 24px 16px;
-    border-bottom: 1px solid var(--line);
+    margin-bottom: 24px;
 }
 
 .sectionTitle {
-    color: var(--yellow);
-    font-size: 14px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
+    color: #FFFFFF;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
     margin-bottom: 16px;
 }
 
 .inputRow {
     display: flex;
-    gap: 0;
+    gap: 8px;
 }
 
 .input {
     flex: 1;
-    background-color: #000000;
-    border: 1px solid var(--line);
-    border-right: none;
-    border-radius: 0;
-    padding: 12px 16px;
-    color: var(--fg-bright);
-    font-size: 13px;
-    font-family: var(--mono);
-    text-transform: uppercase;
+    background-color: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 500px;
+    padding: 12px 20px;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-family: inherit;
     outline: none;
 }
 
 .input::placeholder {
-    color: var(--fg);
-    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
 }
 
 .input:focus {
-    border-color: var(--yellow);
+    border-color: #1DB954;
 }
 
 .compareButton {
-    background-color: var(--yellow);
+    background-color: #1DB954;
     color: #000000;
-    border: 1px solid var(--yellow);
-    border-radius: 0;
+    border: none;
+    border-radius: 500px;
     padding: 12px 24px;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
-    font-family: var(--mono);
-    text-transform: uppercase;
+    font-family: inherit;
     cursor: pointer;
     white-space: nowrap;
+    transition: background-color 0.2s ease;
 }
 
 .compareButton:hover {
-    background-color: var(--fg-bright);
-    border-color: var(--fg-bright);
+    background-color: #1ed760;
 }
 
 .compareButton:disabled {
@@ -74,19 +90,15 @@
 .loading {
     text-align: center;
     padding: 48px 16px;
-    color: var(--fg);
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
 }
 
 .error {
     text-align: center;
     padding: 48px 16px;
-    color: var(--red);
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
+    color: #ff4444;
+    font-size: 14px;
 }
 
 .results {
@@ -97,8 +109,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 32px 16px;
-    border-bottom: 1px solid var(--line);
+    padding: 32px 0;
 }
 
 .friendInfo {
@@ -111,17 +122,15 @@
 .friendImage {
     width: 48px;
     height: 48px;
-    border-radius: 0;
+    border-radius: 50%;
     object-fit: cover;
-    border: 1px solid var(--line);
-    filter: grayscale(1) contrast(1.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .friendName {
-    color: var(--fg-bright);
+    color: #FFFFFF;
     font-size: 16px;
     font-weight: 700;
-    text-transform: uppercase;
 }
 
 .scoreCircle {
@@ -147,25 +156,23 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    color: var(--fg);
+    color: rgba(255, 255, 255, 0.5);
     margin-top: 4px;
 }
 
 .sharedSection {
     padding: 0;
-    border-bottom: 1px solid var(--line);
+    margin-top: 24px;
 }
 
 .sharedHeader {
-    padding: 20px 16px 12px;
-    border-bottom: 1px solid var(--line);
+    margin-bottom: 12px;
 }
 
 .sharedGrid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 0;
-    border-top: 1px solid var(--line);
+    gap: 12px;
 }
 
 .sharedArtistCard {
@@ -173,10 +180,19 @@
     flex-direction: column;
     align-items: center;
     padding: 16px 8px;
-    background-color: #000000;
-    border-right: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-    cursor: default;
+    background-color: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, transform 0.15s ease;
+}
+
+.sharedArtistCard:hover {
+    border-color: rgba(255, 255, 255, 0.18);
+}
+
+.sharedArtistCard:active {
+    transform: scale(0.98);
 }
 
 .sharedArtistImage {
@@ -184,16 +200,13 @@
     height: 64px;
     border-radius: 50%;
     object-fit: cover;
-    border: 1px solid var(--line);
-    filter: grayscale(1) contrast(1.05);
     margin-bottom: 8px;
 }
 
 .sharedArtistName {
-    color: var(--fg-bright);
-    font-size: 12px;
+    color: #FFFFFF;
+    font-size: 13px;
     font-weight: 700;
-    text-transform: uppercase;
     text-align: center;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -205,25 +218,29 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 12px 16px;
-    background-color: #000000;
-    border-bottom: 1px solid var(--line);
+    padding: 10px;
+    background-color: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
     cursor: pointer;
-    transition: background 0.12s ease;
+    transition: border-color 0.2s ease, transform 0.15s ease;
+    margin-bottom: 8px;
 }
 
 .sharedTrackCard:hover {
-    background-color: rgba(255, 199, 0, 0.05);
+    border-color: rgba(255, 255, 255, 0.18);
+}
+
+.sharedTrackCard:active {
+    transform: scale(0.99);
 }
 
 .sharedTrackImage {
     width: 48px;
     height: 48px;
-    border-radius: 0;
+    border-radius: 8px;
     object-fit: cover;
     flex-shrink: 0;
-    border: 1px solid var(--line);
-    filter: grayscale(1) contrast(1.05);
 }
 
 .sharedTrackInfo {
@@ -232,19 +249,17 @@
 }
 
 .sharedTrackName {
-    color: var(--fg-bright);
-    font-size: 13px;
-    font-weight: 700;
-    text-transform: uppercase;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 600;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
 .sharedTrackArtist {
-    color: var(--fg);
-    font-size: 12px;
-    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -252,44 +267,40 @@
 }
 
 .emptyMessage {
-    color: var(--fg);
-    font-size: 13px;
-    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 14px;
     padding: 24px 16px;
     text-align: center;
 }
 
 .sideBySide {
     padding: 0;
+    margin-top: 24px;
 }
 
 .sideBySideHeader {
-    padding: 20px 16px 12px;
-    border-bottom: 1px solid var(--line);
+    margin-bottom: 12px;
 }
 
 .columns {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0;
+    gap: 12px;
 }
 
 .column {
-    border-right: 1px solid var(--line);
-}
-
-.column:last-child {
-    border-right: none;
+    background-color: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    overflow: hidden;
 }
 
 .columnHeader {
-    color: var(--yellow);
-    font-size: 11px;
+    color: #1DB954;
+    font-size: 13px;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
     padding: 12px;
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     text-align: center;
 }
 
@@ -298,17 +309,25 @@
     align-items: center;
     gap: 8px;
     padding: 8px 12px;
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.columnItem:last-child {
+    border-bottom: none;
+}
+
+.columnItem:hover {
+    background-color: rgba(255, 255, 255, 0.04);
 }
 
 .columnImage {
     width: 32px;
     height: 32px;
-    border-radius: 0;
+    border-radius: 4px;
     object-fit: cover;
     flex-shrink: 0;
-    border: 1px solid var(--line);
-    filter: grayscale(1) contrast(1.05);
 }
 
 .columnImageCircle {
@@ -317,15 +336,12 @@
     border-radius: 50%;
     object-fit: cover;
     flex-shrink: 0;
-    border: 1px solid var(--line);
-    filter: grayscale(1) contrast(1.05);
 }
 
 .columnName {
-    color: var(--fg-bright);
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: 600;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -334,9 +350,8 @@
 }
 
 .columnSub {
-    color: var(--fg);
-    font-size: 10px;
-    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 11px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -348,13 +363,9 @@
 }
 
 .subSectionTitle {
-    color: var(--fg);
-    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    padding: 12px;
+    margin: 16px 0 8px;
     text-align: center;
-    border-bottom: 1px solid var(--line);
-    background: rgba(132, 137, 142, 0.05);
 }

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import styles from './index.module.css'
 import { connect } from 'react-redux'
 import { setSelectedSong } from '../redux/Actions/PlaybackActions'
@@ -87,6 +88,7 @@ function scoreColor(score) {
 
 const Compare = (props) => {
     var { topArtists, topTracks, selectSong, token } = props
+    var history = useHistory()
     var myArtists = topArtists || []
     var myTracks = topTracks || []
 
@@ -157,10 +159,27 @@ const Compare = (props) => {
 
     var color = score !== null ? scoreColor(score) : '#84898e'
 
+    var handleArtistClick = function (artist) {
+        if (artist && artist.id) {
+            history.push('/artist/' + artist.id)
+        } else if (artist && artist.externalUrl) {
+            window.open(artist.externalUrl, '_blank')
+        }
+    }
+
     return (
         <div className={styles.container}>
+            <div className={styles.helpSection}>
+                <div className={styles.helpTitle}>How it works</div>
+                <p className={styles.helpText}>
+                    Compare your music taste with a friend! Both of you need a Spotitry account.
+                    Your friend must enable "Public Profile" in their Account page, then share
+                    their profile link or user ID with you. Paste it below and hit Compare to see
+                    your shared artists, tracks, and a compatibility score.
+                </p>
+            </div>
             <div className={styles.inputSection}>
-                <div className={styles.sectionTitle}>{'///COMPARE TASTES'}</div>
+                <div className={styles.sectionTitle}>Compare Tastes</div>
                 <div className={styles.inputRow}>
                     <input
                         className={styles.input}
@@ -214,14 +233,14 @@ const Compare = (props) => {
 
                     <div className={styles.sharedSection}>
                         <div className={styles.sharedHeader}>
-                            <div className={styles.sectionTitle}>{'///SHARED ARTISTS'}</div>
+                            <div className={styles.sectionTitle}>Shared Artists</div>
                         </div>
                         {sharedArtists.length > 0 ? (
                             <div className={styles.sharedGrid}>
                                 {sharedArtists.map(function (artist, idx) {
                                     var img = artist.images && artist.images[0] ? artist.images[0].url : null
                                     return (
-                                        <div className={styles.sharedArtistCard} key={artist.id || idx}>
+                                        <div className={styles.sharedArtistCard} key={artist.id || idx} onClick={function () { handleArtistClick(artist) }}>
                                             {img && (
                                                 <img
                                                     className={styles.sharedArtistImage}
@@ -241,7 +260,7 @@ const Compare = (props) => {
 
                     <div className={styles.sharedSection}>
                         <div className={styles.sharedHeader}>
-                            <div className={styles.sectionTitle}>{'///SHARED TRACKS'}</div>
+                            <div className={styles.sectionTitle}>Shared Tracks</div>
                         </div>
                         {sharedTracks.length > 0 ? (
                             sharedTracks.map(function (track, idx) {
@@ -275,7 +294,7 @@ const Compare = (props) => {
 
                     <div className={styles.sideBySide}>
                         <div className={styles.sideBySideHeader}>
-                            <div className={styles.sectionTitle}>{'///SIDE BY SIDE'}</div>
+                            <div className={styles.sectionTitle}>Side by Side</div>
                         </div>
                         <div className={styles.subSectionTitle}>Top Artists</div>
                         <div className={styles.columns}>
@@ -284,7 +303,7 @@ const Compare = (props) => {
                                 {myArtists.slice(0, 5).map(function (a, idx) {
                                     var img = a.images && a.images[0] ? a.images[0].url : null
                                     return (
-                                        <div className={styles.columnItem} key={a.id || idx}>
+                                        <div className={styles.columnItem} key={a.id || idx} onClick={function () { handleArtistClick(a) }}>
                                             {img && <img className={styles.columnImageCircle} src={img} alt={a.name} />}
                                             <span className={styles.columnName}>{a.name}</span>
                                         </div>
@@ -296,7 +315,7 @@ const Compare = (props) => {
                                 {friendArtists.slice(0, 5).map(function (a, idx) {
                                     var img = a.images && a.images[0] ? a.images[0].url : null
                                     return (
-                                        <div className={styles.columnItem} key={a.id || idx}>
+                                        <div className={styles.columnItem} key={a.id || idx} onClick={function () { handleArtistClick(a) }}>
                                             {img && <img className={styles.columnImageCircle} src={img} alt={a.name} />}
                                             <span className={styles.columnName}>{a.name}</span>
                                         </div>
@@ -313,7 +332,7 @@ const Compare = (props) => {
                                     var img = t.album && t.album.images && t.album.images[0] ? t.album.images[0].url : null
                                     var artistName = t.artists && t.artists[0] ? t.artists[0].name : ''
                                     return (
-                                        <div className={styles.columnItem} key={t.id || idx}>
+                                        <div className={styles.columnItem} key={t.id || idx} onClick={function () { handleTrackClick(t) }}>
                                             {img && <img className={styles.columnImage} src={img} alt={t.name} />}
                                             <div className={styles.columnItemInfo}>
                                                 <div className={styles.columnName}>{t.name}</div>
@@ -329,7 +348,7 @@ const Compare = (props) => {
                                     var img = t.album && t.album.images && t.album.images[0] ? t.album.images[0].url : null
                                     var artistName = t.artists && t.artists[0] ? t.artists[0].name : ''
                                     return (
-                                        <div className={styles.columnItem} key={t.id || idx}>
+                                        <div className={styles.columnItem} key={t.id || idx} onClick={function () { handleTrackClick(t) }}>
                                             {img && <img className={styles.columnImage} src={img} alt={t.name} />}
                                             <div className={styles.columnItemInfo}>
                                                 <div className={styles.columnName}>{t.name}</div>

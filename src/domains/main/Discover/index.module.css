@@ -47,10 +47,6 @@
     color: #FFFFFF;
 }
 
-.searchBar {
-    width: 100%;
-}
-
 .searchResults {
     display: flex;
     flex-direction: column;

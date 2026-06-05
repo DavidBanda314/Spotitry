@@ -82,7 +82,17 @@ const Home = (props) => {
                             <img className={styles.cardImage} alt="Album Cover" src={track.album.images[0].url}/>
                             <div className={styles.cardBody}>
                                 <p className={styles.cardTitle}>{key+1}. {track.name}</p>
-                                <p className={styles.cardSubtitle}>{track.artists[0].name}</p>
+                                <p className={styles.cardSubtitle}>
+                                    <span
+                                        className={styles.artistLink}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            history.push('/artist/' + track.artists[0].id);
+                                        }}
+                                    >
+                                        {track.artists[0].name}
+                                    </span>
+                                </p>
                                 <p className={styles.cardMeta}>{track.album.name}</p>
                             </div>
                         </div>
