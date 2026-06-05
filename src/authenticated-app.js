@@ -11,6 +11,7 @@ import Stats from './domains/main/Stats';
 import Search from './domains/main/Search';
 import GlobalSearch from './components/GlobalSearch';
 import Share from './domains/main/Share';
+import Profile from './domains/main/Profile';
 import Compare from './domains/main/Compare';
 import { StoreToken } from './domains/main/redux/Actions/UserActions.js'
 import { getPlaybackInfoRequested } from './domains/main/redux/Actions/PlaybackActions.js'
@@ -216,6 +217,9 @@ const AuthenticatedApp = (props) => {
             </Route>
             <Route exact path='/share'>
               <Share/>
+            </Route>
+            <Route exact path='/profile/:userId'>
+              <Profile/>
             </Route>
             <Route exact path='/compare'>
               <Compare/>
