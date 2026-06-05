@@ -95,15 +95,20 @@ const AuthenticatedApp = (props) => {
 
   // Periodic sync: poll Spotify player state to keep timer accurate
   const syncRef = useRef(null)
+  const abortRef = useRef(null)
   const songURIRef = useRef(songURI)
   useEffect(() => { songURIRef.current = songURI }, [songURI])
   useEffect(() => {
     if (!play || !token) {
       clearInterval(syncRef.current)
+      if (abortRef.current) abortRef.current.abort()
       return
     }
     var doSync = function () {
-      fetch(PLAYER_ENDPOINT, { headers: { 'Authorization': 'Bearer ' + token } })
+      if (abortRef.current) abortRef.current.abort()
+      var controller = new AbortController()
+      abortRef.current = controller
+      fetch(PLAYER_ENDPOINT, { headers: { 'Authorization': 'Bearer ' + token }, signal: controller.signal })
         .then(function (res) { return res.ok && res.status !== 204 ? res.json() : null })
         .then(function (data) {
           if (!data) return
@@ -118,7 +123,10 @@ const AuthenticatedApp = (props) => {
         .catch(function () {})
     }
     syncRef.current = setInterval(doSync, 5000)
-    return function () { clearInterval(syncRef.current) }
+    return function () {
+      clearInterval(syncRef.current)
+      if (abortRef.current) abortRef.current.abort()
+    }
   }, [play, token, updateSelectedSong])
 
   // Reset progress when song changes
