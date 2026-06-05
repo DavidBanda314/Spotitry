@@ -1,86 +1,159 @@
 .App {
-    min-height: 100vh;
-    background: linear-gradient(to bottom, #1DB954 0%, #121212 40%);
-}
-
-.AppLogo {
-    height: 120px;
-    pointer-events: none;
-    margin-bottom: 32px;
-}
-
-.AppHeader {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #FFFFFF;
-    padding: 0 24px;
+  min-height: 100vh;
+  background-color: #000000;
+  overflow: hidden;
 }
 
 .header {
-    background-color: #000000;
-    padding: 12px 0;
+  background-color: #000000;
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
 }
 
-.header :global(.MuiTab-root) {
-    color: #FFFFFF;
-    font-size: 28px;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    text-transform: none;
+.AppHeader {
+  background: linear-gradient(180deg, #1DB954 0%, #121212 40%, #000000 100%);
+  min-height: calc(100vh - 60px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  text-align: center;
 }
 
-.header :global(.MuiTabs-indicator) {
-    display: none;
+.AppLogo {
+  height: 80px;
+  pointer-events: none;
+  margin-bottom: 32px;
 }
 
-.dumb {
-    background-color: #1DB954 !important;
-    color: #000000 !important;
-    border-radius: 500px !important;
-    font-weight: 700 !important;
-    font-size: 16px !important;
-    padding: 12px 48px !important;
-    text-transform: none !important;
-    letter-spacing: 0.1em;
-    transition: transform 0.2s ease, background-color 0.2s ease !important;
-    border: none !important;
-    min-width: 160px !important;
-    height: 56px !important;
+.heroTitle {
+  font-size: clamp(40px, 8vw, 72px);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  color: #FFFFFF;
+  margin-bottom: 16px;
+  max-width: 800px;
 }
 
-.dumb:hover {
-    background-color: #1ed760 !important;
-    transform: scale(1.04);
+.heroSubtitle {
+  font-size: clamp(16px, 2.5vw, 20px);
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 40px;
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.loginButton {
+  background-color: #1DB954;
+  color: #000000;
+  border: none;
+  border-radius: 500px;
+  padding: 14px 48px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+  letter-spacing: 0.02em;
+}
+
+.loginButton:hover {
+  background-color: #1ed760;
+  transform: scale(1.04);
 }
 
 .signUpButton {
-    background-color: transparent !important;
-    color: #FFFFFF !important;
-    border: 1px solid rgba(255, 255, 255, 0.7) !important;
-    border-radius: 500px !important;
-    font-weight: 700 !important;
-    font-size: 16px !important;
-    padding: 12px 48px !important;
-    text-transform: none !important;
-    letter-spacing: 0.1em;
-    transition: transform 0.2s ease, border-color 0.2s ease !important;
-    min-width: 160px !important;
-    height: 56px !important;
+  background-color: transparent;
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 500px;
+  padding: 14px 48px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+  letter-spacing: 0.02em;
 }
 
 .signUpButton:hover {
-    border-color: #FFFFFF !important;
-    transform: scale(1.04);
+  border-color: #FFFFFF;
+  transform: scale(1.04);
+}
+
+.features {
+  background-color: #000000;
+  padding: 80px 32px;
+  text-align: center;
+}
+
+.featuresTitle {
+  font-size: 32px;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin-bottom: 48px;
+  letter-spacing: -0.02em;
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 32px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.featureCard {
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  padding: 32px 24px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.featureIcon {
+  font-size: 36px;
+  margin-bottom: 16px;
+}
+
+.featureCardTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 8px;
+}
+
+.featureCardDesc {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.6;
+}
+
+.footer {
+  background-color: #000000;
+  padding: 32px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 @keyframes AppLogo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

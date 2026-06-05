@@ -1,134 +1,94 @@
-.row1 {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: calc(100vh - 64px);
-    background-color: #121212;
-    padding: 32px;
-    padding-bottom: 100px;
-}
-
-.nowPlaying {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    margin-bottom: 32px;
-    width: 100%;
-    max-width: 600px;
+.header {
+    font-size: 18px;
+    font-weight: 600;
+    color: #FFFFFF;
+    margin-top: 16px;
+    margin-left: 16px;
 }
 
 .pic {
-    width: 200px;
+    width: 240px;
     height: 200px;
     border-radius: 8px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
     object-fit: cover;
+    position: fixed;
+    top: 55px;
+    left: 200px;
 }
 
-.header {
-    font-size: 24px;
-    font-weight: 700;
-    color: #FFFFFF;
-    margin: 0;
-}
-
-.searchBar {
-    width: 100%;
-    max-width: 600px;
-    margin-bottom: 16px;
-}
-
-.searchBar :global(.input-group) {
-    background-color: #242424;
-    border-radius: 500px;
-    overflow: hidden;
-    border: none;
-}
-
-.searchBar :global(.input-group) input {
-    background-color: #242424;
-    border: none;
-    color: #FFFFFF;
-    padding: 12px 16px;
-    font-size: 14px;
-}
-
-.searchBar :global(.input-group) input::placeholder {
-    color: #A7A7A7;
-}
-
-.searchBar :global(.input-group) input:focus {
-    background-color: #2A2A2A;
-    box-shadow: none;
-    outline: none;
-    border: none;
-}
-
-.searchBar :global(.input-group-append) button {
-    background-color: transparent;
-    border: none;
-    color: #A7A7A7;
-    padding: 8px 16px;
-}
-
-.searchResults {
-    max-height: 400px;
-    overflow-y: auto;
-    border-radius: 8px;
-    margin-top: 8px;
-    width: 100%;
-    max-width: 600px;
+.column {
+    display: flex;
+    justify-content: left;
+    align-items: center;
 }
 
 .row {
-    display: flex;
     flex-direction: row;
-    align-items: center;
-    padding: 8px 12px;
-    cursor: pointer;
-    background-color: #181818 !important;
-    border-radius: 4px !important;
-    margin-bottom: 4px;
-    transition: background-color 0.2s ease;
-    width: 100% !important;
-}
-
-.row:hover {
-    background-color: #282828 !important;
-}
-
-.row p {
-    color: #FFFFFF;
-    margin: 0;
-    margin-left: 12px;
-    font-size: 14px;
-    font-weight: 500;
+    display: flex;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .smallPic {
-    width: 40px;
-    height: 40px;
-    border-radius: 4px;
-    object-fit: cover;
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+}
+
+.row1 {
+    flex-direction: row;
+    display: flex;
+    min-height: calc(100vh - 48px);
+    color: #FFFFFF;
+    background-color: #000000;
+    justify-content: space-around;
+    align-items: center;
+    overflow: auto;
 }
 
 .timestamp {
-    margin-top: 24px;
+    margin-top: 100px;
+    height: 200px;
+    margin-right: 500px;
+    left: 300px;
+    position: relative;
+    background-color: #000000;
 }
 
 .timestampButton {
-    background-color: #1DB954 !important;
-    color: #000000 !important;
-    border-radius: 500px !important;
-    font-weight: 700 !important;
-    font-size: 16px !important;
-    padding: 16px 48px !important;
-    text-transform: none !important;
-    transition: transform 0.2s ease, background-color 0.2s ease !important;
-    border: none !important;
+    height: 100px;
+    background-color: #1DB954;
+    color: #000000;
+    font-weight: 700;
+    border-radius: 500px;
+    font-size: 16px;
 }
 
 .timestampButton:hover {
-    background-color: #1ed760 !important;
-    transform: scale(1.04);
+    background-color: #1ed760;
+    color: #000000;
+}
+
+.searchBar {
+    position: fixed;
+    top: 300px;
+    width: 377px;
+    overflow: auto;
+    left: 126px;
+}
+
+.searchResults {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    top: 440px;
+    max-height: 325px;
+    border-radius: 8px;
+    left: 125px;
+    overflow: auto;
+    background-color: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.06);
 }

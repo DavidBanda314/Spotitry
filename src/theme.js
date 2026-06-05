@@ -12,16 +12,24 @@ const theme = createMuiTheme({
         main: '#FFFFFF',
       },
       background: {
-        default: '#121212',
-        paper: '#181818',
+        default: '#000000',
+        paper: '#1a1a1a',
       },
       text: {
         primary: '#FFFFFF',
-        secondary: '#B3B3B3',
+        secondary: '#a0a0a0',
       },
     },
     typography: {
       fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif",
+      h1: {
+        fontWeight: 900,
+        letterSpacing: '-0.04em',
+      },
+      h2: {
+        fontWeight: 800,
+        letterSpacing: '-0.03em',
+      },
     },
     shape: {
       borderRadius: 8,
@@ -29,7 +37,7 @@ const theme = createMuiTheme({
     overrides: {
       MuiPaper: {
         root: {
-          backgroundColor: '#121212',
+          backgroundColor: '#000000',
         },
       },
       MuiTab: {
