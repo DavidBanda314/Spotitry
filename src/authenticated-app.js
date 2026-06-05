@@ -23,6 +23,13 @@ import { faChevronUp } from '@fortawesome/free-solid-svg-icons'
 import NowPlaying from './components/NowPlaying';
 import styles from './authenticated-app.module.css';
 
+function formatMs(ms) {
+  var totalSec = Math.floor(ms / 1000)
+  var min = Math.floor(totalSec / 60)
+  var sec = totalSec % 60
+  return min + ':' + (sec < 10 ? '0' : '') + sec
+}
+
 const AuthenticatedApp = (props) => {
   var {token, storeToken, selectedSong, getPlaybackInfo, userId} = props
   const {position_ms, song, songURI} = selectedSong
@@ -31,6 +38,8 @@ const AuthenticatedApp = (props) => {
   const [noteText, setNoteText] = useState('')
   const [play, setPlay] = useState(false)
   const [expanded, setExpanded] = useState(false)
+  const [progressMs, setProgressMs] = useState(0)
+  const [durationMs, setDurationMs] = useState(0)
   const location = useLocation()
 
   useEffect(() => {
@@ -146,6 +155,7 @@ const AuthenticatedApp = (props) => {
         )}
         <div className={styles.playerRow}>
           {!expanded && (
+            <>
             <button
               onClick={() => setExpanded(true)}
               aria-label="Expand player"
@@ -154,8 +164,21 @@ const AuthenticatedApp = (props) => {
             >
               <FontAwesomeIcon icon={faChevronUp} />
             </button>
+            <div className={styles.miniInfo} onClick={() => setExpanded(true)}>
+              {song?.album?.images?.[0]?.url && (
+                <img className={styles.miniArt} src={song.album.images[0].url} alt="" />
+              )}
+              <div className={styles.miniMeta}>
+                <span className={styles.miniTitle}>{song?.name}</span>
+                <span className={styles.miniArtist}>{song?.artists?.[0]?.name}</span>
+              </div>
+              <span className={styles.miniTime}>
+                {formatMs(progressMs)}{durationMs ? ' / ' + formatMs(durationMs) : ''}
+              </span>
+            </div>
+            </>
           )}
-          <div style={{flex: 1}}>
+          <div style={{flex: 1, display: expanded ? 'block' : 'none'}}>
             <SpotifyPlayer
               styles={{
                 bgColor:'transparent',
@@ -171,7 +194,11 @@ const AuthenticatedApp = (props) => {
               offset={position_ms}
               play={play}
               autoPlay={true}
-              callback={(state) => { setPlay(state.isPlaying) }}
+              callback={(state) => {
+                setPlay(state.isPlaying)
+                if (state.progressMs !== undefined) { setProgressMs(state.progressMs) }
+                if (state.track && state.track.durationMs) { setDurationMs(state.track.durationMs) }
+              }}
               showSaveIcon={true}
               persistDeviceSelection={true}
             />
