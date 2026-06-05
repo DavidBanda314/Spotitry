@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 
 function formatTimestamp(ms) {
-    return Math.floor(ms / 60000) + ":" + ((ms % 60000) / 1000).toFixed(0).padStart(2, '0');
+    return Math.floor(ms / 60000) + ":" + Math.floor((ms % 60000) / 1000).toString().padStart(2, '0');
 }
 
 function getRecentTimestamps(timestamps) {
