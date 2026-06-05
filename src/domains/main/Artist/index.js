@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { playSongRequested, setSelectedSong } from '../redux/Actions/PlaybackActions';
@@ -27,39 +27,39 @@ const Artist = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const fetchArtistData = useCallback(async () => {
+    useEffect(() => {
         if (!token || !id) return;
+        const controller = new AbortController();
+        const signal = controller.signal;
+
         setLoading(true);
         setError(null);
-        try {
-            const headers = { Authorization: 'Bearer ' + token };
-            const [artistRes, tracksRes, relatedRes] = await Promise.all([
-                fetch('https://api.spotify.com/v1/artists/' + id, { headers }),
-                fetch('https://api.spotify.com/v1/artists/' + id + '/top-tracks?market=US', { headers }),
-                fetch('https://api.spotify.com/v1/artists/' + id + '/related-artists', { headers }),
-            ]);
+
+        const headers = { Authorization: 'Bearer ' + token };
+        Promise.all([
+            fetch('https://api.spotify.com/v1/artists/' + id, { headers, signal }),
+            fetch('https://api.spotify.com/v1/artists/' + id + '/top-tracks?market=US', { headers, signal }),
+            fetch('https://api.spotify.com/v1/artists/' + id + '/related-artists', { headers, signal }),
+        ]).then(function (responses) {
+            var artistRes = responses[0];
+            var tracksRes = responses[1];
+            var relatedRes = responses[2];
             if (!artistRes.ok) throw new Error('Failed to fetch artist');
-            const artistData = await artistRes.json();
-            setArtist(artistData);
-
-            if (tracksRes.ok) {
-                const tracksData = await tracksRes.json();
-                setTopTracks(tracksData.tracks || []);
-            }
-            if (relatedRes.ok) {
-                const relatedData = await relatedRes.json();
-                setRelatedArtists((relatedData.artists || []).slice(0, 6));
-            }
-        } catch (err) {
+            return Promise.all([artistRes.json(), tracksRes.ok ? tracksRes.json() : null, relatedRes.ok ? relatedRes.json() : null]);
+        }).then(function (data) {
+            if (signal.aborted) return;
+            setArtist(data[0]);
+            setTopTracks(data[1] ? (data[1].tracks || []) : []);
+            setRelatedArtists(data[2] ? (data[2].artists || []).slice(0, 6) : []);
+        }).catch(function (err) {
+            if (signal.aborted) return;
             setError(err.message);
-        } finally {
-            setLoading(false);
-        }
-    }, [token, id]);
+        }).finally(function () {
+            if (!signal.aborted) setLoading(false);
+        });
 
-    useEffect(() => {
-        fetchArtistData();
-    }, [fetchArtistData]);
+        return function () { controller.abort(); };
+    }, [token, id]);
 
     const handlePlayTrack = (track) => {
         dispatch(setSelectedSong(0, track.uri, track));
