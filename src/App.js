@@ -5,6 +5,13 @@ import AuthenticatedApp from './authenticated-app'
 import {useHistory } from "react-router-dom";
 
 const App = (props) => {
+  const currentTime = new Date().getTime();
+  const expiration = localStorage.getItem('expiration');
+  if (expiration && currentTime > expiration) {
+    localStorage.removeItem('token');
+    localStorage.removeItem('expiration');
+    localStorage.removeItem('refresh_token');
+  }
   const [isLoggedIn, setIsLoggedIn] = useState(hash.access_token || !!localStorage.getItem("token"))
   const [isExchanging, setIsExchanging] = useState(false)
   const history = useHistory()
