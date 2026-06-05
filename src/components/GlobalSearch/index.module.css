@@ -4,10 +4,10 @@
     gap: 8px;
     height: 34px;
     padding: 0 14px;
-    background-color: #1a1a1a;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 500px;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-secondary);
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
@@ -15,8 +15,8 @@
 }
 
 .searchPill:hover {
-    border-color: rgba(255, 255, 255, 0.18);
-    color: #FFFFFF;
+    border-color: var(--border-strong);
+    color: var(--text);
 }
 
 .searchPill:active {

@@ -2,26 +2,26 @@
     max-width: 640px;
     margin: 0 auto;
     padding: 16px;
-    color: #FFFFFF;
+    color: var(--text);
 }
 
 .helpSection {
-    background-color: #1a1a1a;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background-color: var(--surface);
+    border: 1px solid var(--border-soft);
     border-radius: 12px;
     padding: 16px;
     margin-bottom: 20px;
 }
 
 .helpTitle {
-    color: #1DB954;
+    color: var(--accent);
     font-size: 13px;
     font-weight: 700;
     margin-bottom: 8px;
 }
 
 .helpText {
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-secondary);
     font-size: 13px;
     line-height: 1.5;
     margin: 0;
@@ -32,7 +32,7 @@
 }
 
 .sectionTitle {
-    color: #FFFFFF;
+    color: var(--text);
     font-size: 18px;
     font-weight: 800;
     letter-spacing: -0.02em;
@@ -46,27 +46,27 @@
 
 .input {
     flex: 1;
-    background-color: #1a1a1a;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 500px;
     padding: 12px 20px;
-    color: #FFFFFF;
+    color: var(--text);
     font-size: 14px;
     font-family: inherit;
     outline: none;
 }
 
 .input::placeholder {
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--text-tertiary);
 }
 
 .input:focus {
-    border-color: #1DB954;
+    border-color: var(--accent);
 }
 
 .compareButton {
-    background-color: #1DB954;
-    color: #000000;
+    background-color: var(--accent);
+    color: var(--on-accent);
     border: none;
     border-radius: 500px;
     padding: 12px 24px;
@@ -79,7 +79,7 @@
 }
 
 .compareButton:hover {
-    background-color: #1ed760;
+    background-color: var(--accent-hover);
 }
 
 .compareButton:disabled {
@@ -90,7 +90,7 @@
 .loading {
     text-align: center;
     padding: 48px 16px;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-secondary);
     font-size: 14px;
 }
 
@@ -124,11 +124,11 @@
     height: 48px;
     border-radius: 50%;
     object-fit: cover;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-2);
 }
 
 .friendName {
-    color: #FFFFFF;
+    color: var(--text);
     font-size: 16px;
     font-weight: 700;
 }
@@ -156,7 +156,7 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--text-muted);
     margin-top: 4px;
 }
 
@@ -180,15 +180,15 @@
     flex-direction: column;
     align-items: center;
     padding: 16px 8px;
-    background-color: #1a1a1a;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background-color: var(--surface);
+    border: 1px solid var(--border-soft);
     border-radius: 12px;
     cursor: pointer;
     transition: border-color 0.2s ease, transform 0.15s ease;
 }
 
 .sharedArtistCard:hover {
-    border-color: rgba(255, 255, 255, 0.18);
+    border-color: var(--border-strong);
 }
 
 .sharedArtistCard:active {
@@ -204,7 +204,7 @@
 }
 
 .sharedArtistName {
-    color: #FFFFFF;
+    color: var(--text);
     font-size: 13px;
     font-weight: 700;
     text-align: center;
@@ -219,8 +219,8 @@
     align-items: center;
     gap: 12px;
     padding: 10px;
-    background-color: #1a1a1a;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background-color: var(--surface);
+    border: 1px solid var(--border-soft);
     border-radius: 12px;
     cursor: pointer;
     transition: border-color 0.2s ease, transform 0.15s ease;
@@ -228,7 +228,7 @@
 }
 
 .sharedTrackCard:hover {
-    border-color: rgba(255, 255, 255, 0.18);
+    border-color: var(--border-strong);
 }
 
 .sharedTrackCard:active {
@@ -249,7 +249,7 @@
 }
 
 .sharedTrackName {
-    color: #FFFFFF;
+    color: var(--text);
     font-size: 14px;
     font-weight: 600;
     overflow: hidden;
@@ -258,7 +258,7 @@
 }
 
 .sharedTrackArtist {
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-secondary);
     font-size: 13px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -267,7 +267,7 @@
 }
 
 .emptyMessage {
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--text-muted);
     font-size: 14px;
     padding: 24px 16px;
     text-align: center;
@@ -289,18 +289,18 @@
 }
 
 .column {
-    background-color: #1a1a1a;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background-color: var(--surface);
+    border: 1px solid var(--border-soft);
     border-radius: 12px;
     overflow: hidden;
 }
 
 .columnHeader {
-    color: #1DB954;
+    color: var(--accent);
     font-size: 13px;
     font-weight: 700;
     padding: 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid var(--border-soft);
     text-align: center;
 }
 
@@ -309,7 +309,7 @@
     align-items: center;
     gap: 8px;
     padding: 8px 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid var(--overlay-fill);
     cursor: pointer;
     transition: background 0.15s ease;
 }
@@ -319,7 +319,7 @@
 }
 
 .columnItem:hover {
-    background-color: rgba(255, 255, 255, 0.04);
+    background-color: var(--overlay-fill);
 }
 
 .columnImage {
@@ -339,7 +339,7 @@
 }
 
 .columnName {
-    color: #FFFFFF;
+    color: var(--text);
     font-size: 12px;
     font-weight: 600;
     overflow: hidden;
@@ -350,7 +350,7 @@
 }
 
 .columnSub {
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--text-muted);
     font-size: 11px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -363,7 +363,7 @@
 }
 
 .subSectionTitle {
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-secondary);
     font-size: 14px;
     font-weight: 700;
     margin: 16px 0 8px;

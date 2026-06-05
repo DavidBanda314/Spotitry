@@ -26,7 +26,7 @@ const UnauthenticatedApp = () => {
     return (
       <div className={styles.App}>
             <div className={styles.header}>
-              <span style={{fontSize: '24px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.02em'}}>Spotitry</span>
+              <span style={{fontSize: '24px', fontWeight: 800, color: 'var(--text)', letterSpacing: '-0.02em'}}>Spotitry</span>
             </div>
         <header className={styles.AppHeader}>
         

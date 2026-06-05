@@ -1,6 +1,6 @@
 .container {
     padding: 16px 16px 32px;
-    background-color: #000000;
+    background-color: var(--bg);
     max-width: 1100px;
     margin: 0 auto;
 }
@@ -12,7 +12,7 @@
 }
 
 .sectionTitle {
-    color: #FFFFFF;
+    color: var(--text);
     font-size: 22px;
     font-weight: 800;
     letter-spacing: -0.02em;
@@ -28,10 +28,10 @@
 
 .tab {
     background: none;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid var(--scrollbar-thin);
     border-radius: 500px;
     padding: 8px 16px;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-secondary);
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
@@ -39,19 +39,19 @@
 }
 
 .tab:hover {
-    color: #FFFFFF;
-    border-color: rgba(255, 255, 255, 0.3);
+    color: var(--text);
+    border-color: var(--border-3);
 }
 
 .tabActive {
-    background-color: #1DB954;
-    color: #000000;
-    border-color: #1DB954;
+    background-color: var(--accent);
+    color: var(--on-accent);
+    border-color: var(--accent);
 }
 
 .tabActive:hover {
-    color: #000000;
-    border-color: #1DB954;
+    color: var(--on-accent);
+    border-color: var(--accent);
 }
 
 .list {
@@ -64,14 +64,14 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    background-color: #1a1a1a;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background-color: var(--surface);
+    border: 1px solid var(--border-soft);
     border-radius: 8px;
     padding: 10px 12px;
 }
 
 .rank {
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--text-tertiary);
     font-size: 14px;
     font-weight: 700;
     min-width: 24px;
@@ -98,7 +98,7 @@
 }
 
 .itemName {
-    color: #FFFFFF;
+    color: var(--text);
     font-size: 14px;
     font-weight: 700;
     margin: 0 0 2px;
@@ -108,7 +108,7 @@
 }
 
 .itemSub {
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-secondary);
     font-size: 13px;
     margin: 0;
     overflow: hidden;
@@ -135,34 +135,34 @@
 }
 
 .genreName {
-    color: #FFFFFF;
+    color: var(--text);
     font-size: 14px;
     font-weight: 600;
     text-transform: capitalize;
 }
 
 .genrePercent {
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--text-muted);
     font-size: 12px;
 }
 
 .genreBarBg {
     width: 100%;
     height: 8px;
-    background-color: rgba(255, 255, 255, 0.08);
+    background-color: var(--border);
     border-radius: 4px;
     overflow: hidden;
 }
 
 .genreBar {
     height: 100%;
-    background-color: #1DB954;
+    background-color: var(--accent);
     border-radius: 4px;
     transition: width 0.3s ease;
 }
 
 .loading {
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--text-muted);
     text-align: center;
     padding: 40px 0;
     font-size: 14px;

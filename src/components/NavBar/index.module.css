@@ -7,10 +7,10 @@
     display: flex;
     justify-content: space-around;
     align-items: stretch;
-    background-color: rgba(0, 0, 0, 0.95);
+    background-color: var(--bar-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 1px solid var(--border);
     padding-bottom: env(safe-area-inset-bottom, 0px);
     height: calc(58px + env(safe-area-inset-bottom, 0px));
 }
@@ -26,13 +26,13 @@
     background: none;
     border: none;
     cursor: pointer;
-    color: rgba(255, 255, 255, 0.55);
+    color: var(--text-secondary);
     transition: color 0.15s ease, transform 0.15s ease;
     -webkit-tap-highlight-color: transparent;
 }
 
 .item:hover {
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--text-strong);
 }
 
 .item:active {
@@ -40,7 +40,7 @@
 }
 
 .active {
-    color: #1DB954;
+    color: var(--accent);
 }
 
 .icon {
@@ -68,9 +68,9 @@
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    border: 4px solid #000000;
-    background-color: #1DB954;
-    color: #000000;
+    border: 4px solid var(--bg);
+    background-color: var(--accent);
+    color: var(--on-accent);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -81,7 +81,7 @@
 }
 
 .centerButton:hover:not(:disabled) {
-    background-color: #1ed760;
+    background-color: var(--accent-hover);
 }
 
 .centerButton:active:not(:disabled) {
@@ -90,13 +90,13 @@
 
 .centerButtonSaved,
 .centerButtonSaved:hover:not(:disabled) {
-    background-color: #1ed760;
+    background-color: var(--accent-hover);
     transform: scale(1.06);
 }
 
 .centerButton:disabled {
-    background-color: rgba(255, 255, 255, 0.18);
-    color: rgba(255, 255, 255, 0.4);
+    background-color: var(--border-strong);
+    color: var(--text-tertiary);
     box-shadow: none;
     cursor: not-allowed;
 }

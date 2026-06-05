@@ -1,5 +1,73 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
+:root {
+  /* Default DARK theme */
+  --bg: #000000;
+  --surface: #1a1a1a;
+  --surface-2: #282828;
+  --surface-3: #2a2a2a;
+
+  --text: #FFFFFF;
+  --text-strong: rgba(255, 255, 255, 0.85);
+  --text-secondary: rgba(255, 255, 255, 0.6);
+  --text-muted: rgba(255, 255, 255, 0.5);
+  --text-tertiary: rgba(255, 255, 255, 0.4);
+
+  --border: rgba(255, 255, 255, 0.08);
+  --border-soft: rgba(255, 255, 255, 0.06);
+  --border-2: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.18);
+  --border-strong-2: rgba(255, 255, 255, 0.2);
+  --border-3: rgba(255, 255, 255, 0.3);
+
+  --overlay-fill: rgba(255, 255, 255, 0.04);
+  --overlay-fill-hover: rgba(255, 255, 255, 0.07);
+
+  --scrollbar-thin: rgba(255, 255, 255, 0.15);
+  --scrollbar-thumb: rgba(255, 255, 255, 0.3);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.5);
+
+  --accent: #1DB954;
+  --accent-hover: #1ed760;
+  --on-accent: #000000;
+
+  --bar-bg: rgba(0, 0, 0, 0.95);
+}
+
+[data-theme="light"] {
+  /* LIGHT theme overrides */
+  --bg: #FFFFFF;
+  --surface: #F2F2F2;
+  --surface-2: #E6E6E6;
+  --surface-3: #DADADA;
+
+  --text: #111111;
+  --text-strong: rgba(0, 0, 0, 0.85);
+  --text-secondary: rgba(0, 0, 0, 0.6);
+  --text-muted: rgba(0, 0, 0, 0.5);
+  --text-tertiary: rgba(0, 0, 0, 0.45);
+
+  --border: rgba(0, 0, 0, 0.1);
+  --border-soft: rgba(0, 0, 0, 0.08);
+  --border-2: rgba(0, 0, 0, 0.1);
+  --border-strong: rgba(0, 0, 0, 0.18);
+  --border-strong-2: rgba(0, 0, 0, 0.2);
+  --border-3: rgba(0, 0, 0, 0.3);
+
+  --overlay-fill: rgba(0, 0, 0, 0.04);
+  --overlay-fill-hover: rgba(0, 0, 0, 0.06);
+
+  --scrollbar-thin: rgba(0, 0, 0, 0.15);
+  --scrollbar-thumb: rgba(0, 0, 0, 0.3);
+  --scrollbar-thumb-hover: rgba(0, 0, 0, 0.5);
+
+  --accent: #1DB954;
+  --accent-hover: #1ed760;
+  --on-accent: #000000;
+
+  --bar-bg: rgba(255, 255, 255, 0.95);
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -7,7 +75,7 @@
 }
 
 html, body {
-  background-color: #000000;
+  background-color: var(--bg);
   margin: 0;
   padding: 0;
 }
@@ -17,18 +85,18 @@ body {
     'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #FFFFFF;
+  color: var(--text);
   line-height: 1.5;
 }
 
 a {
-  color: #1DB954;
+  color: var(--accent);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 a:hover {
-  color: #1ed760;
+  color: var(--accent-hover);
   text-decoration: underline;
 }
 
@@ -37,16 +105,16 @@ a:hover {
 }
 
 ::-webkit-scrollbar-track {
-  background: #000000;
+  background: var(--bg);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsla(0, 0%, 100%, 0.3);
+  background: var(--scrollbar-thumb);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsla(0, 0%, 100%, 0.5);
+  background: var(--scrollbar-thumb-hover);
 }
 
 code {
