@@ -47,8 +47,36 @@
     color: #FFFFFF;
 }
 
-.searchBar {
+.searchField {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 500px;
+    padding: 0 16px;
+    height: 44px;
     width: 100%;
+}
+
+.searchIcon {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.searchInput {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #FFFFFF;
+    font-size: 15px;
+    font-family: inherit;
+}
+
+.searchInput::placeholder {
+    color: rgba(255, 255, 255, 0.4);
 }
 
 .searchResults {

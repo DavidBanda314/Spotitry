@@ -3,8 +3,7 @@ import styles from '../History/index.module.css'
 import { connect } from 'react-redux'
 import { getProfileRequested, StoreToken } from '../redux/Actions/UserActions'
 import { playSongRequested, setSelectedSong } from '../redux/Actions/PlaybackActions'
-import { InputGroup, InputGroupAddon,Input, Button } from 'reactstrap'
-import 'bootstrap/dist/css/bootstrap.min.css';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faListUl, faMusic } from '@fortawesome/free-solid-svg-icons'
 import DisplayCard from '../../../components/DisplayCard';
@@ -57,19 +56,18 @@ const History = (props) => {
                 userId={userId}
                 trackUris={uniqueTrackUris}
             />
-            <div className={styles.searchWrapper}>
-                <InputGroup>
-                    <InputGroupAddon addonType="append">
-                        <Button>
-                            <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
-                        </Button>
-                    </InputGroupAddon>
-                    <Input placeholder = "Search your history..." onChange={(event) => {
+            <div className={styles.searchField}>
+                <FontAwesomeIcon icon={faSearch} className={styles.searchIcon} />
+                <input
+                    className={styles.searchInput}
+                    type="text"
+                    placeholder="Search your history..."
+                    onChange={(event) => {
                         var temp = history?.filter((track) => (track.track.name.toLowerCase().includes(event.target.value.toLowerCase())))
                         setMyHistory(temp)
                         setSearchValue(event.target.value)
-                    }}></Input>
-                </InputGroup>
+                    }}
+                />
             </div>
 
             {isLoading ? (

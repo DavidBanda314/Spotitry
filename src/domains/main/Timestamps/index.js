@@ -3,15 +3,15 @@ import styles from '../Timestamps/index.module.css'
 import { connect } from 'react-redux'
 import { getProfileRequested } from '../redux/Actions/UserActions'
 import { playSongRequested, setSelectedSong } from '../redux/Actions/PlaybackActions'
-import { InputGroup, InputGroupAddon, Input, Button } from 'reactstrap'
-import 'bootstrap/dist/css/bootstrap.min.css';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch, faListUl, faLink, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faSearch, faListUl, faLink, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
 import CreatePlaylistModal from '../../../components/CreatePlaylistModal'
 import { SkeletonGrid } from '../../../components/Skeleton'
 import {
     createCollection as fbCreateCollection,
     addTimestampToCollection as fbAddTimestampToCollection,
+    removeTimestampFromCollection as fbRemoveTimestampFromCollection,
     deleteCollection as fbDeleteCollection,
     fetchCollections as fbFetchCollections,
 } from '../../../firebase'
@@ -161,6 +161,22 @@ const Timestamps = (props) => {
         setTimeout(function () { setAddedConfirmId(null) }, 1500)
     }, [userId, collectionDropdownId])
 
+    const handleRemoveFromCollection = useCallback(async function (timestamp) {
+        if (!userId || !activeCollection) return
+        var collTs = collections[activeCollection]?.timestamps || {}
+        var matchKey = null
+        Object.entries(collTs).forEach(function (entry) {
+            if (entry[1].songName === timestamp._songKey && entry[1].timestampKey === timestamp._pushId) {
+                matchKey = entry[0]
+            }
+        })
+        if (matchKey) {
+            await fbRemoveTimestampFromCollection(userId, activeCollection, matchKey)
+            var updated = await fbFetchCollections(userId)
+            setCollections(updated || {})
+        }
+    }, [userId, activeCollection, collections])
+
     function millisToMinutesAndSeconds(millis) {
         var minutes = Math.floor(millis / 60000);
         var seconds = ((millis % 60000) / 1000).toFixed(0);
@@ -246,17 +262,15 @@ const Timestamps = (props) => {
                 </div>
             )}
 
-            <div className={styles.searchWrapper}>
-                <InputGroup>
-                    <InputGroupAddon addonType="append">
-                        <Button>
-                            <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
-                        </Button>
-                    </InputGroupAddon>
-                    <Input placeholder = "Search timestamps..." onChange={(event) => {
-                        setSearchValue(event.target.value)
-                    }}></Input>
-                </InputGroup>
+            <div className={styles.searchField}>
+                <FontAwesomeIcon icon={faSearch} className={styles.searchIcon} />
+                <input
+                    className={styles.searchInput}
+                    type="text"
+                    placeholder="Search timestamps..."
+                    value={searchValue}
+                    onChange={(event) => setSearchValue(event.target.value)}
+                />
             </div>
             {!databaseUserLoaded ? (
                 <div className={styles.grid}>
@@ -333,6 +347,15 @@ const Timestamps = (props) => {
                                                     >
                                                         {copiedId === shareId ? '\u2713' : <FontAwesomeIcon icon={faLink} />}
                                                     </button>
+                                                    {activeCollection && (
+                                                        <button
+                                                            className={styles.removeFromCollBtn}
+                                                            onClick={() => handleRemoveFromCollection(timestamp)}
+                                                            title="Remove from collection"
+                                                        >
+                                                            <FontAwesomeIcon icon={faMinus} />
+                                                        </button>
+                                                    )}
                                                     <div className={styles.addToCollWrap}>
                                                         <button
                                                             className={styles.addToCollBtn}

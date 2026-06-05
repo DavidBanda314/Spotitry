@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styles from './index.module.css'
 import { connect } from 'react-redux'
-import SearchBar from '../../../components/searchBar'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { searchSongsRequested } from '../redux/Actions/UserActions.js'
 import { getPlaybackInfoRequested, playSongRequested, setSelectedSong } from '../redux/Actions/PlaybackActions.js'
 import { Button } from '@material-ui/core'
@@ -40,8 +41,15 @@ const Discover = (props) => {
                 <SkeletonCard width="100%" height="120px" borderRadius="16px" />
             ) : null}
 
-            <div className={styles.searchBar}>
-                <SearchBar setSearchValue={setSearchValue}/>
+            <div className={styles.searchField}>
+                <FontAwesomeIcon icon={faSearch} className={styles.searchIcon} />
+                <input
+                    className={styles.searchInput}
+                    type="text"
+                    placeholder="Search for songs..."
+                    value={searchValue}
+                    onChange={(event) => setSearchValue(event.target.value)}
+                />
             </div>
 
             <div className={styles.searchResults}>
