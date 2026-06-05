@@ -1,12 +1,48 @@
-@keyframes pulse {
-    0% { background-color: #1a1a1a; }
-    50% { background-color: #2a2a2a; }
-    100% { background-color: #1a1a1a; }
+.card {
+    background-color: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    overflow: hidden;
 }
 
-.skeleton {
-    animation: pulse 1.5s ease-in-out infinite;
-    border-radius: 12px;
+.image {
+    width: 100%;
+    aspect-ratio: 1;
+    display: block;
+}
+
+.imageCircle {
+    width: calc(100% - 32px);
+    margin: 16px auto 0;
+    border-radius: 50%;
+}
+
+.body {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.line {
+    height: 10px;
+    border-radius: 4px;
+}
+
+.shimmer {
+    background: linear-gradient(
+        90deg,
+        #1a1a1a 25%,
+        #2a2a2a 37%,
+        #1a1a1a 63%
+    );
+    background-size: 400% 100%;
+    animation: shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: 100% 0; }
+    100% { background-position: 0 0; }
 }
 
 .grid {
@@ -25,5 +61,12 @@
 @media (min-width: 900px) {
     .grid {
         grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .shimmer {
+        animation: none;
+        background: #242424;
     }
 }
