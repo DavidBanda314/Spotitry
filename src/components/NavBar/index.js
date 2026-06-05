@@ -25,13 +25,23 @@ const NavBar = (props) => {
     const [saved, setSaved] = useState(false)
     const [showNote, setShowNote] = useState(false)
     const [noteText, setNoteText] = useState('')
+    const pendingNoteRef = useRef(null)
     const savedTimer = useRef(null)
     const noteInputRef = useRef(null)
     useEffect(() => () => clearTimeout(savedTimer.current), [])
 
+    // When lastCreatedTimestamp arrives and we have a queued note, flush it
+    useEffect(() => {
+        if (lastCreatedTimestamp && pendingNoteRef.current) {
+            const note = pendingNoteRef.current
+            pendingNoteRef.current = null
+            updateTimestampNote(userId, lastCreatedTimestamp.songKey, lastCreatedTimestamp.pushId, note)
+        }
+    }, [lastCreatedTimestamp, userId])
+
     const canSave = !!(token && userId && selectedSong?.songURI)
     const handleCreate = () => {
-        if (canSave) {
+        if (canSave && !showNote) {
             getPlaybackInfo(token, 1, userId)
             setSaved(true)
             clearTimeout(savedTimer.current)
@@ -42,8 +52,12 @@ const NavBar = (props) => {
     }
 
     const saveWithNote = async () => {
-        if (noteText.trim() && lastCreatedTimestamp) {
-            await updateTimestampNote(userId, lastCreatedTimestamp.songKey, lastCreatedTimestamp.pushId, noteText)
+        if (noteText.trim()) {
+            if (lastCreatedTimestamp) {
+                await updateTimestampNote(userId, lastCreatedTimestamp.songKey, lastCreatedTimestamp.pushId, noteText)
+            } else {
+                pendingNoteRef.current = noteText
+            }
         }
         setShowNote(false)
         setNoteText('')
