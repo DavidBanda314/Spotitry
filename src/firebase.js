@@ -31,9 +31,13 @@ export async function createAndFetchUser(userId,name,email){
     }
   }
 
+function sanitizeKey(key){
+  return String(key).replace(/[.#$/[\]]/g, '_').trim() || 'unknown'
+}
+
 export async function saveTimestamp(userId,song,progress_ms){
   try{
-      const ref = db.ref('users/' + userId + `/timestamps/${song.name}`)
+      const ref = db.ref('users/' + userId + `/timestamps/${sanitizeKey(song.name)}`)
       await ref.push({
         position_ms:progress_ms,
         song:song
