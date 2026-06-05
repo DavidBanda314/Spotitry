@@ -198,7 +198,7 @@ const AuthenticatedApp = (props) => {
 const mapDispatchToProps = (dispatch) => {
   return{
       storeToken: (token) => dispatch(StoreToken(token)),
-      getPlaybackInfo: (token, create, userId) => dispatch(getPlaybackInfoRequested(token, create, userId)),
+      getPlaybackInfo: (token, create, userId, note) => dispatch(getPlaybackInfoRequested(token, create, userId, note)),
   }
 }
 const mapStateToProps = (state) => {
