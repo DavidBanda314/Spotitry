@@ -15,7 +15,7 @@ import Profile from './domains/main/Profile';
 import Compare from './domains/main/Compare';
 import Artist from './domains/main/Artist';
 import { StoreToken } from './domains/main/redux/Actions/UserActions.js'
-import { getPlaybackInfoRequested } from './domains/main/redux/Actions/PlaybackActions.js'
+import { getPlaybackInfoRequested, setDeviceId } from './domains/main/redux/Actions/PlaybackActions.js'
 import { connect } from 'react-redux'
 import SpotifyPlayer from 'react-spotify-web-playback';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -32,8 +32,9 @@ function formatMs(ms) {
 }
 
 const AuthenticatedApp = (props) => {
-  var {token, storeToken, selectedSong, getPlaybackInfo, userId} = props
+  var {token, storeToken, selectedSong, getPlaybackInfo, userId, playbackInfo, storeDeviceId} = props
   const {position_ms, song, songURI} = selectedSong
+  const displaySong = (playbackInfo && playbackInfo.item) || song
   const [timestampSaved, setTimestampSaved] = useState(false)
   const [showNoteInput, setShowNoteInput] = useState(false)
   const [noteText, setNoteText] = useState('')
@@ -125,11 +126,10 @@ const AuthenticatedApp = (props) => {
         <span className={styles.brand}>Spoti<span className={styles.brandAccent}>try</span></span>
         <GlobalSearch/>
       </header>
-      {song && 
-      <div className={`${styles.player} ${expanded ? styles.playerExpanded : ''}`}>
-        {expanded && (
+      <div className={`${styles.player} ${expanded ? styles.playerExpanded : ''} ${displaySong ? '' : styles.playerHidden}`}>
+        {displaySong && expanded && (
           <NowPlaying
-            song={song}
+            song={displaySong}
             saved={timestampSaved}
             onCollapse={() => setExpanded(false)}
             onSave={handleTimestamp}
@@ -197,7 +197,7 @@ const AuthenticatedApp = (props) => {
           </div>
         )}
         <div className={styles.playerRow}>
-          {!expanded && (
+          {displaySong && !expanded && (
             <>
             <button
               onClick={() => setExpanded(true)}
@@ -208,12 +208,12 @@ const AuthenticatedApp = (props) => {
               <FontAwesomeIcon icon={faChevronUp} />
             </button>
             <div className={styles.miniInfo} onClick={() => setExpanded(true)}>
-              {song?.album?.images?.[0]?.url && (
-                <img className={styles.miniArt} src={song.album.images[0].url} alt="" />
+              {displaySong?.album?.images?.[0]?.url && (
+                <img className={styles.miniArt} src={displaySong.album.images[0].url} alt="" />
               )}
               <div className={styles.miniMeta}>
-                <span className={styles.miniTitle}>{song?.name}</span>
-                <span className={styles.miniArtist}>{song?.artists?.[0]?.name}</span>
+                <span className={styles.miniTitle}>{displaySong?.name}</span>
+                <span className={styles.miniArtist}>{displaySong?.artists?.[0]?.name}</span>
               </div>
               <span className={styles.miniTime}>
                 {formatMs(progressMs)}{durationMs ? ' / ' + formatMs(durationMs) : ''}
@@ -249,7 +249,7 @@ const AuthenticatedApp = (props) => {
                 sliderTrackColor:'var(--border-strong-2)',
               }}
               token={token}
-              uris={[songURI]}
+              uris={songURI ? [songURI] : []}
               offset={position_ms}
               play={play}
               autoPlay={true}
@@ -257,6 +257,7 @@ const AuthenticatedApp = (props) => {
                 setPlay(state.isPlaying)
                 if (state.progressMs !== undefined) { setProgressMs(state.progressMs) }
                 if (state.track && state.track.durationMs) { setDurationMs(state.track.durationMs) }
+                if (state.deviceId) { storeDeviceId(state.deviceId) }
               }}
               showSaveIcon={true}
               persistDeviceSelection={true}
@@ -265,8 +266,7 @@ const AuthenticatedApp = (props) => {
 
         </div>
       </div>
-      }
-      <main className={`${styles.content} ${song ? styles.withPlayer : ''}`}>
+      <main className={`${styles.content} ${displaySong ? styles.withPlayer : ''}`}>
       <TransitionGroup component={null}>
         <CSSTransition
           key={location.pathname}
@@ -334,12 +334,14 @@ const mapDispatchToProps = (dispatch) => {
   return{
       storeToken: (token) => dispatch(StoreToken(token)),
       getPlaybackInfo: (token, create, userId, note) => dispatch(getPlaybackInfoRequested(token, create, userId, note)),
+      storeDeviceId: (deviceId) => dispatch(setDeviceId(deviceId)),
   }
 }
 const mapStateToProps = (state) => {
   return{
     token:state.User.token,
     selectedSong:state.Player.selectedSong,
+    playbackInfo:state.Player.playbackInfo,
     userId: state.User.databaseUser.userId,
   }
 }

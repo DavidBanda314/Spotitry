@@ -183,7 +183,6 @@ const Artist = () => {
                             className={styles.timestampCard}
                             key={idx}
                             onClick={function () {
-                                dispatch(setSelectedSong(0, song.uri, song));
                                 dispatch(playSongRequested(token, ts.position_ms, song.uri, song));
                             }}
                         >

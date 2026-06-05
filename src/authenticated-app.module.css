@@ -50,6 +50,18 @@
     z-index: 150;
 }
 
+/* Player stays mounted (so the Web Playback SDK device registers) but is
+   visually hidden until a track is playing. */
+.playerHidden {
+    position: fixed;
+    width: 1px;
+    height: 1px;
+    left: -9999px;
+    bottom: auto;
+    overflow: hidden;
+    pointer-events: none;
+}
+
 .playerRow {
     display: flex;
     align-items: center;
