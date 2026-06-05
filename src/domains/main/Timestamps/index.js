@@ -144,7 +144,21 @@ const Timestamps = (props) => {
                     var ts = inner[1]
                     return Object.assign({}, ts, { _songKey: songKey, _pushId: pushId })
                 })
+                // Newest moment first within a song (push keys are time-ordered).
+                items.sort(function (a, b) {
+                    if (a._pushId < b._pushId) return 1
+                    if (a._pushId > b._pushId) return -1
+                    return 0
+                })
                 tempArr2.push(items)
+            })
+            // Most recently saved song-group first.
+            tempArr2.sort(function (a, b) {
+                var aKey = a[0] ? a[0]._pushId : ''
+                var bKey = b[0] ? b[0]._pushId : ''
+                if (aKey < bKey) return 1
+                if (aKey > bKey) return -1
+                return 0
             })
             setAllTimeStampsBySong(tempArr2)
         } else {
