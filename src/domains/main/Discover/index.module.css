@@ -3,6 +3,7 @@
     flex-direction: column;
     gap: 16px;
     padding: 16px;
+    padding-bottom: 140px;
     max-width: 600px;
     margin: 0 auto;
     color: var(--text);
@@ -224,4 +225,17 @@
 
 .timestampButton:hover {
     background-color: var(--accent-hover) !important;
+}
+
+.openLink {
+    margin-left: 8px;
+    color: var(--accent);
+    font-size: 12px;
+    text-decoration: none;
+    opacity: 0.8;
+}
+
+.openLink:hover {
+    text-decoration: underline;
+    opacity: 1;
 }

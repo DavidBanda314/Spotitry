@@ -65,10 +65,28 @@
 .playerRow {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
+    position: relative;
     background-color: var(--bar-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-top: 1px solid var(--border);
+}
+
+.miniProgressTrack {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: var(--border-strong-2);
+    z-index: 1;
+}
+
+.miniProgressFill {
+    height: 100%;
+    background-color: var(--accent);
+    transition: width 1s linear;
 }
 
 .expandButton {

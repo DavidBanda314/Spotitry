@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styles from './index.module.css'
 import { connect } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import SearchBar from '../../../components/searchBar'
 import { searchSongsRequested, getDiscoverFeedRequested } from '../redux/Actions/UserActions.js'
 import { getPlaybackInfoRequested, playSongRequested, setSelectedSong } from '../redux/Actions/PlaybackActions.js'
@@ -21,6 +22,7 @@ const Discover = (props) => {
         discoverFeed, discoverFeedType, discoverLoading,
         currentlyPlaying, userId, setSelectedSong, playbackInfo,
     } = props
+    const history = useHistory()
     const [query, setQuery] = useState('')
     const [debouncedQuery, setDebouncedQuery] = useState('')
     const [activeTab, setActiveTab] = useState('tracks')
@@ -104,13 +106,28 @@ const Discover = (props) => {
             <div className={styles.rowMeta}>
                 <span className={styles.rowTitle}>{album.name}</span>
                 <span className={styles.rowSubtitle}>{album.artists?.[0]?.name}</span>
+                {album.external_urls?.spotify && (
+                    <a
+                        href={album.external_urls.spotify}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.openLink}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        Open Album
+                    </a>
+                )}
             </div>
             {selectedId === album.id && <span className={styles.playingTag}>Playing</span>}
         </div>
     )
 
     const artistRow = (artist, key) => (
-        <div className={styles.rowStatic} key={artist.id || key}>
+        <div
+            className={`${styles.row}`}
+            key={artist.id || key}
+            onClick={() => history.push(`/artist/${artist.id}`)}
+        >
             {artist.images?.[0]?.url ? (
                 <img alt="" src={artist.images[0].url} className={styles.smallPicRound}/>
             ) : (

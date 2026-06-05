@@ -44,6 +44,9 @@ export function* getPlaybackInfo({ token, createTimestamp, userId, note}) {
 }
 
 export function* playSong({token, position_ms, songURI, song}){
+    // Remember what the player bar was showing so we can roll back if the
+    // play request fails (otherwise the UI would show a song that never started).
+    const previousItem = yield select((state) => state.Player.playbackInfo?.item)
     try{
         // Show the track in the bottom player immediately so the UI updates
         // even before the device-targeted play request resolves.
@@ -63,7 +66,10 @@ export function* playSong({token, position_ms, songURI, song}){
         yield put(Actions.playSongSucceeded())
     }
     catch(error){
-        console.log(error)
+        // Roll back the optimistic player update so the bar doesn't show a
+        // track that isn't actually playing.
+        yield put(Actions.setPlaybackInfo(previousItem))
+        yield put(Actions.playSongFailed(error))
     }
 }
 
