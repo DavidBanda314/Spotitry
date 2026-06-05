@@ -61,3 +61,54 @@ export async function getTimestamps(userId){
     console.log(error)
   }
 }
+
+export async function createCollection(userId, name) {
+  try {
+    const ref = db.ref('users/' + userId + '/collections');
+    const newRef = await ref.push({ name });
+    return newRef.key;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+export async function addTimestampToCollection(userId, collectionId, timestampData) {
+  try {
+    const ref = db.ref('users/' + userId + '/collections/' + collectionId + '/timestamps');
+    await ref.push(timestampData);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function removeTimestampFromCollection(userId, collectionId, timestampKey) {
+  try {
+    const ref = db.ref('users/' + userId + '/collections/' + collectionId + '/timestamps/' + timestampKey);
+    await ref.remove();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function deleteCollection(userId, collectionId) {
+  try {
+    const ref = db.ref('users/' + userId + '/collections/' + collectionId);
+    await ref.remove();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function fetchCollections(userId) {
+  try {
+    const snapshot = await db.ref('users/' + userId + '/collections').get();
+    if (snapshot.exists()) {
+      return snapshot.val();
+    }
+    return {};
+  } catch (error) {
+    console.log(error);
+    return {};
+  }
+}
