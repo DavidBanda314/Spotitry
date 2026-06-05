@@ -6,6 +6,14 @@ import emptyProfile from '../../../images/empty_profile.jpeg'
 const Account = (props) => {
     const { profile } = props
     console.log(profile)
+
+    const handleLogout = () => {
+        localStorage.removeItem('token')
+        localStorage.removeItem('expiration')
+        localStorage.removeItem('refresh_token')
+        window.location.href = '/'
+    }
+
     return(
         <div className={styles.header}>
             <div className={styles.banner}>
@@ -25,6 +33,9 @@ const Account = (props) => {
                     </div>
                     }
                 </div>
+                <button className={styles.logoutButton} onClick={handleLogout}>
+                    Log out
+                </button>
             </div>
         </div>
 
