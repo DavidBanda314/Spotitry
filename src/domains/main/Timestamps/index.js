@@ -34,15 +34,41 @@ const Timestamps = (props) => {
     const [addedConfirmId, setAddedConfirmId] = useState(null)
     const [deleteConfirm, setDeleteConfirm] = useState(false)
 
-    const handleShare = (trackUri, positionMs, note, id) => {
+    const handleShare = async (song, positionMs, note, id) => {
         const baseUrl = window.location.origin
-        const params = new URLSearchParams({ track: trackUri, t: positionMs })
+        const params = new URLSearchParams({ track: song?.uri || '', t: positionMs })
         if (note) params.set('note', note)
+        if (song?.name) params.set('s', song.name)
+        const artist = song?.artists?.map((a) => a.name).join(', ')
+        if (artist) params.set('a', artist)
+        if (song?.album?.name) params.set('al', song.album.name)
+        const img = song?.album?.images?.[0]?.url
+        if (img) params.set('img', img)
+        if (song?.preview_url) params.set('p', song.preview_url)
+        if (song?.duration_ms) params.set('d', song.duration_ms)
         const url = `${baseUrl}/share?${params.toString()}`
-        navigator.clipboard.writeText(url).then(() => {
+
+        const shareData = {
+            title: `${song?.name || 'A moment'} on Spotitry`,
+            text: note ? `"${note}"` : `Listen from ${millisToMinutesAndSeconds(positionMs)}`,
+            url,
+        }
+        if (navigator.share) {
+            try {
+                await navigator.share(shareData)
+                return
+            } catch (err) {
+                // user dismissed the share sheet, or it is unsupported – fall back to copy
+                if (err && err.name === 'AbortError') return
+            }
+        }
+        try {
+            await navigator.clipboard.writeText(url)
             setCopiedId(id)
             setTimeout(() => setCopiedId(null), 2000)
-        })
+        } catch (err) {
+            // clipboard unavailable; nothing else to do
+        }
     }
 
     const uniqueTrackUris = useMemo(() => {
@@ -328,8 +354,8 @@ const Timestamps = (props) => {
                                                     </button>
                                                     <button
                                                         className={styles.shareBtn}
-                                                        onClick={() => handleShare(track?.uri, timeSet, timestamp.note, shareId)}
-                                                        title="Copy share link"
+                                                        onClick={() => handleShare(track, timeSet, timestamp.note, shareId)}
+                                                        title="Share this moment"
                                                     >
                                                         {copiedId === shareId ? '\u2713' : <FontAwesomeIcon icon={faLink} />}
                                                     </button>

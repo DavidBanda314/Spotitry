@@ -152,6 +152,51 @@
     text-decoration: none;
 }
 
+.previewBtn {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #FFFFFF;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 500px;
+    padding: 14px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.previewBtn:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.loginLink {
+    display: block;
+    color: #1DB954;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    padding: 8px 0;
+}
+
+.loginLink:hover {
+    text-decoration: underline;
+}
+
+.footer {
+    padding: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.footerLink {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.footerLink:hover {
+    color: rgba(255, 255, 255, 0.6);
+}
+
 .error {
     color: #ff4444;
     font-size: 14px;
