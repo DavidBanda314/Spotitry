@@ -1,8 +1,9 @@
 import { all, takeLatest, call, put } from 'redux-saga/effects';
 import * as Actions from '../Actions/PlaybackActions'
+import { setDatabaseUserSucceeded } from '../Actions/UserActions'
 import axios from 'axios'
 import { PLAYER_ENDPOINT } from '../../../../utils/constants'
-import { saveTimestamp } from '../../../../firebase'
+import { saveTimestamp, fetchUser } from '../../../../firebase'
 
 export function* getPlaybackInfo({ token, createTimestamp, userId, note}) {
     try {
@@ -23,7 +24,11 @@ export function* getPlaybackInfo({ token, createTimestamp, userId, note}) {
             const devices = availableDevices.data
             yield put(Actions.getPlaybackInfoSucceeded(playback,devices))
             if(createTimestamp === 1){
-                saveTimestamp(userId,playback.item,playback.progress_ms,note)
+                yield call(saveTimestamp, userId, playback.item, playback.progress_ms, note)
+                const user = yield call(fetchUser, userId)
+                if(user){
+                    yield put(setDatabaseUserSucceeded(user))
+                }
             }
         }
         else{
