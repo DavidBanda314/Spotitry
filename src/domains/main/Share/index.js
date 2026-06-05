@@ -5,7 +5,7 @@ import { playSongRequested, setSelectedSong } from '../redux/Actions/PlaybackAct
 
 function millisToMinutesAndSeconds(millis) {
     var minutes = Math.floor(millis / 60000);
-    var seconds = ((millis % 60000) / 1000).toFixed(0);
+    var seconds = Math.floor((millis % 60000) / 1000);
     return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
 }
 
@@ -40,10 +40,21 @@ const Share = (props) => {
                 setLoading(false)
             })
             .catch(() => {
+                setError('Could not load track')
                 setLoading(false)
             })
         } else {
-            setLoading(false)
+            fetch(`https://open.spotify.com/oembed?url=https://open.spotify.com/track/${trackId}`)
+            .then(res => res.ok ? res.json() : null)
+            .then(data => {
+                if (data) {
+                    setTrackData({ name: data.title, _oembed: true, _thumbnail: data.thumbnail_url })
+                }
+                setLoading(false)
+            })
+            .catch(() => {
+                setLoading(false)
+            })
         }
     }, [trackId, token])
 
@@ -54,10 +65,10 @@ const Share = (props) => {
         }
     }
 
-    const albumCover = trackData?.album?.images?.[0]?.url
+    const albumCover = trackData?._oembed ? trackData._thumbnail : trackData?.album?.images?.[0]?.url
     const trackName = trackData?.name
-    const artistName = trackData?.artists?.[0]?.name
-    const albumName = trackData?.album?.name
+    const artistName = trackData?._oembed ? null : trackData?.artists?.[0]?.name
+    const albumName = trackData?._oembed ? null : trackData?.album?.name
 
     if (loading) {
         return (

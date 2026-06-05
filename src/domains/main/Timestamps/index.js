@@ -112,7 +112,7 @@ const Timestamps = (props) => {
                 </div>
             ) : (
             <div className={styles.grid}>
-                    {timestampsBySong?.map((tsGroup, key) => {
+                    {timestampsBySong?.map((tsGroup, cardIndex) => {
                         var entries = Object.values(tsGroup)
                         var song = entries[0]?.song
                         var album = song?.album
@@ -120,7 +120,7 @@ const Timestamps = (props) => {
                         var albumCover = album?.images[0]?.url
                         var artistName = entries[0]?.song.artists[0]?.name ? entries[0].song.artists[0].name : entries[0].song.album.artists[0].name
                         return(
-                            <div className={styles.card} key={key}>
+                            <div className={styles.card} key={cardIndex}>
                                 <div className={styles.cardHeader}>
                                     {albumCover &&
                                         <img src={albumCover} alt="" className={styles.cover}/>
@@ -132,12 +132,13 @@ const Timestamps = (props) => {
                                     </div>
                                 </div>
                                 <div className={styles.timestampList}>
-                                    {entries.map((timestamp, key) => {
+                                    {entries.map((timestamp, tsIndex) => {
                                         var totalTime = song.duration_ms
                                         var timeSet = timestamp.position_ms
                                         var track = song
+                                        var shareId = `${cardIndex}-${tsIndex}-${songName}`
                                         return(
-                                            <div className={styles.timestampItem} key={key}>
+                                            <div className={styles.timestampItem} key={tsIndex}>
                                                 <div className={styles.timestampRow}>
                                                     <button
                                                         className={styles.timestampButton}
@@ -155,10 +156,10 @@ const Timestamps = (props) => {
                                                     </button>
                                                     <button
                                                         className={styles.shareBtn}
-                                                        onClick={() => handleShare(track?.uri, timeSet, timestamp.note, `${key}-${songName}`)}
+                                                        onClick={() => handleShare(track?.uri, timeSet, timestamp.note, shareId)}
                                                         title="Copy share link"
                                                     >
-                                                        {copiedId === `${key}-${songName}` ? '✓' : <FontAwesomeIcon icon={faLink} />}
+                                                        {copiedId === shareId ? '✓' : <FontAwesomeIcon icon={faLink} />}
                                                     </button>
                                                 </div>
                                                 {timestamp.note && (
