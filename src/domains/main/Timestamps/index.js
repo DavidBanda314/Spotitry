@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faListUl } from '@fortawesome/free-solid-svg-icons'
 import { Card, CardImg, CardBody, CardTitle, CardSubtitle, CardText } from 'reactstrap'
 import CreatePlaylistModal from '../../../components/CreatePlaylistModal'
+import { SkeletonGrid } from '../../../components/Skeleton'
 
 
 const Timestamps = (props) => {
@@ -80,8 +81,9 @@ const Timestamps = (props) => {
                 </InputGroup>
             </div>
             <div className={styles.grid}>
-                    {timestampsBySong?.length !== 0 && 
-                    timestampsBySong?.map((tsGroup, key) => {
+                    {!timestamps ? (
+                        <SkeletonGrid count={4} cardHeight="300px" />
+                    ) : timestampsBySong?.map((tsGroup, key) => {
                         var entries = Object.values(tsGroup)
                         var song = entries[0]?.song
                         var album = song?.album

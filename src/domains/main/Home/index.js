@@ -2,6 +2,7 @@ import React from 'react'
 import styles from './index.module.css'
 import { playSongRequested , setSelectedSong, getPlaybackInfoRequested} from '../redux/Actions/PlaybackActions.js'
 import { connect } from 'react-redux'
+import { SkeletonGrid } from '../../../components/Skeleton'
 
 
 function formatTimestamp(ms) {
@@ -22,6 +23,7 @@ function getRecentTimestamps(timestamps) {
 const Home = (props) => {
     var { token, topTracks, topArtists, setSelectedSong, selectedSong, getPlaybackInfo, playSong, timestamps } = props
     var recentTimestamps = getRecentTimestamps(timestamps);
+    const isLoading = topTracks.length === 0 && topArtists.length === 0
     return(
         <div className={styles.container}>
             {recentTimestamps.length > 0 && (
@@ -57,6 +59,9 @@ const Home = (props) => {
             <div className={styles.sectionHeader}>
                 <h4 className={styles.sectionTitle}>Your Top Songs</h4>
             </div>
+            {isLoading ? (
+                <SkeletonGrid count={6} cardHeight="240px" />
+            ) : (
             <div className={styles.grid}>
                 {topTracks.slice(0,10)?.map((track,key) => {
                     return(
@@ -82,10 +87,14 @@ const Home = (props) => {
                     )
                 })}
             </div>
+            )}
 
             <div className={styles.sectionHeader}>
                 <h4 className={styles.sectionTitle}>Your Top Artists</h4>
             </div>
+            {isLoading ? (
+                <SkeletonGrid count={6} cardHeight="240px" borderRadius="50%" />
+            ) : (
             <div className={styles.grid}>
                 {topArtists.slice(0,10)?.map((artist,key) => {
                     return(
@@ -105,6 +114,7 @@ const Home = (props) => {
                     )
                 })}
             </div>
+            )}
         </div>
     )
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Switch, Route, Redirect} from 'react-router-dom';
+import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import Home from './domains/main/Home';
 import NavBar from './components/NavBar';
 import Timestamps from './domains/main/Timestamps';
@@ -19,6 +20,7 @@ const AuthenticatedApp = (props) => {
   const [timestampSaved, setTimestampSaved] = useState(false)
   const [showNoteInput, setShowNoteInput] = useState(false)
   const [noteText, setNoteText] = useState('')
+  const location = useLocation()
 
   useEffect(() => {
     if(!token){
@@ -158,45 +160,46 @@ const AuthenticatedApp = (props) => {
       </div>
       }
       <main className={`${styles.content} ${song ? styles.withPlayer : ''}`}>
-      <Switch>
-        <Route
-          exact
-          path="/"
-          render={() => {
-            return <Redirect to="/home" />;
+      <TransitionGroup component={null}>
+        <CSSTransition
+          key={location.pathname}
+          classNames={{
+            enter: styles.fadeEnter,
+            enterActive: styles.fadeEnterActive,
+            exit: styles.fadeExit,
+            exitActive: styles.fadeExitActive,
           }}
-        />
-        <Route
-          exact path='/home'
+          timeout={200}
         >
-          <Home/>
-        </Route>
-        <Route
-          exact path='/timestamps'
-          >
-          <Timestamps/>
-        </Route>
-        <Route
-          exact path='/account'
-        >
-          <Account/>
-        </Route>
-        <Route
-          exact path='/discover'
-        >
-          <Discover/>
-        </Route>
-        <Route
-          exact path='/history'
-        >
-          <History/>
-        </Route>
-        <Route
-          exact path='/stats'
-        >
-          <Stats/>
-        </Route>
-      </Switch>
+          <Switch location={location}>
+            <Route
+              exact
+              path="/"
+              render={() => {
+                return <Redirect to="/home" />;
+              }}
+            />
+            <Route exact path='/home'>
+              <Home/>
+            </Route>
+            <Route exact path='/timestamps'>
+              <Timestamps/>
+            </Route>
+            <Route exact path='/account'>
+              <Account/>
+            </Route>
+            <Route exact path='/discover'>
+              <Discover/>
+            </Route>
+            <Route exact path='/history'>
+              <History/>
+            </Route>
+            <Route exact path='/stats'>
+              <Stats/>
+            </Route>
+          </Switch>
+        </CSSTransition>
+      </TransitionGroup>
       </main>
       <NavBar/>
       </>

@@ -5,6 +5,7 @@ import SearchBar from '../../../components/searchBar'
 import { searchSongsRequested } from '../redux/Actions/UserActions.js'
 import { getPlaybackInfoRequested, playSongRequested, setSelectedSong } from '../redux/Actions/PlaybackActions.js'
 import { Button } from '@material-ui/core'
+import { SkeletonCard } from '../../../components/Skeleton'
 
 
 const Discover = (props) => {
@@ -19,7 +20,7 @@ const Discover = (props) => {
     },[searchValue])
     return(
         <div className={styles.container}>
-            {currentlyPlaying &&
+            {currentlyPlaying ? (
                 <div className={styles.nowPlaying}>
                     <img alt="" src={currentlyPlaying?.album?.images[1]?.url} className={styles.pic}/>
                     <div className={styles.nowPlayingMeta}>
@@ -27,7 +28,9 @@ const Discover = (props) => {
                         <span className={styles.header}>{currentlyPlaying?.name}</span>
                     </div>
                 </div>
-            }
+            ) : (
+                <SkeletonCard width="100%" height="120px" borderRadius="16px" />
+            )}
 
             <div className={styles.searchBar}>
                 <SearchBar setSearchValue={setSearchValue}/>

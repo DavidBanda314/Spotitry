@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faListUl } from '@fortawesome/free-solid-svg-icons'
 import DisplayCard from '../../../components/DisplayCard';
 import CreatePlaylistModal from '../../../components/CreatePlaylistModal'
+import { SkeletonGrid } from '../../../components/Skeleton';
 
 const History = (props) => {
     const {token,history, StoreToken, setSelectedSong, selectedSong, userId} = props
@@ -71,7 +72,9 @@ const History = (props) => {
             </div>
 
             <div className={styles.cardGrid}>
-                { myHistory.length !== 0 && myHistory.slice(0,20).map((track,key) => {
+                {history.length === 0 ? (
+                    <SkeletonGrid count={6} cardHeight="240px" />
+                ) : myHistory.slice(0,20).map((track,key) => {
                     var song = track.track
                     var album = song?.album
                     var artist = song?.artists[0]
