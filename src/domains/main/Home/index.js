@@ -61,7 +61,7 @@ const Home = (props) => {
                 <h4 className={styles.sectionTitle}>{'///YOUR TOP SONGS'}</h4>
             </div>
             {isTracksLoading ? (
-                <SkeletonGrid count={6} cardHeight="240px" />
+                <SkeletonGrid count={10} className={styles.grid} lines={3} />
             ) : (
             <div className={styles.grid}>
                 {topTracks.slice(0,10)?.map((track,key) => {
@@ -94,7 +94,7 @@ const Home = (props) => {
                 <h4 className={styles.sectionTitle}>{'///YOUR TOP ARTISTS'}</h4>
             </div>
             {isArtistsLoading ? (
-                <SkeletonGrid count={6} cardHeight="240px" borderRadius="50%" />
+                <SkeletonGrid count={10} className={styles.grid} circle lines={1} />
             ) : (
             <div className={styles.grid}>
                 {topArtists.slice(0,10)?.map((artist,key) => {
