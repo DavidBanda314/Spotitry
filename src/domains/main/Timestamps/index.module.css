@@ -241,3 +241,250 @@
     font-size: 12px;
     text-transform: uppercase;
 }
+
+/* Collections */
+.collectionsSection {
+    padding: 0 16px 12px;
+}
+
+.collectionsRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.chip,
+.chipActive {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+}
+
+.chip {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--fg);
+}
+
+.chip:hover {
+    border-color: #1DB954;
+    color: #1DB954;
+}
+
+.chipActive {
+    background: #1DB954;
+    border: 1px solid #1DB954;
+    color: #000;
+}
+
+.newCollBtn {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    background: transparent;
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    color: var(--fg);
+    transition: border-color 0.15s, color 0.15s;
+}
+
+.newCollBtn:hover {
+    border-color: #1DB954;
+    color: #1DB954;
+}
+
+.newCollInputWrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.newCollInput {
+    background: #000;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: #fff;
+    outline: none;
+    text-transform: uppercase;
+    width: 160px;
+}
+
+.newCollInput:focus {
+    border-color: #1DB954;
+}
+
+.newCollSaveBtn {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    background: #1DB954;
+    border: none;
+    color: #000;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.newCollCancelBtn {
+    padding: 4px 8px;
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: 700;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--fg);
+    cursor: pointer;
+    line-height: 1;
+}
+
+/* Collection header */
+.collectionHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+}
+
+.collectionName {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1DB954;
+    text-transform: uppercase;
+}
+
+.deleteCollBtn {
+    background: transparent;
+    border: 1px solid rgba(255, 80, 80, 0.4);
+    color: #ff5050;
+    padding: 6px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    border-radius: 0;
+    transition: background 0.15s;
+}
+
+.deleteCollBtn:hover {
+    background: rgba(255, 80, 80, 0.1);
+}
+
+.deleteConfirmWrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.deleteConfirmText {
+    font-size: 12px;
+    color: #ff5050;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.deleteConfirmYes {
+    background: #ff5050;
+    border: none;
+    color: #000;
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    border-radius: 0;
+}
+
+.deleteConfirmNo {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--fg);
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    border-radius: 0;
+}
+
+/* Add to Collection */
+.addToCollWrap {
+    position: relative;
+}
+
+.addToCollBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: transparent;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 13px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.addToCollBtn:hover {
+    color: #1DB954;
+    border-color: rgba(29, 185, 84, 0.4);
+    background-color: rgba(29, 185, 84, 0.08);
+}
+
+.collDropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 4px;
+    background: #1a1a1a;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    min-width: 160px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.collDropdownEmpty {
+    padding: 10px 14px;
+    font-size: 11px;
+    color: var(--fg);
+    text-transform: uppercase;
+}
+
+.collDropdownItem {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    color: var(--fg-bright);
+    padding: 10px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.12s, color 0.12s;
+}
+
+.collDropdownItem:last-child {
+    border-bottom: none;
+}
+
+.collDropdownItem:hover {
+    background: rgba(29, 185, 84, 0.1);
+    color: #1DB954;
+}
