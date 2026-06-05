@@ -15,7 +15,7 @@ import Profile from './domains/main/Profile';
 import Compare from './domains/main/Compare';
 import Artist from './domains/main/Artist';
 import { StoreToken } from './domains/main/redux/Actions/UserActions.js'
-import { getPlaybackInfoRequested, setDeviceId } from './domains/main/redux/Actions/PlaybackActions.js'
+import { getPlaybackInfoRequested } from './domains/main/redux/Actions/PlaybackActions.js'
 import { connect } from 'react-redux'
 import SpotifyPlayer from 'react-spotify-web-playback';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -31,11 +31,12 @@ function formatMs(ms) {
 }
 
 const AuthenticatedApp = (props) => {
-  var {token, storeToken, selectedSong, getPlaybackInfo, userId, storeDeviceId} = props
-  const {song} = selectedSong
+  var {token, storeToken, selectedSong, getPlaybackInfo, userId} = props
+  const {position_ms, song, songURI} = selectedSong
   const [timestampSaved, setTimestampSaved] = useState(false)
   const [showNoteInput, setShowNoteInput] = useState(false)
   const [noteText, setNoteText] = useState('')
+  const [play, setPlay] = useState(false)
   const [expanded, setExpanded] = useState(false)
   const [progressMs, setProgressMs] = useState(0)
   const [durationMs, setDurationMs] = useState(0)
@@ -48,6 +49,11 @@ const AuthenticatedApp = (props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
+  useEffect(() => {
+    if(selectedSong?.songURI){
+      setPlay(true)
+    }
+  },[selectedSong])
 
   const handleTimestamp = () => {
     if (token && userId) {
@@ -175,7 +181,7 @@ const AuthenticatedApp = (props) => {
           <div style={{flex: 1, display: expanded ? 'block' : 'none'}}>
             <SpotifyPlayer
               styles={{
-                bgColor:'var(--bg)',
+                bgColor:'transparent',
                 color:'var(--text)',
                 trackNameColor:'var(--text)',
                 trackArtistColor:'var(--text-secondary)',
@@ -184,9 +190,12 @@ const AuthenticatedApp = (props) => {
                 sliderTrackColor:'var(--border-strong-2)',
               }}
               token={token}
+              uris={[songURI]}
+              offset={position_ms}
+              play={play}
+              autoPlay={true}
               callback={(state) => {
-                const id = state.currentDeviceId || state.deviceId
-                if (id) { storeDeviceId(id) }
+                setPlay(state.isPlaying)
                 if (state.progressMs !== undefined) { setProgressMs(state.progressMs) }
                 if (state.track && state.track.durationMs) { setDurationMs(state.track.durationMs) }
               }}
@@ -266,7 +275,6 @@ const mapDispatchToProps = (dispatch) => {
   return{
       storeToken: (token) => dispatch(StoreToken(token)),
       getPlaybackInfo: (token, create, userId, note) => dispatch(getPlaybackInfoRequested(token, create, userId, note)),
-      storeDeviceId: (deviceId) => dispatch(setDeviceId(deviceId)),
   }
 }
 const mapStateToProps = (state) => {

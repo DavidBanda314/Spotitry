@@ -48,14 +48,15 @@
     right: 0;
     bottom: calc(58px + env(safe-area-inset-bottom, 0px));
     z-index: 150;
-    padding-bottom: 12px;
 }
 
 .playerRow {
     display: flex;
     align-items: center;
-    background-color: var(--bg);
-    border-top: 1px solid var(--border-2);
+    background-color: var(--bar-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid var(--border);
 }
 
 .expandButton {

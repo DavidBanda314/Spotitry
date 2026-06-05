@@ -63,6 +63,21 @@ export async function updateTimestampNote(userId, songKey, pushId, note) {
     console.log(error);
   }
 }
+export async function deleteTimestamp(userId, songKey, pushId) {
+  try {
+    const tsRef = db.ref('users/' + userId + '/timestamps/' + songKey + '/' + pushId);
+    await tsRef.remove();
+    // If no timestamps remain under this song, clean up the song group
+    const songRef = db.ref('users/' + userId + '/timestamps/' + songKey);
+    const snapshot = await songRef.get();
+    if (!snapshot.exists() || !snapshot.val()) {
+      await songRef.remove();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function getTimestamps(userId){
   try{
     let snapshot = await db.ref('users/' + userId + '/timestamps').get();
