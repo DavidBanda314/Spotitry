@@ -14,11 +14,18 @@ function getRecentTimestamps(timestamps) {
     if (!timestamps) return [];
     var all = [];
     Object.values(timestamps).forEach(function(songGroup) {
-        Object.values(songGroup).forEach(function(ts) {
-            all.push(ts);
+        Object.entries(songGroup).forEach(function(inner) {
+            all.push({ key: inner[0], ts: inner[1] });
         });
     });
-    return all.slice(-6).reverse();
+    // Firebase push keys are chronologically ordered, so sorting the keys
+    // descending yields the most recently saved timestamps first.
+    all.sort(function(a, b) {
+        if (a.key < b.key) return 1;
+        if (a.key > b.key) return -1;
+        return 0;
+    });
+    return all.slice(0, 6).map(function(e) { return e.ts; });
 }
 
 const Home = (props) => {

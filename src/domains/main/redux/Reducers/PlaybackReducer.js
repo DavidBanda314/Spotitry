@@ -13,7 +13,6 @@ const InitialState =
         songURI:'',
         song:'',
     },
-    deviceId:'',
     loading:false,
     errors:{},
 }
@@ -64,13 +63,6 @@ function playbackReducer(state = InitialState, action){
             return{
                 ...state,
                 errors:errors
-            }
-        }
-        case playbackActions.setDeviceId: {
-            const {deviceId} = action
-            return {
-                ...state,
-                deviceId:deviceId
             }
         }
         case playbackActions.setSelectedSong: {
