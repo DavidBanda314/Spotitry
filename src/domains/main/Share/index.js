@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import styles from './index.module.css'
 import { connect } from 'react-redux'
-import { playSongRequested, setSelectedSong } from '../redux/Actions/PlaybackActions'
+import { playSongRequested } from '../redux/Actions/PlaybackActions'
 
 function millisToMinutesAndSeconds(millis) {
     var minutes = Math.floor(millis / 60000);
@@ -10,7 +10,7 @@ function millisToMinutesAndSeconds(millis) {
 }
 
 const Share = (props) => {
-    const { token, setSelectedSong: selectSong, playSong } = props
+    const { token, playSong } = props
     const [trackData, setTrackData] = useState(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
@@ -95,7 +95,6 @@ const Share = (props) => {
 
     const handlePlayInSpotitry = () => {
         if (trackData && token) {
-            selectSong(0, trackData.uri, trackData)
             playSong(token, positionMs, trackData.uri, trackData)
         }
     }
@@ -200,7 +199,6 @@ const Share = (props) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         playSong: (token, position_ms, songURI, song) => dispatch(playSongRequested(token, position_ms, songURI, song)),
-        setSelectedSong: (position_ms, songURI, song) => dispatch(setSelectedSong(position_ms, songURI, song))
     }
 }
 const mapStateToProps = (state) => {

@@ -1,4 +1,4 @@
-import { all, takeLatest, call, put } from 'redux-saga/effects';
+import { all, takeLatest, call, put, select, delay } from 'redux-saga/effects';
 import * as Actions from '../Actions/PlaybackActions'
 import { setDatabaseUserSucceeded } from '../Actions/UserActions'
 import axios from 'axios'
@@ -24,7 +24,10 @@ export function* getPlaybackInfo({ token, createTimestamp, userId, note}) {
             const devices = availableDevices.data
             yield put(Actions.getPlaybackInfoSucceeded(playback,devices))
             if(createTimestamp === 1){
-                yield call(saveTimestamp, userId, playback.item, playback.progress_ms, note)
+                const tsResult = yield call(saveTimestamp, userId, playback.item, playback.progress_ms, note)
+                if (tsResult) {
+                    yield put(Actions.timestampCreated(tsResult.songKey, tsResult.pushId))
+                }
                 const user = yield call(fetchUser, userId)
                 if(user){
                     yield put(setDatabaseUserSucceeded(user))
@@ -42,18 +45,22 @@ export function* getPlaybackInfo({ token, createTimestamp, userId, note}) {
 
 export function* playSong({token, position_ms, songURI, song}){
     try{
-        // console.log(songURI)
-        // if(songURI.includes('artist')){
-        //     console.log('yeet')
-        //     yield call(axios.put, `${PLAYER_ENDPOINT}/play`,{context_uri:songURI, position_ms: position_ms},{headers:{'Authorization': 'Bearer ' + token}})
-        //     yield put(Actions.playSongSucceeded())
-        //     yield put(Actions.setPlaybackInfo(song))
-        // }
-        // else{
-            yield call(axios.put, `${PLAYER_ENDPOINT}/play`,{uris: [songURI], position_ms: position_ms},{headers:{'Authorization': 'Bearer ' + token}})
-            yield put(Actions.playSongSucceeded())
-            yield put(Actions.setPlaybackInfo(song))
-        // }
+        // Show the track in the bottom player immediately so the UI updates
+        // even before the device-targeted play request resolves.
+        yield put(Actions.setPlaybackInfo(song))
+        // Wait briefly for the embedded Web Playback SDK device to register so
+        // we can target it directly. Targeting the device lets a single play
+        // request start exactly at position_ms (no "start at 0 then skip").
+        let deviceId = yield select((state) => state.Player.deviceId)
+        for(let i = 0; i < 10 && !deviceId; i++){
+            yield delay(300)
+            deviceId = yield select((state) => state.Player.deviceId)
+        }
+        const url = deviceId
+            ? `${PLAYER_ENDPOINT}/play?device_id=${deviceId}`
+            : `${PLAYER_ENDPOINT}/play`
+        yield call(axios.put, url, {uris: [songURI], position_ms: position_ms}, {headers:{'Authorization': 'Bearer ' + token}})
+        yield put(Actions.playSongSucceeded())
     }
     catch(error){
         console.log(error)
