@@ -1,7 +1,7 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import styles from './index.module.css'
-import { playSongRequested , setSelectedSong, getPlaybackInfoRequested} from '../redux/Actions/PlaybackActions.js'
+import { setSelectedSong, getPlaybackInfoRequested} from '../redux/Actions/PlaybackActions.js'
 import { connect } from 'react-redux'
 import { SkeletonGrid } from '../../../components/Skeleton'
 
@@ -29,7 +29,7 @@ function getRecentTimestamps(timestamps) {
 }
 
 const Home = (props) => {
-    var { token, topTracks, topArtists, setSelectedSong, selectedSong, getPlaybackInfo, playSong, timestamps, loading, history } = props
+    var { token, topTracks, topArtists, setSelectedSong, selectedSong, getPlaybackInfo, timestamps, loading, history } = props
     var recentTimestamps = getRecentTimestamps(timestamps);
     const isTracksLoading = loading && topTracks.length === 0
     const isArtistsLoading = loading && topArtists.length === 0
@@ -49,7 +49,7 @@ const Home = (props) => {
                                     className={styles.timestampCard}
                                     key={idx}
                                     onClick={function() {
-                                        playSong(token, ts.position_ms, song?.uri, song);
+                                        setSelectedSong(ts.position_ms, song?.uri, song);
                                     }}
                                 >
                                     {albumArt && <img className={styles.timestampArt} alt="Album" src={albumArt} />}
@@ -138,7 +138,6 @@ const Home = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        playSong: (token, deviceId, songURI, song) => dispatch(playSongRequested(token, deviceId, songURI,song)),
         setSelectedSong: (token, songURI, song) => dispatch(setSelectedSong(token, songURI, song)),
         getPlaybackInfo: (token,create,userId) => dispatch(getPlaybackInfoRequested(token,create,userId)),
     }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { playSongRequested, setSelectedSong } from '../redux/Actions/PlaybackActions';
+import { setSelectedSong } from '../redux/Actions/PlaybackActions';
 import styles from './index.module.css';
 
 function formatTimestamp(ms) {
@@ -63,7 +63,6 @@ const Artist = () => {
 
     const handlePlayTrack = (track) => {
         dispatch(setSelectedSong(0, track.uri, track));
-        dispatch(playSongRequested(token, 0, track.uri, track));
     };
 
     const handleRelatedClick = (artistId) => {
@@ -183,7 +182,7 @@ const Artist = () => {
                             className={styles.timestampCard}
                             key={idx}
                             onClick={function () {
-                                dispatch(playSongRequested(token, ts.position_ms, song.uri, song));
+                                dispatch(setSelectedSong(ts.position_ms, song.uri, song));
                             }}
                         >
                             {albumArt && <img className={styles.timestampArt} src={albumArt} alt={song.name} />}

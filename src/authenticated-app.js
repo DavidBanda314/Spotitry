@@ -102,6 +102,42 @@ const AuthenticatedApp = (props) => {
     }
   }, [songURI, position_ms, song])
 
+  // Arm a one-shot seek whenever a selection carries a start position. The web
+  // player always begins a track at 0:00 (and Spotify Connect can ignore an
+  // initial position when activating an idle device), so we seek to the moment
+  // once the player reports the matching track is actually playing. Using a
+  // single play source + post-play seek avoids the race that made timestamps
+  // sometimes start at the beginning.
+  // For a single track URI, position_ms is a real playback offset in ms (a saved
+  // timestamp). For album URIs the first arg is instead a track index passed to
+  // the player's `offset` prop, so we must not treat it as a seek target.
+  const isTimestampPlay = !!songURI && songURI.includes('track') && position_ms > 0
+  const seekArmedRef = useRef(false)
+  const seekTargetRef = useRef(0)
+  useEffect(() => {
+    if (isTimestampPlay) {
+      seekTargetRef.current = position_ms
+      seekArmedRef.current = true
+    } else {
+      seekArmedRef.current = false
+    }
+  }, [songURI, position_ms, isTimestampPlay])
+
+  const maybeSeekToTimestamp = useCallback((state) => {
+    if (!seekArmedRef.current || !state.isPlaying) return
+    if (!state.track || state.track.uri !== songURI) return
+    const targetDevice = state.currentDeviceId || state.deviceId
+    if (!targetDevice) return
+    const target = seekTargetRef.current
+    seekArmedRef.current = false
+    fetch(`${PLAYER_ENDPOINT}/seek?position_ms=${target}&device_id=${targetDevice}`, {
+      method: 'PUT',
+      headers: { 'Authorization': 'Bearer ' + token },
+    })
+      .then(() => setProgressMs(target))
+      .catch(() => { seekArmedRef.current = true })
+  }, [songURI, token])
+
   const handlePlayPause = useCallback(() => {
     setPlay((prev) => !prev)
   }, [])
@@ -250,14 +286,15 @@ const AuthenticatedApp = (props) => {
               }}
               token={token}
               uris={songURI ? [songURI] : []}
-              offset={position_ms}
+              offset={songURI && songURI.includes('album') ? position_ms : 0}
               play={play}
               autoPlay={true}
               callback={(state) => {
                 setPlay(state.isPlaying)
-                if (state.progressMs !== undefined) { setProgressMs(state.progressMs) }
                 if (state.track && state.track.durationMs) { setDurationMs(state.track.durationMs) }
                 if (state.deviceId) { storeDeviceId(state.deviceId) }
+                maybeSeekToTimestamp(state)
+                if (!seekArmedRef.current && state.progressMs !== undefined) { setProgressMs(state.progressMs) }
               }}
               showSaveIcon={true}
               persistDeviceSelection={true}

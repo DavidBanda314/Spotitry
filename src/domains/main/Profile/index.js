@@ -3,7 +3,7 @@ import styles from './index.module.css'
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { fetchPublicProfile } from '../../../firebase'
-import { playSongRequested, setSelectedSong } from '../redux/Actions/PlaybackActions'
+import { setSelectedSong } from '../redux/Actions/PlaybackActions'
 
 function millisToMinutesAndSeconds(millis) {
     var minutes = Math.floor(millis / 60000);
@@ -12,7 +12,7 @@ function millisToMinutesAndSeconds(millis) {
 }
 
 const Profile = (props) => {
-    const { token, setSelectedSong: selectSong, playSong } = props
+    const { token, setSelectedSong: selectSong } = props
     const { userId } = useParams()
     const [profileData, setProfileData] = useState(null)
     const [loading, setLoading] = useState(true)
@@ -34,13 +34,12 @@ const Profile = (props) => {
     const handlePlayTrack = (track) => {
         if (token && track.uri) {
             selectSong(0, track.uri, { name: track.name, uri: track.uri })
-            playSong(token, 0, track.uri, { name: track.name, uri: track.uri })
         }
     }
 
     const handlePlayTimestamp = (ts) => {
         if (token && ts.uri) {
-            playSong(token, ts.position_ms, ts.uri, { name: ts.songName, uri: ts.uri })
+            selectSong(ts.position_ms, ts.uri, { name: ts.songName, uri: ts.uri })
         }
     }
 
@@ -194,7 +193,6 @@ const Profile = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        playSong: (token, position_ms, songURI, song) => dispatch(playSongRequested(token, position_ms, songURI, song)),
         setSelectedSong: (position_ms, songURI, song) => dispatch(setSelectedSong(position_ms, songURI, song))
     }
 }
