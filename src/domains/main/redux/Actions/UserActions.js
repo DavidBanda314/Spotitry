@@ -15,6 +15,9 @@ export const UserDataActions = {
     searchSongsRequested: 'Search Songs Requested',
     searchSongsSucceeded: 'Search Songs Succeeded',
     searchSongsFailed: 'Search Songs Failed',
+    getDiscoverFeedRequested: 'Get Discover Feed Requested',
+    getDiscoverFeedSucceeded: 'Get Discover Feed Succeeded',
+    getDiscoverFeedFailed: 'Get Discover Feed Failed',
 }
 
 export function StoreToken(token){
@@ -108,15 +111,36 @@ export function searchSongsRequested(token,searchValue){
         token
     }
 }
-export function searchSongsSucceeded(searchedSongs){
+export function searchSongsSucceeded(searchedSongs, searchedArtists = [], searchedAlbums = []){
     return {
         type: UserDataActions.searchSongsSucceeded,
-        searchedSongs
+        searchedSongs,
+        searchedArtists,
+        searchedAlbums
     }
 }
 export function searchSongsFailed(errors){
     return {
         type: UserDataActions.searchSongsFailed,
+        errors
+    }
+}
+export function getDiscoverFeedRequested(token){
+    return {
+        type: UserDataActions.getDiscoverFeedRequested,
+        token
+    }
+}
+export function getDiscoverFeedSucceeded(discoverFeed, discoverFeedType){
+    return {
+        type: UserDataActions.getDiscoverFeedSucceeded,
+        discoverFeed,
+        discoverFeedType
+    }
+}
+export function getDiscoverFeedFailed(errors){
+    return {
+        type: UserDataActions.getDiscoverFeedFailed,
         errors
     }
 }
