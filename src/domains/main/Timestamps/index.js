@@ -50,8 +50,17 @@ const Timestamps = (props) => {
             {(!timestampsBySong || timestampsBySong.length === 0) ? (
                 <div className={styles.emptyState}>
                     <span className={styles.emptyIcon}>♪</span>
-                    <span className={styles.emptyTitle}>No saved timestamps yet</span>
-                    <span className={styles.emptySubtitle}>Save a moment from a song and it will show up here.</span>
+                    {searchValue ? (
+                        <>
+                            <span className={styles.emptyTitle}>No timestamps match your search</span>
+                            <span className={styles.emptySubtitle}>Try a different song name.</span>
+                        </>
+                    ) : (
+                        <>
+                            <span className={styles.emptyTitle}>No saved timestamps yet</span>
+                            <span className={styles.emptySubtitle}>Save a moment from a song and it will show up here.</span>
+                        </>
+                    )}
                 </div>
             ) : (
             <div className={styles.grid}>
