@@ -6,7 +6,13 @@ import { parseSpecialCharacters } from '../../../utils/constants'
 import { playSongRequested, setSelectedSong } from '../redux/Actions/PlaybackActions'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+<<<<<<< Updated upstream
 import { faSearch, faListUl, faLink, faPlus, faMinus, faTrash } from '@fortawesome/free-solid-svg-icons'
+||||||| constructed merge base
+import { faSearch, faListUl, faLink, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
+=======
+import { faSearch, faListUl, faLink, faPlus, faMinus, faCopy, faShareAlt } from '@fortawesome/free-solid-svg-icons'
+>>>>>>> Stashed changes
 import CreatePlaylistModal from '../../../components/CreatePlaylistModal'
 import { SkeletonGrid } from '../../../components/Skeleton'
 import {
@@ -27,6 +33,7 @@ const Timestamps = (props) => {
     const [allTimeStampsBySong,setAllTimeStampsBySong] = useState([])
     const [showPlaylistModal, setShowPlaylistModal] = useState(false)
     const [copiedId, setCopiedId] = useState(null)
+    const [shareMenuId, setShareMenuId] = useState(null)
 
     // Collections state
     const [collections, setCollections] = useState({})
@@ -73,7 +80,7 @@ const Timestamps = (props) => {
         setNoteDraft('')
     }, [userId, noteDraft, refetchUser, token])
 
-    const handleShare = async (song, positionMs, note, id) => {
+    const buildShareUrl = (song, positionMs, note) => {
         const baseUrl = window.location.origin
         const params = new URLSearchParams({ track: song?.uri || '', t: positionMs })
         if (note) params.set('note', note)
@@ -85,8 +92,24 @@ const Timestamps = (props) => {
         if (img) params.set('img', img)
         if (song?.preview_url) params.set('p', song.preview_url)
         if (song?.duration_ms) params.set('d', song.duration_ms)
-        const url = `${baseUrl}/share?${params.toString()}`
+        return `${baseUrl}/share?${params.toString()}`
+    }
 
+    const handleCopyLink = async (song, positionMs, note, id) => {
+        setShareMenuId(null)
+        const url = buildShareUrl(song, positionMs, note)
+        try {
+            await navigator.clipboard.writeText(url)
+            setCopiedId(id)
+            setTimeout(() => setCopiedId(null), 2000)
+        } catch (err) {
+            // clipboard unavailable; nothing else to do
+        }
+    }
+
+    const handleNativeShare = async (song, positionMs, note, id) => {
+        setShareMenuId(null)
+        const url = buildShareUrl(song, positionMs, note)
         const shareData = {
             title: `${song?.name || 'A moment'} on Spotitry`,
             text: note ? `"${note}"` : `Listen from ${millisToMinutesAndSeconds(positionMs)}`,
@@ -101,13 +124,7 @@ const Timestamps = (props) => {
                 if (err && err.name === 'AbortError') return
             }
         }
-        try {
-            await navigator.clipboard.writeText(url)
-            setCopiedId(id)
-            setTimeout(() => setCopiedId(null), 2000)
-        } catch (err) {
-            // clipboard unavailable; nothing else to do
-        }
+        handleCopyLink(song, positionMs, note, id)
     }
 
     const uniqueTrackUris = useMemo(() => {
@@ -419,13 +436,33 @@ const Timestamps = (props) => {
                                                         <span className={styles.playIcon}>&#9654;</span>
                                                         <span className={styles.timeLabel}>{millisToMinutesAndSeconds(timeSet)} / {millisToMinutesAndSeconds(totalTime)}</span>
                                                     </button>
-                                                    <button
-                                                        className={styles.shareBtn}
-                                                        onClick={() => handleShare(track, timeSet, timestamp.note, shareId)}
-                                                        title="Share this moment"
-                                                    >
-                                                        {copiedId === shareId ? '\u2713' : <FontAwesomeIcon icon={faLink} />}
-                                                    </button>
+                                                    <div className={styles.shareWrap}>
+                                                        <button
+                                                            className={styles.shareBtn}
+                                                            onClick={() => setShareMenuId(shareMenuId === shareId ? null : shareId)}
+                                                            title="Share this moment"
+                                                        >
+                                                            {copiedId === shareId ? '\u2713' : <FontAwesomeIcon icon={faLink} />}
+                                                        </button>
+                                                        {shareMenuId === shareId && (
+                                                            <div className={styles.shareMenu}>
+                                                                <button
+                                                                    className={styles.shareMenuItem}
+                                                                    onClick={() => handleCopyLink(track, timeSet, timestamp.note, shareId)}
+                                                                >
+                                                                    <FontAwesomeIcon icon={faCopy} />
+                                                                    Copy link
+                                                                </button>
+                                                                <button
+                                                                    className={styles.shareMenuItem}
+                                                                    onClick={() => handleNativeShare(track, timeSet, timestamp.note, shareId)}
+                                                                >
+                                                                    <FontAwesomeIcon icon={faShareAlt} />
+                                                                    Share&hellip;
+                                                                </button>
+                                                            </div>
+                                                        )}
+                                                    </div>
                                                     {activeCollection && (
                                                         <button
                                                             className={styles.removeFromCollBtn}
