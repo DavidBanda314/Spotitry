@@ -29,13 +29,11 @@ const Account = (props) => {
                     <div>
                         <div className={styles.name} >{`${profile?.display_name}`}</div>
                         <div className={styles.email}>{profile?.email}</div>
-                        <div className={styles.followers}>{profile.followers.total} Followers</div>
                     </div>
                     :
                     <div>
                         <div className={styles.name} >{"Loading..."}</div>
                         <div className={styles.email}>{"Loading..."}</div>
-                        <div className={styles.followers}>{"Loading..."}</div>
                     </div>
                     }
                     <div className={styles.stats}>
