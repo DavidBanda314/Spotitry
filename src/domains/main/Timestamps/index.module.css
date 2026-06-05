@@ -194,11 +194,117 @@
     font-variant-numeric: tabular-nums;
 }
 
+.noteDisplay {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-left: 4px;
+}
+
 .note {
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(255, 255, 255, 0.55);
     font-size: 12px;
     font-style: italic;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+}
+
+.addNoteLink,
+.noteEditLink {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 2px 4px;
+    flex-shrink: 0;
+    transition: color 0.15s ease;
+}
+
+.addNoteLink {
+    align-self: flex-start;
     padding-left: 4px;
+}
+
+.addNoteLink:hover,
+.noteEditLink:hover {
+    color: #1DB954;
+}
+
+.noteEditor {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 0 2px;
+}
+
+.noteInput {
+    flex: 1;
+    min-width: 0;
+    background: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    color: #FFFFFF;
+    outline: none;
+    transition: border-color 0.15s ease;
+}
+
+.noteInput::placeholder {
+    color: rgba(255, 255, 255, 0.35);
+}
+
+.noteInput:focus {
+    border-color: #1DB954;
+}
+
+.noteSaveBtn {
+    flex-shrink: 0;
+    background: #1DB954;
+    border: none;
+    color: #000000;
+    border-radius: 500px;
+    padding: 7px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.noteSaveBtn:hover:not(:disabled) {
+    background: #1ed760;
+}
+
+.noteSaveBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.noteCancelBtn {
+    flex-shrink: 0;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.6);
+    border-radius: 500px;
+    padding: 7px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.noteCancelBtn:hover:not(:disabled) {
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #FFFFFF;
+}
+
+.noteCancelBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .emptyState {
