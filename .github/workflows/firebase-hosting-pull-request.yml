@@ -13,7 +13,7 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v3
-      - run: yarn install --frozen-lockfile && yarn build
+      - run: yarn install --frozen-lockfile && CI=false yarn build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'

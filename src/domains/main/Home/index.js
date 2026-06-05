@@ -2,7 +2,6 @@ import React from 'react'
 import styles from './index.module.css'
 import { playSongRequested , setSelectedSong, getPlaybackInfoRequested} from '../redux/Actions/PlaybackActions.js'
 import { connect } from 'react-redux'
-import { Card, CardImg, CardBody, CardTitle, CardHeader, CardSubtitle, Col, Row} from 'reactstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -11,16 +10,13 @@ const Home = (props) => {
     return(
 
         <div className={styles.container}>
-            <div class="card d-flex justify-content-center">
-                <div class="card-body">
-                    <h4 class="card-title">Your Top Songs</h4>
-                </div>
-            </div>
-            <div>
-                <Row style={{height: '800px', marginBottom: "20px"}}>
+            <h2 className={styles.sectionTitle}>Your Top Songs</h2>
+            <div className={styles.cardGrid}>
                 {topTracks.slice(0,10)?.map((track,key) => {
                     return(
-                        <Col style={{height: '50%', display: 'flex', marginTop: "10px", }}
+                        <div
+                            key={key}
+                            className={styles.card}
                             onClick={() => {
                                 if (selectedSong?.song?.album?.uri === track.album.uri) {
                                     setSelectedSong(0,track.uri,track);
@@ -30,45 +26,45 @@ const Home = (props) => {
                                 getPlaybackInfo(token,0,0);
                             }}
                         >
-                            <Card style={{cursor:'pointer', width: '210px'}}>
-                                <CardImg top width="100%" alt="Album Cover" style={{width:'210px'}} src={track.album.images[0].url}/>
-                                <CardHeader style={{}}>
-                                    <CardTitle tag="h5">{key+1}.  {track.name}</CardTitle>
-                                </CardHeader>
-                                <CardBody>
-                                    <CardSubtitle tag="h6" className="mb-2 text-muted">{track.artists[0].name}</CardSubtitle>
-                                    <CardSubtitle tag="h6" className="mb-2 text-muted">{track.album.name}</CardSubtitle>
-                                </CardBody>
-                            </Card>
-                        </Col>
+                            <img
+                                className={styles.cardImage}
+                                src={track.album.images[0].url}
+                                alt="Album Cover"
+                            />
+                            <p className={styles.cardTitle}>
+                                <span className={styles.rank}>{key+1}.</span> {track.name}
+                            </p>
+                            <p className={styles.cardSubtitle}>{track.artists[0].name}</p>
+                            <p className={styles.cardSubtitle}>{track.album.name}</p>
+                        </div>
                     )
                 })}
-                </Row>
             </div>
-            <div class="card d-flex" style={{marginTop: '10px'}}>
-                <div class="card-body">
-                    <h4 class="card-title">Your Top Artists</h4>
-                </div>
-            </div>
-            <div>
-                <Row style={{justifyContent: 'center'}}>
+
+            <h2 className={styles.sectionTitle}>Your Top Artists</h2>
+            <div className={styles.cardGrid}>
                 {topArtists.slice(0,10)?.map((artist,key) => {
                     return(
-                        <Col style={{ display: 'flex', margin:'15px'}}>
-                            <Card style={{height:'300px', width:'200px', cursor: 'pointer'}} 
-                                onClick={() => {
-                                    setSelectedSong(Math.floor(Math.random() * 10),artist.uri,artist);
-                                    getPlaybackInfo(token,0,0);
-                                    }}>
-                                <CardImg alt="Artist Pic" style={{width:'200px', height: '200px'}} src={artist.images[0].url}/>
-                                <CardHeader style={{height:'100px'}}>
-                                    <CardTitle tag="h5">{key+1}.  {artist.name}</CardTitle>
-                                </CardHeader>
-                            </Card>
-                        </Col>
+                        <div
+                            key={key}
+                            className={styles.card}
+                            onClick={() => {
+                                setSelectedSong(Math.floor(Math.random() * 10),artist.uri,artist);
+                                getPlaybackInfo(token,0,0);
+                            }}
+                        >
+                            <img
+                                className={styles.cardImageRound}
+                                src={artist.images[0].url}
+                                alt="Artist"
+                            />
+                            <p className={styles.cardTitle}>
+                                <span className={styles.rank}>{key+1}.</span> {artist.name}
+                            </p>
+                            <p className={styles.cardSubtitle}>Artist</p>
+                        </div>
                     )
                 })}  
-                </Row>           
             </div>
         </div>
         

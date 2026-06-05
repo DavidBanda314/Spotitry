@@ -1,82 +1,134 @@
-.header {
-    font-size: 18px;
-    position: absolute;
-    top: 260px;
-    left:220px
-}
-.pic{
-    width: 240px;
-    height: 200px;
-    position: fixed;
-    top: 55px;
-    left: 200px;
-}
-.column{
+.row1 {
     display: flex;
-    justify-content: left;
+    flex-direction: column;
     align-items: center;
-}
-.row{
-    flex-direction: row;
-    display: flex;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    background-color: #1db9a2;
+    min-height: calc(100vh - 64px);
+    background-color: #121212;
+    padding: 32px;
+    padding-bottom: 100px;
 }
 
-.smallPic{
-    width: 50px;
-    height: 50px;
-    border-radius: 20px;
-}
-.row1 {
-    flex-direction: row;
+.nowPlaying {
     display: flex;
-    height: 87vh;
-    color:  #1DB954;
-    background-color: #282c34;
-    justify-content: space-around;
     align-items: center;
-    overflow: scroll;
-    /* background-color: yellowgreen; */
+    gap: 24px;
+    margin-bottom: 32px;
+    width: 100%;
+    max-width: 600px;
 }
-.timestamp{
-    margin-top: 100px;
+
+.pic {
+    width: 200px;
     height: 200px;
-    margin-right: 500px;
-    left: 300px;
-    position: relative;
-    background-color: #282c34;
-    background-color: #282c34;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    object-fit: cover;
 }
-.timestampButton {
-    height: 100px;
-    background-color: #1DB954;
-    color: #282c34;
-    
+
+.header {
+    font-size: 24px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin: 0;
 }
-.timestampButton:hover{
-    background-color: black;
-    color:#1DB954;
-}
+
 .searchBar {
-    position: fixed;
-    top: 300px;
-    width: 377px;
-    overflow: scroll;
-    left:126px
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 16px;
+}
+
+.searchBar :global(.input-group) {
+    background-color: #242424;
+    border-radius: 500px;
+    overflow: hidden;
+    border: none;
+}
+
+.searchBar :global(.input-group) input {
+    background-color: #242424;
+    border: none;
+    color: #FFFFFF;
+    padding: 12px 16px;
+    font-size: 14px;
+}
+
+.searchBar :global(.input-group) input::placeholder {
+    color: #A7A7A7;
+}
+
+.searchBar :global(.input-group) input:focus {
+    background-color: #2A2A2A;
+    box-shadow: none;
+    outline: none;
+    border: none;
+}
+
+.searchBar :global(.input-group-append) button {
+    background-color: transparent;
+    border: none;
+    color: #A7A7A7;
+    padding: 8px 16px;
 }
 
 .searchResults {
-    margin-top: 10px;
+    max-height: 400px;
+    overflow-y: auto;
+    border-radius: 8px;
+    margin-top: 8px;
+    width: 100%;
+    max-width: 600px;
+}
+
+.row {
     display: flex;
-    flex-direction: column;
-    top: 440px;
-    max-height: 325px;
-    border-radius: 10px;
-    left: 125px;
-    /* position: absolute; */
-    overflow: scroll;
-    background-color: #eeeee4
-    ;
+    flex-direction: row;
+    align-items: center;
+    padding: 8px 12px;
+    cursor: pointer;
+    background-color: #181818 !important;
+    border-radius: 4px !important;
+    margin-bottom: 4px;
+    transition: background-color 0.2s ease;
+    width: 100% !important;
+}
+
+.row:hover {
+    background-color: #282828 !important;
+}
+
+.row p {
+    color: #FFFFFF;
+    margin: 0;
+    margin-left: 12px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.smallPic {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+.timestamp {
+    margin-top: 24px;
+}
+
+.timestampButton {
+    background-color: #1DB954 !important;
+    color: #000000 !important;
+    border-radius: 500px !important;
+    font-weight: 700 !important;
+    font-size: 16px !important;
+    padding: 16px 48px !important;
+    text-transform: none !important;
+    transition: transform 0.2s ease, background-color 0.2s ease !important;
+    border: none !important;
+}
+
+.timestampButton:hover {
+    background-color: #1ed760 !important;
+    transform: scale(1.04);
 }

@@ -32,12 +32,12 @@ const UnauthenticatedApp = () => {
         <br></br>
         <Box display="flex" justifyContent="space-between">
           {!accessToken && (
-            <Button style={{height: '50px', width: '100px', margin: "20px"}} className={styles.dumb} variant="contained" href={`${authEndpoint}client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`}>
-              Login
+            <Button style={{margin: "20px"}} className={styles.dumb} variant="contained" href={`${authEndpoint}client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`}>
+              Log in
             </Button>
           )}
           {!accessToken && (
-            <Button style={{height: '50px', width: '100px', margin: "20px"}} variant="contained" href={`${signUp}`}>
+            <Button style={{margin: "20px"}} className={styles.signUpButton} variant="outlined" href={`${signUp}`}>
               Sign Up
             </Button>
           )}

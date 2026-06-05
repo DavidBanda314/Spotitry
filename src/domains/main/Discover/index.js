@@ -20,45 +20,40 @@ const Discover = (props) => {
     return(
         <>
         <div className={styles.row1}>
-            <div >
-                <>
-                    {currentlyPlaying && <img alt="" src={currentlyPlaying?.album?.images[1].url} className={styles.pic}/>}
-                    <p className={styles.header}> {currentlyPlaying?.name}</p>
-                </>
-                <div className={styles.searchBar}>
-                    <SearchBar
-                        setSearchValue={setSearchValue}
-                    />
-                    <div className={styles.searchResults}>
-                        { searchValue &&
-                            searchedSongs.map((song, key) => (
-                                <div 
-                                    className={styles.row} key={key} 
-                                    style={{cursor:'pointer', backgroundColor: 'white', borderRadius:'20px', width: '375px'}}
-                                    onClick={() => { 
-                                        setSelectedSong(song.track_number-1,song.album.uri,song)
-                                    }}
-                                >
-
-                                    <img alt="" src={song.album.images[0].url} className={styles.smallPic}/>
-                                    <p
-                                    style={{cursor:'pointer', marginTop:'10px', marginLeft:'20px'}}>{song.name}</p>
-                                </div>
-                            ))
-                        }
-                    </div>
+            {currentlyPlaying && (
+                <div className={styles.nowPlaying}>
+                    <img alt="Now Playing" src={currentlyPlaying?.album?.images[1].url} className={styles.pic}/>
+                    <p className={styles.header}>{currentlyPlaying?.name}</p>
+                </div>
+            )}
+            <div className={styles.searchBar}>
+                <SearchBar
+                    setSearchValue={setSearchValue}
+                />
+                <div className={styles.searchResults}>
+                    { searchValue &&
+                        searchedSongs.map((song, key) => (
+                            <div 
+                                className={styles.row} key={key} 
+                                onClick={() => { 
+                                    setSelectedSong(song.track_number-1,song.album.uri,song)
+                                }}
+                            >
+                                <img alt="" src={song.album.images[0].url} className={styles.smallPic}/>
+                                <p>{song.name}</p>
+                            </div>
+                        ))
+                    }
                 </div>
             </div>
             <div className={styles.timestamp}>
-            <Button
-                style={{height: '75px', width: '150px', margin: "20px"}}
-                variant='contained' 
-                className={styles.timestampButton}
-                onClick={() => getPlaybackInfo(token,1,userId)}
+                <Button
+                    variant='contained' 
+                    className={styles.timestampButton}
+                    onClick={() => getPlaybackInfo(token,1,userId)}
                 >
-                Timestamp
-            </Button>
-
+                    Timestamp
+                </Button>
             </div>
         </div>
         </>
