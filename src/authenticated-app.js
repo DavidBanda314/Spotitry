@@ -79,7 +79,7 @@ const AuthenticatedApp = (props) => {
         )}
         {showNoteInput && (
           <div style={{
-            backgroundColor: '#282828',
+            backgroundColor: '#1a1a1a',
             padding: '12px 16px',
             display: 'flex',
             alignItems: 'center',
@@ -95,10 +95,11 @@ const AuthenticatedApp = (props) => {
               autoFocus
               style={{
                 flex: 1,
-                backgroundColor: '#3a3a3a',
-                border: '1px solid rgba(255,255,255,0.2)',
-                borderRadius: '500px',
-                padding: '8px 16px',
+                minWidth: 0,
+                backgroundColor: '#000000',
+                border: '1px solid rgba(255,255,255,0.15)',
+                borderRadius: '8px',
+                padding: '9px 14px',
                 color: '#FFFFFF',
                 fontSize: '14px',
                 outline: 'none',
@@ -107,11 +108,12 @@ const AuthenticatedApp = (props) => {
             <button
               onClick={saveTimestampWithNote}
               style={{
+                flexShrink: 0,
                 backgroundColor: '#1DB954',
                 color: '#000',
                 border: 'none',
                 borderRadius: '500px',
-                padding: '8px 20px',
+                padding: '9px 18px',
                 fontSize: '14px',
                 fontWeight: 700,
                 cursor: 'pointer',
@@ -122,11 +124,12 @@ const AuthenticatedApp = (props) => {
             <button
               onClick={cancelNote}
               style={{
+                flexShrink: 0,
                 backgroundColor: 'transparent',
                 color: 'rgba(255,255,255,0.6)',
                 border: '1px solid rgba(255,255,255,0.2)',
                 borderRadius: '500px',
-                padding: '8px 16px',
+                padding: '9px 14px',
                 fontSize: '14px',
                 cursor: 'pointer',
               }}

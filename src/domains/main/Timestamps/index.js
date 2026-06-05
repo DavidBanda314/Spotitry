@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo, useCallback } from 'react'
 import styles from '../Timestamps/index.module.css'
 import { connect } from 'react-redux'
 import { getProfileRequested } from '../redux/Actions/UserActions'
+import { parseSpecialCharacters } from '../../../utils/constants'
 import { playSongRequested, setSelectedSong } from '../redux/Actions/PlaybackActions'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -14,11 +15,12 @@ import {
     removeTimestampFromCollection as fbRemoveTimestampFromCollection,
     deleteCollection as fbDeleteCollection,
     fetchCollections as fbFetchCollections,
+    updateTimestampNote as fbUpdateTimestampNote,
 } from '../../../firebase'
 
 
 const Timestamps = (props) => {
-    const {token, timestamps, playSong, setSelectedSong, selectedSong, userId, databaseUserLoaded} = props
+    const {token, timestamps, playSong, setSelectedSong, selectedSong, userId, databaseUserLoaded, refetchUser} = props
     const [timestampsBySong,setTimeStampsBySong] = useState([])
     const [searchValue, setSearchValue] = useState('')
     const [allTimeStampsBySong,setAllTimeStampsBySong] = useState([])
@@ -33,6 +35,32 @@ const Timestamps = (props) => {
     const [collectionDropdownId, setCollectionDropdownId] = useState(null)
     const [addedConfirmId, setAddedConfirmId] = useState(null)
     const [deleteConfirm, setDeleteConfirm] = useState(false)
+
+    // Note editing state (keyed by ts._pushId)
+    const [noteEditingId, setNoteEditingId] = useState(null)
+    const [noteDraft, setNoteDraft] = useState('')
+    const [noteSaving, setNoteSaving] = useState(false)
+
+    const openNoteEditor = useCallback((ts) => {
+        setNoteEditingId(ts._pushId)
+        setNoteDraft(ts.note || '')
+    }, [])
+
+    const cancelNoteEditor = useCallback(() => {
+        setNoteEditingId(null)
+        setNoteDraft('')
+    }, [])
+
+    const handleSaveNote = useCallback(async (ts) => {
+        if (!userId) return
+        setNoteSaving(true)
+        // Timestamps are stored under the sanitized user id (same as saveTimestamp), so parse it here too.
+        await fbUpdateTimestampNote(parseSpecialCharacters(userId), ts._songKey, ts._pushId, noteDraft)
+        if (refetchUser) refetchUser(token)
+        setNoteSaving(false)
+        setNoteEditingId(null)
+        setNoteDraft('')
+    }, [userId, noteDraft, refetchUser, token])
 
     const handleShare = async (song, positionMs, note, id) => {
         const baseUrl = window.location.origin
@@ -413,8 +441,51 @@ const Timestamps = (props) => {
                                                         )}
                                                     </div>
                                                 </div>
-                                                {timestamp.note && (
-                                                    <span className={styles.note}>"{timestamp.note}"</span>
+                                                {noteEditingId === timestamp._pushId ? (
+                                                    <div className={styles.noteEditor} onClick={(e) => e.stopPropagation()}>
+                                                        <input
+                                                            className={styles.noteInput}
+                                                            value={noteDraft}
+                                                            onChange={(e) => setNoteDraft(e.target.value)}
+                                                            onKeyDown={(e) => {
+                                                                if (e.key === 'Enter') handleSaveNote(timestamp)
+                                                                if (e.key === 'Escape') cancelNoteEditor()
+                                                            }}
+                                                            placeholder="Add a note..."
+                                                            autoFocus
+                                                        />
+                                                        <button
+                                                            className={styles.noteSaveBtn}
+                                                            disabled={noteSaving}
+                                                            onClick={() => handleSaveNote(timestamp)}
+                                                        >
+                                                            {noteSaving ? 'Saving...' : 'Save'}
+                                                        </button>
+                                                        <button
+                                                            className={styles.noteCancelBtn}
+                                                            disabled={noteSaving}
+                                                            onClick={cancelNoteEditor}
+                                                        >
+                                                            Cancel
+                                                        </button>
+                                                    </div>
+                                                ) : timestamp.note ? (
+                                                    <div className={styles.noteDisplay}>
+                                                        <span className={styles.note}>&ldquo;{timestamp.note}&rdquo;</span>
+                                                        <button
+                                                            className={styles.noteEditLink}
+                                                            onClick={(e) => { e.stopPropagation(); openNoteEditor(timestamp) }}
+                                                        >
+                                                            Edit
+                                                        </button>
+                                                    </div>
+                                                ) : (
+                                                    <button
+                                                        className={styles.addNoteLink}
+                                                        onClick={(e) => { e.stopPropagation(); openNoteEditor(timestamp) }}
+                                                    >
+                                                        + Add note
+                                                    </button>
                                                 )}
                                             </div>
                                         )

@@ -51,6 +51,18 @@ export async function saveTimestamp(userId,song,progress_ms,note){
     console.log(error)
   }
 }
+export async function updateTimestampNote(userId, songKey, pushId, note) {
+  try {
+    const ref = db.ref('users/' + userId + '/timestamps/' + songKey + '/' + pushId + '/note');
+    if (note && note.trim()) {
+      await ref.set(note.trim());
+    } else {
+      await ref.remove();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
 export async function getTimestamps(userId){
   try{
     let snapshot = await db.ref('users/' + userId + '/timestamps').get();
