@@ -21,16 +21,14 @@ const Home = (props) => {
                 {topTracks.slice(0,10)?.map((track,key) => {
                     return(
                         <Col style={{height: '50%', display: 'flex', marginTop: "10px", }}
-                            onClick={() => (
-                                (selectedSong?.song?.album?.uri === track.album.uri ?
-                                (setSelectedSong(0,track.uri,track), getPlaybackInfo(token,0,0) )
-                                
-                                :
-                                setSelectedSong(track.track_number-1,track.album?.uri,track),
-                                getPlaybackInfo(token,0,0) 
-    
-                                ) 
-                            )}
+                            onClick={() => {
+                                if (selectedSong?.song?.album?.uri === track.album.uri) {
+                                    setSelectedSong(0,track.uri,track);
+                                } else {
+                                    setSelectedSong(track.track_number-1,track.album?.uri,track);
+                                }
+                                getPlaybackInfo(token,0,0);
+                            }}
                         >
                             <Card style={{cursor:'pointer', width: '210px'}}>
                                 <CardImg top width="100%" alt="Album Cover" style={{width:'210px'}} src={track.album.images[0].url}/>
