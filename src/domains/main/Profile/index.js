@@ -34,7 +34,6 @@ const Profile = (props) => {
     const handlePlayTrack = (track) => {
         if (token && track.uri) {
             selectSong(0, track.uri, { name: track.name, uri: track.uri })
-            playSong(token, 0, track.uri, { name: track.name, uri: track.uri })
         }
     }
 

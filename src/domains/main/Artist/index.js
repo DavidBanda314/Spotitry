@@ -63,7 +63,6 @@ const Artist = () => {
 
     const handlePlayTrack = (track) => {
         dispatch(setSelectedSong(0, track.uri, track));
-        dispatch(playSongRequested(token, 0, track.uri, track));
     };
 
     const handleRelatedClick = (artistId) => {

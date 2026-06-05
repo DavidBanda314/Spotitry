@@ -35,7 +35,11 @@ function formatMs(ms) {
 const AuthenticatedApp = (props) => {
   var {token, storeToken, selectedSong, getPlaybackInfo, userId, updateSelectedSong, playbackInfo, storeDeviceId} = props
   const {position_ms, song, songURI} = selectedSong
-  const displaySong = (playbackInfo && playbackInfo.item) || song
+  // Single source of truth for the player bar: whatever is actually playing.
+  // Both library plays (setSelectedSong) and timestamp plays (saga's
+  // setPlaybackInfo) populate playbackInfo.item, so we don't fall back to
+  // selectedSong.song — that could show a stale track once item is cleared.
+  const displaySong = playbackInfo && playbackInfo.item
   const [timestampSaved, setTimestampSaved] = useState(false)
   const [showNoteInput, setShowNoteInput] = useState(false)
   const [noteText, setNoteText] = useState('')
