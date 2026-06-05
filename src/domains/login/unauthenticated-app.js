@@ -1,7 +1,7 @@
 import styles from  './unauthenticated.module.css'
 import React, { useEffect, useState, useCallback} from "react";
 import { spotifyLogo, clientId, hash, scopes, signUp, authEndpoint, generatePKCEChallenge} from '../../utils/constants'
-import {Tabs, Tab, Button, Box} from '@material-ui/core'
+
 
 const UnauthenticatedApp = () => {
     const [accessToken, setAccessToken] = useState()
@@ -37,9 +37,9 @@ const UnauthenticatedApp = () => {
         </p>
         <div className={styles.buttonGroup}>
           {!accessToken && (
-            <a className={styles.loginButton} href="#" onClick={(e) => { e.preventDefault(); handleLogin(); }}>
+            <button className={styles.loginButton} onClick={handleLogin}>
               Log in with Spotify
-            </a>
+            </button>
           )}
           {!accessToken && (
             <a className={styles.signUpButton} href={`${signUp}`}>

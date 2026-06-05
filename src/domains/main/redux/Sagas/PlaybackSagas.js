@@ -4,7 +4,7 @@ import axios from 'axios'
 import { PLAYER_ENDPOINT } from '../../../../utils/constants'
 import { saveTimestamp } from '../../../../firebase'
 
-export function* getPlaybackInfo({ token, createTimestamp, userId}) {
+export function* getPlaybackInfo({ token, createTimestamp, userId, note}) {
     try {
         const playbackInfo = yield call(axios.get, PLAYER_ENDPOINT,
             {
@@ -23,7 +23,7 @@ export function* getPlaybackInfo({ token, createTimestamp, userId}) {
             const devices = availableDevices.data
             yield put(Actions.getPlaybackInfoSucceeded(playback,devices))
             if(createTimestamp === 1){
-                saveTimestamp(userId,playback.item,playback.progress_ms)
+                saveTimestamp(userId,playback.item,playback.progress_ms,note)
             }
         }
         else{
