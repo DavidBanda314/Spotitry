@@ -1,7 +1,7 @@
-import { all, takeLatest, call, put } from 'redux-saga/effects';
+import { all, takeLatest, call, put, select } from 'redux-saga/effects';
 import * as Actions from '../Actions/UserActions'
 import axios from 'axios'
-import { PROFILE_ENDPOINT, TOP_ARTISTS_ENDPOINT, TOP_TRACKS_ENDPOINT, SEARCH_ENDPOINT, parseSpecialCharacters, } from '../../../../utils/constants'
+import { PROFILE_ENDPOINT, TOP_ARTISTS_ENDPOINT, TOP_TRACKS_ENDPOINT, SEARCH_ENDPOINT, RECOMMENDATIONS_ENDPOINT, NEW_RELEASES_ENDPOINT, parseSpecialCharacters, } from '../../../../utils/constants'
 import {createAndFetchUser, fetchUser} from '../../../../firebase.js'
 import { getRecentlyPlayedRequested } from '../../../main/redux/Actions/PlaybackActions'
 
@@ -120,20 +120,57 @@ export function* searchSongs({token,searchValue = ''}) {
         {headers: {'Authorization': 'Bearer ' + token},
             params: {
                 'q':searchValue, 
-                'type':'track'
+                'type':'track,artist,album'
             },
         })
         }
         if(response) {
-            const searchedSongs = response.data.tracks.items
-            yield put(Actions.searchSongsSucceeded(searchedSongs))
+            const searchedSongs = response.data.tracks?.items || []
+            const searchedArtists = response.data.artists?.items || []
+            const searchedAlbums = response.data.albums?.items || []
+            yield put(Actions.searchSongsSucceeded(searchedSongs, searchedArtists, searchedAlbums))
         }
         else {
-            yield put(Actions.searchSongsFailed('Could not get top tracks'))
+            yield put(Actions.searchSongsFailed('Could not get search results'))
         }
     }
     catch(error) {
         yield put(Actions.searchSongsFailed(error))
+    }
+}
+
+export function* getDiscoverFeed({token}) {
+    try {
+        const topTracks = yield select((state) => state.User.topTracks)
+        const topArtists = yield select((state) => state.User.topArtists)
+        const seedTracks = (topTracks || []).slice(0, 2).map((t) => t.id).filter(Boolean)
+        const seedArtists = (topArtists || []).slice(0, 3 - seedTracks.length).map((a) => a.id).filter(Boolean)
+
+        if (seedTracks.length || seedArtists.length) {
+            const response = yield call(axios.get, RECOMMENDATIONS_ENDPOINT, {
+                headers: { 'Authorization': 'Bearer ' + token },
+                params: {
+                    limit: 20,
+                    seed_tracks: seedTracks.join(','),
+                    seed_artists: seedArtists.join(','),
+                },
+            })
+            const tracks = response?.data?.tracks || []
+            if (tracks.length) {
+                yield put(Actions.getDiscoverFeedSucceeded(tracks, 'recommendations'))
+                return
+            }
+        }
+
+        const fallback = yield call(axios.get, NEW_RELEASES_ENDPOINT, {
+            headers: { 'Authorization': 'Bearer ' + token },
+            params: { limit: 20 },
+        })
+        const albums = fallback?.data?.albums?.items || []
+        yield put(Actions.getDiscoverFeedSucceeded(albums, 'newReleases'))
+    }
+    catch(error) {
+        yield put(Actions.getDiscoverFeedFailed(error))
     }
 }
 
@@ -144,7 +181,8 @@ function* userSaga() {
         yield takeLatest(Actions.UserDataActions.GET_TOP_ARTISTS_Requested, getTopArtists),
         yield takeLatest(Actions.UserDataActions.GET_TOP_TRACKS_Requested, getTopTracks),
         yield takeLatest(Actions.UserDataActions.setDatabaseUserRequested, setDatabaseUser),
-        yield takeLatest(Actions.UserDataActions.searchSongsRequested, searchSongs)
+        yield takeLatest(Actions.UserDataActions.searchSongsRequested, searchSongs),
+        yield takeLatest(Actions.UserDataActions.getDiscoverFeedRequested, getDiscoverFeed)
     ]);
 }
 export default userSaga

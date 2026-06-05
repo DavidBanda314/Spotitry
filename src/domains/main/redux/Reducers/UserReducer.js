@@ -7,8 +7,14 @@ const InitialState =
     topArtists: [],
     topTracks: [],
     searchedSongs: [],
+    searchedArtists: [],
+    searchedAlbums: [],
     searchLoading: false,
     searchError: null,
+    discoverFeed: [],
+    discoverFeedType: null,
+    discoverLoading: false,
+    discoverError: null,
     token: '',
     loading:false,
     errors:{},
@@ -117,10 +123,12 @@ function userReducer(state = InitialState, action){
             }
         }
         case UserDataActions.searchSongsSucceeded: {
-            const { searchedSongs } = action
+            const { searchedSongs, searchedArtists, searchedAlbums } = action
             return {
                 ...state,
                 searchedSongs,
+                searchedArtists,
+                searchedAlbums,
                 searchLoading: false,
                 searchError: null,
             }
@@ -132,6 +140,31 @@ function userReducer(state = InitialState, action){
                 errors:errors,
                 searchLoading: false,
                 searchError: errors,
+            }
+        }
+        case UserDataActions.getDiscoverFeedRequested: {
+            return {
+                ...state,
+                discoverLoading: true,
+                discoverError: null,
+            }
+        }
+        case UserDataActions.getDiscoverFeedSucceeded: {
+            const { discoverFeed, discoverFeedType } = action
+            return {
+                ...state,
+                discoverFeed,
+                discoverFeedType,
+                discoverLoading: false,
+                discoverError: null,
+            }
+        }
+        case UserDataActions.getDiscoverFeedFailed: {
+            const { errors } = action
+            return {
+                ...state,
+                discoverLoading: false,
+                discoverError: errors,
             }
         }
         default:{

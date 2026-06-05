@@ -47,6 +47,8 @@ export const TOP_ARTISTS_ENDPOINT = 'https://api.spotify.com/v1/me/top/artists'
 export const TOP_TRACKS_ENDPOINT = 'https://api.spotify.com/v1/me/top/tracks'
 export const SEARCH_ENDPOINT = 'https://api.spotify.com/v1/search'
 export const PLAYER_ENDPOINT = 'https://api.spotify.com/v1/me/player'
+export const RECOMMENDATIONS_ENDPOINT = 'https://api.spotify.com/v1/recommendations'
+export const NEW_RELEASES_ENDPOINT = 'https://api.spotify.com/v1/browse/new-releases'
 
 // PKCE helpers
 function generateRandomString(length) {
