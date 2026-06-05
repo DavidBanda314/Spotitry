@@ -105,6 +105,30 @@ export async function exchangeCodeForToken(code) {
   return data;
 }
 
+export async function refreshAccessToken() {
+  const refreshToken = localStorage.getItem('refresh_token');
+  if (!refreshToken) return null;
+  const body = new URLSearchParams({
+    client_id: clientId,
+    grant_type: 'refresh_token',
+    refresh_token: refreshToken,
+  });
+  const response = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: body,
+  });
+  const data = await response.json();
+  if (data.access_token) {
+    localStorage.setItem('token', data.access_token);
+    localStorage.setItem('expiration', (new Date().getTime() + data.expires_in * 1000));
+    if (data.refresh_token) {
+      localStorage.setItem('refresh_token', data.refresh_token);
+    }
+  }
+  return data;
+}
+
 // Legacy hash parser (kept for backward compatibility during transition)
 export const hash = window.location.hash
 .substring(1)
