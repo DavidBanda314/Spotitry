@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import styles from './index.module.css'
 import { useHistory, useLocation } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHome, faHistory, faBookmark, faSearch, faUser, faChartBar, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faHome, faHistory, faBookmark, faSearch, faUser, faChartBar, faPlus, faCheck } from '@fortawesome/free-solid-svg-icons'
 import { getPlaybackInfoRequested } from '../../domains/main/redux/Actions/PlaybackActions.js'
 
 const tabs = [
@@ -21,10 +21,17 @@ const NavBar = (props) => {
     const location = useLocation()
     const current = location.pathname.replace('/', '').toLowerCase()
 
+    const [saved, setSaved] = useState(false)
+    const savedTimer = useRef(null)
+    useEffect(() => () => clearTimeout(savedTimer.current), [])
+
     const canSave = !!(token && userId && selectedSong?.songURI)
     const handleCreate = () => {
         if (canSave) {
             getPlaybackInfo(token, 1, userId)
+            setSaved(true)
+            clearTimeout(savedTimer.current)
+            savedTimer.current = setTimeout(() => setSaved(false), 2000)
         }
     }
 
@@ -53,13 +60,13 @@ const NavBar = (props) => {
             <div className={styles.centerSlot}>
                 <button
                     type="button"
-                    className={styles.centerButton}
+                    className={`${styles.centerButton} ${saved ? styles.centerButtonSaved : ''}`}
                     onClick={handleCreate}
                     disabled={!canSave}
-                    aria-label="Save a timestamp of the current song"
+                    aria-label={saved ? 'Timestamp saved' : 'Save a timestamp of the current song'}
                     title={canSave ? 'Save a timestamp of the current song' : 'Play a song to save a timestamp'}
                 >
-                    <FontAwesomeIcon icon={faPlus} className={styles.centerIcon} />
+                    <FontAwesomeIcon icon={saved ? faCheck : faPlus} className={styles.centerIcon} />
                 </button>
             </div>
             {tabs.slice(mid).map(renderTab)}
