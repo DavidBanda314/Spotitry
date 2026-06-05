@@ -13,7 +13,7 @@ const Discover = (props) => {
     const {searchSongs, getPlaybackInfo, token, searchedSongs, currentlyPlaying, userId, setSelectedSong, playbackInfo, searchLoading, searchError} = props
     const [query, setQuery] = useState('')
     const [debouncedQuery, setDebouncedQuery] = useState('')
-    const [selectedKey, setSelectedKey] = useState(null)
+    const [selectedId, setSelectedId] = useState(null)
     const [playbackLoaded, setPlaybackLoaded] = useState(false)
     const playbackInfoRef = useRef(playbackInfo)
 
@@ -44,12 +44,12 @@ const Discover = (props) => {
     const handleClear = () => {
         setQuery('')
         setDebouncedQuery('')
-        setSelectedKey(null)
+        setSelectedId(null)
     }
 
-    const handleSelect = (song, key) => {
+    const handleSelect = (song) => {
         setSelectedSong(song.track_number - 1, song.album.uri, song)
-        setSelectedKey(key)
+        setSelectedId(song.id)
     }
 
     const hasQuery = debouncedQuery.length > 0
@@ -87,9 +87,9 @@ const Discover = (props) => {
         }
         return searchedSongs.map((song, key) => (
             <div
-                className={`${styles.row} ${selectedKey === key ? styles.rowSelected : ''}`}
-                key={key}
-                onClick={() => handleSelect(song, key)}
+                className={`${styles.row} ${selectedId === song.id ? styles.rowSelected : ''}`}
+                key={song.id || key}
+                onClick={() => handleSelect(song)}
             >
                 {song.album?.images?.[0]?.url ? (
                     <img alt="" src={song.album.images[0].url} className={styles.smallPic}/>
@@ -100,7 +100,7 @@ const Discover = (props) => {
                     <span className={styles.rowTitle}>{song.name}</span>
                     <span className={styles.rowSubtitle}>{song.artists?.[0]?.name}</span>
                 </div>
-                {selectedKey === key && (
+                {selectedId === song.id && (
                     <span className={styles.playingTag}>Playing</span>
                 )}
             </div>
