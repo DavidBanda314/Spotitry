@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from 'react'
+import React, {useState, useEffect, useMemo } from 'react'
 import styles from '../History/index.module.css'
 import { connect } from 'react-redux'
 import { getProfileRequested, StoreToken } from '../redux/Actions/UserActions'
@@ -6,13 +6,26 @@ import { playSongRequested, setSelectedSong } from '../redux/Actions/PlaybackAct
 import { InputGroup, InputGroupAddon,Input, Button } from 'reactstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faSearch, faListUl } from '@fortawesome/free-solid-svg-icons'
 import DisplayCard from '../../../components/DisplayCard';
+import CreatePlaylistModal from '../../../components/CreatePlaylistModal'
 
 const History = (props) => {
-    const {token,history, StoreToken, setSelectedSong, selectedSong} = props
+    const {token,history, StoreToken, setSelectedSong, selectedSong, userId} = props
     const [myHistory, setMyHistory] = useState(history)
     const [searchValue,setSearchValue] = useState('')
+    const [showPlaylistModal, setShowPlaylistModal] = useState(false)
+
+    const uniqueTrackUris = useMemo(() => {
+        if (!history || !history.length) return []
+        const uris = new Set()
+        history.forEach((item) => {
+            if (item.track && item.track.uri) {
+                uris.add(item.track.uri)
+            }
+        })
+        return Array.from(uris)
+    }, [history])
     useEffect(() => {
         StoreToken(token)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -25,7 +38,23 @@ const History = (props) => {
     console.log(myHistory)
     return(
         <>
-        <div className={styles.container}>     
+        <div className={styles.container}>
+            <button
+                className={styles.createPlaylistBtn}
+                onClick={() => setShowPlaylistModal(true)}
+                disabled={uniqueTrackUris.length === 0 || !userId}
+            >
+                <FontAwesomeIcon icon={faListUl} style={{marginRight: '8px'}} />
+                Create Playlist
+            </button>
+            <CreatePlaylistModal
+                isOpen={showPlaylistModal}
+                onClose={() => setShowPlaylistModal(false)}
+                defaultName="My Recent Listens"
+                token={token}
+                userId={userId}
+                trackUris={uniqueTrackUris}
+            />
             <div className={styles.searchWrapper}>
                 <InputGroup>
                     <InputGroupAddon addonType="append">
@@ -81,7 +110,8 @@ const mapStateToProps = (state) => {
   return {
       history: state.Player.recentlyPlayed,
       token:state.User.token,
-      selectedSong:state.Player.selectedSong
+      selectedSong:state.Player.selectedSong,
+      userId: state.User.profile?.id
   }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(History);
