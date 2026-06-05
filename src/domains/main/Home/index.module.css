@@ -99,6 +99,94 @@
     text-transform: uppercase;
 }
 
+.timestampRow {
+    display: flex;
+    overflow-x: auto;
+    gap: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+    scrollbar-width: thin;
+    scrollbar-color: var(--fg) transparent;
+}
+
+.timestampRow::-webkit-scrollbar {
+    height: 6px;
+}
+
+.timestampRow::-webkit-scrollbar-thumb {
+    background: var(--fg);
+    border-radius: 0;
+}
+
+.timestampCard {
+    display: flex;
+    align-items: center;
+    min-width: 220px;
+    max-width: 260px;
+    background-color: #000000;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    border-radius: 0;
+    padding: 10px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.12s ease;
+}
+
+.timestampCard:hover {
+    background-color: #0a0a0a;
+}
+
+.timestampCard:hover .timestampSong {
+    color: var(--fg-bright);
+}
+
+.timestampArt {
+    width: 48px;
+    height: 48px;
+    border-radius: 0;
+    object-fit: cover;
+    flex-shrink: 0;
+    margin-right: 10px;
+    border: 1px solid var(--line);
+    filter: grayscale(1) contrast(1.05);
+}
+
+.timestampInfo {
+    min-width: 0;
+    flex: 1;
+}
+
+.timestampSong {
+    color: var(--fg);
+    font-size: 13px;
+    font-weight: 700;
+    margin: 0 0 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-transform: uppercase;
+    transition: color 0.12s ease;
+}
+
+.timestampTime {
+    color: var(--yellow);
+    font-size: 13px;
+    font-weight: 700;
+    margin: 0 0 2px;
+    font-variant-numeric: tabular-nums;
+}
+
+.timestampNote {
+    color: var(--fg);
+    font-size: 11px;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-transform: uppercase;
+}
+
 @media (min-width: 600px) {
     .grid {
         grid-template-columns: repeat(3, 1fr);

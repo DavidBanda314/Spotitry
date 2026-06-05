@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Switch, Route, Redirect} from 'react-router-dom';
+import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import Home from './domains/main/Home';
 import NavBar from './components/NavBar';
 import Timestamps from './domains/main/Timestamps';
 import Account from './domains/main/Account';
 import Discover from './domains/main/Discover';
 import History from './domains/main/History';
+import Stats from './domains/main/Stats';
 import { StoreToken } from './domains/main/redux/Actions/UserActions.js'
 import { getPlaybackInfoRequested } from './domains/main/redux/Actions/PlaybackActions.js'
 import { connect } from 'react-redux'
@@ -18,6 +20,8 @@ const AuthenticatedApp = (props) => {
   const [timestampSaved, setTimestampSaved] = useState(false)
   const [showNoteInput, setShowNoteInput] = useState(false)
   const [noteText, setNoteText] = useState('')
+  const [play, setPlay] = useState(false)
+  const location = useLocation()
 
   useEffect(() => {
     if(!token){
@@ -25,6 +29,12 @@ const AuthenticatedApp = (props) => {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
+
+  useEffect(() => {
+    if(selectedSong?.songURI){
+      setPlay(true)
+    }
+  },[selectedSong])
 
   const handleTimestamp = () => {
     if (token && userId) {
@@ -136,7 +146,9 @@ const AuthenticatedApp = (props) => {
               token={token}
               uris={[songURI]}
               offset={position_ms}
+              play={play}
               autoPlay={true}
+              callback={(state) => { setPlay(state.isPlaying) }}
               showSaveIcon={true}
               persistDeviceSelection={true}
             />
@@ -163,40 +175,46 @@ const AuthenticatedApp = (props) => {
       </div>
       }
       <main className={`${styles.content} ${song ? styles.withPlayer : ''}`}>
-      <Switch>
-        <Route
-          exact
-          path="/"
-          render={() => {
-            return <Redirect to="/home" />;
+      <TransitionGroup component={null}>
+        <CSSTransition
+          key={location.pathname}
+          classNames={{
+            enter: styles.fadeEnter,
+            enterActive: styles.fadeEnterActive,
+            exit: styles.fadeExit,
+            exitActive: styles.fadeExitActive,
           }}
-        />
-        <Route
-          exact path='/home'
+          timeout={200}
         >
-          <Home/>
-        </Route>
-        <Route
-          exact path='/timestamps'
-          >
-          <Timestamps/>
-        </Route>
-        <Route
-          exact path='/account'
-        >
-          <Account/>
-        </Route>
-        <Route
-          exact path='/discover'
-        >
-          <Discover/>
-        </Route>
-        <Route
-          exact path='/history'
-        >
-          <History/>
-        </Route>
-      </Switch>
+          <Switch location={location}>
+            <Route
+              exact
+              path="/"
+              render={() => {
+                return <Redirect to="/home" />;
+              }}
+            />
+            <Route exact path='/home'>
+              <Home/>
+            </Route>
+            <Route exact path='/timestamps'>
+              <Timestamps/>
+            </Route>
+            <Route exact path='/account'>
+              <Account/>
+            </Route>
+            <Route exact path='/discover'>
+              <Discover/>
+            </Route>
+            <Route exact path='/history'>
+              <History/>
+            </Route>
+            <Route exact path='/stats'>
+              <Stats/>
+            </Route>
+          </Switch>
+        </CSSTransition>
+      </TransitionGroup>
       </main>
       <NavBar/>
       </>

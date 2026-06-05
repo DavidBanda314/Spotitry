@@ -9,39 +9,207 @@
     color: var(--fg);
 }
 
+.createPlaylistBtn {
+    align-self: flex-start;
+    margin: 16px;
+    background: transparent;
+    color: var(--blue);
+    border: 1px solid var(--blue);
+    border-radius: 0;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background 0.12s, color 0.12s;
+}
+
+.createPlaylistBtn:hover:not(:disabled) {
+    background: var(--blue);
+    color: #000000;
+}
+
+.createPlaylistBtn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
 .searchWrapper {
     width: 100%;
-    padding: 16px;
+    padding: 0 16px 16px;
     border-bottom: 1px solid var(--line);
 }
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(1, 1fr);
     gap: 0;
     border-top: 1px solid var(--line);
 }
 
-.cardWrapper {
-    display: flex;
-    border-right: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-}
-
-.image {
-    object-fit: cover;
-    aspect-ratio: 1;
-    filter: grayscale(1) contrast(1.05);
-}
-
 @media (min-width: 600px) {
     .grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (min-width: 900px) {
     .grid {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
     }
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background-color: #000000;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    border-radius: 0;
+    padding: 14px 16px;
+}
+
+.cardHeader {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.cover {
+    width: 56px;
+    height: 56px;
+    border-radius: 0;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid var(--line);
+    filter: grayscale(1) contrast(1.05);
+}
+
+.cardMeta {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.songTitle {
+    color: var(--fg-bright);
+    font-size: 14px;
+    font-weight: 700;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-transform: uppercase;
+}
+
+.artistName {
+    color: var(--fg);
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-transform: uppercase;
+}
+
+.albumName {
+    color: var(--fg);
+    font-size: 11px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-transform: uppercase;
+}
+
+.timestampList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.timestampItem {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.timestampButton {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    background-color: #000000;
+    border: 1px solid var(--line);
+    border-radius: 0;
+    padding: 10px 12px;
+    color: var(--fg);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: border-color 0.12s ease, color 0.12s ease;
+}
+
+.timestampButton:hover {
+    color: var(--fg-bright);
+    border-color: var(--fg-bright);
+}
+
+.playIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 0;
+    background-color: var(--yellow);
+    color: #000000;
+    font-size: 10px;
+    flex-shrink: 0;
+}
+
+.timeLabel {
+    color: var(--fg);
+    font-variant-numeric: tabular-nums;
+}
+
+.timestampButton:hover .timeLabel {
+    color: var(--fg-bright);
+}
+
+.note {
+    color: var(--fg);
+    font-size: 11px;
+    padding-left: 4px;
+    text-transform: uppercase;
+}
+
+.emptyState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+    padding: 64px 24px;
+    background-color: #000000;
+    border-top: 1px solid var(--line);
+}
+
+.emptyIcon {
+    font-size: 36px;
+    color: var(--yellow);
+}
+
+.emptyTitle {
+    color: var(--fg-bright);
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.emptySubtitle {
+    color: var(--fg);
+    font-size: 12px;
+    text-transform: uppercase;
 }

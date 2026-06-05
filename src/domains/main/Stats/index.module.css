@@ -1,0 +1,195 @@
+.container {
+    padding: 16px 16px 32px;
+    background-color: #000000;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.sectionHeader {
+    display: flex;
+    align-items: center;
+    margin: 24px 0 16px;
+}
+
+.sectionTitle {
+    color: var(--yellow);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    flex: 1;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.tab {
+    background: none;
+    border: 1px solid var(--line);
+    border-radius: 0;
+    padding: 8px 16px;
+    color: var(--fg);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background-color 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+}
+
+.tab:hover {
+    color: var(--fg-bright);
+    border-color: var(--fg-bright);
+}
+
+.tabActive {
+    background-color: var(--yellow);
+    color: #000000;
+    border-color: var(--yellow);
+}
+
+.tabActive:hover {
+    color: #000000;
+    border-color: var(--yellow);
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.listItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: #000000;
+    border: 1px solid var(--line);
+    border-radius: 0;
+    padding: 10px 12px;
+}
+
+.rank {
+    color: var(--fg);
+    font-size: 13px;
+    font-weight: 700;
+    min-width: 28px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+}
+
+.itemImage {
+    width: 48px;
+    height: 48px;
+    border-radius: 0;
+    object-fit: cover;
+    border: 1px solid var(--line);
+    filter: grayscale(1) contrast(1.05);
+}
+
+.itemImageRound {
+    width: 48px;
+    height: 48px;
+    border-radius: 0;
+    object-fit: cover;
+    border: 1px solid var(--line);
+    filter: grayscale(1) contrast(1.05);
+}
+
+.itemInfo {
+    flex: 1;
+    min-width: 0;
+}
+
+.itemName {
+    color: var(--fg-bright);
+    font-size: 13px;
+    font-weight: 700;
+    margin: 0 0 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-transform: uppercase;
+}
+
+.itemSub {
+    color: var(--fg);
+    font-size: 12px;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-transform: uppercase;
+}
+
+.genreList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.genreItem {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.genreLabel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.genreName {
+    color: var(--fg-bright);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.genrePercent {
+    color: var(--fg);
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+}
+
+.genreBarBg {
+    width: 100%;
+    height: 8px;
+    background-color: #000000;
+    border: 1px solid var(--line);
+    border-radius: 0;
+    overflow: hidden;
+}
+
+.genreBar {
+    height: 100%;
+    background-color: var(--yellow);
+    border-radius: 0;
+    transition: width 0.3s ease;
+}
+
+.loading {
+    color: var(--fg);
+    text-align: center;
+    padding: 40px 0;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+.error {
+    color: var(--red);
+    text-align: center;
+    padding: 40px 0;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+@media (min-width: 600px) {
+    .sectionTitle {
+        font-size: 14px;
+    }
+}

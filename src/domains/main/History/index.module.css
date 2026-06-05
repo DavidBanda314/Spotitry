@@ -6,6 +6,31 @@
     color: var(--fg);
 }
 
+.createPlaylistBtn {
+    align-self: flex-start;
+    margin: 16px;
+    background: transparent;
+    color: var(--blue);
+    border: 1px solid var(--blue);
+    border-radius: 0;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background 0.12s, color 0.12s;
+}
+
+.createPlaylistBtn:hover:not(:disabled) {
+    background: var(--blue);
+    color: #000000;
+}
+
+.createPlaylistBtn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
 .searchWrapper {
     width: 100%;
     padding: 16px;

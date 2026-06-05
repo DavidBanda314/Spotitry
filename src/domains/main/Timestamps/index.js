@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import styles from '../Timestamps/index.module.css'
 import { connect } from 'react-redux'
 import { getProfileRequested } from '../redux/Actions/UserActions'
@@ -6,15 +6,30 @@ import { playSongRequested, setSelectedSong } from '../redux/Actions/PlaybackAct
 import { InputGroup, InputGroupAddon, Input, Button } from 'reactstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
-import { Card, CardImg, CardBody, CardTitle, CardSubtitle, CardText } from 'reactstrap'
+import { faSearch, faListUl } from '@fortawesome/free-solid-svg-icons'
+import CreatePlaylistModal from '../../../components/CreatePlaylistModal'
+import { SkeletonGrid } from '../../../components/Skeleton'
 
 
 const Timestamps = (props) => {
-    const {token, timestamps, playSong, setSelectedSong, selectedSong} = props
+    const {token, timestamps, playSong, setSelectedSong, selectedSong, userId, databaseUserLoaded} = props
     const [timestampsBySong,setTimeStampsBySong] = useState([])
     const [searchValue, setSearchValue] = useState('')
-    const [allTimeStampsBySong,setAllTimeStampsBySong] = useState('')
+    const [allTimeStampsBySong,setAllTimeStampsBySong] = useState([])
+    const [showPlaylistModal, setShowPlaylistModal] = useState(false)
+
+    const uniqueTrackUris = useMemo(() => {
+        if (!timestamps) return []
+        const uris = new Set()
+        Object.values(timestamps).forEach((songGroup) => {
+            Object.values(songGroup).forEach((entry) => {
+                if (entry.song && entry.song.uri) {
+                    uris.add(entry.song.uri)
+                }
+            })
+        })
+        return Array.from(uris)
+    }, [timestamps])
     useEffect(() => {   
         if(!searchValue && timestamps){
             var tempArr2 = []
@@ -33,7 +48,23 @@ const Timestamps = (props) => {
     }
     return(
     
-        <div className={styles.container}>     
+        <div className={styles.container}>
+            <button
+                className={styles.createPlaylistBtn}
+                onClick={() => setShowPlaylistModal(true)}
+                disabled={uniqueTrackUris.length === 0 || !userId}
+            >
+                <FontAwesomeIcon icon={faListUl} style={{marginRight: '8px'}} />
+                Create Playlist
+            </button>
+            <CreatePlaylistModal
+                isOpen={showPlaylistModal}
+                onClose={() => setShowPlaylistModal(false)}
+                defaultName="My Spotitry Timestamps"
+                token={token}
+                userId={userId}
+                trackUris={uniqueTrackUris}
+            />
             <div className={styles.searchWrapper}>
                 <InputGroup>
                     <InputGroupAddon addonType="append">
@@ -48,65 +79,79 @@ const Timestamps = (props) => {
                     }}></Input>
                 </InputGroup>
             </div>
+            {!databaseUserLoaded ? (
+                <div className={styles.grid}>
+                    <SkeletonGrid count={4} cardHeight="300px" />
+                </div>
+            ) : (!timestampsBySong || timestampsBySong.length === 0) ? (
+                <div className={styles.emptyState}>
+                    <span className={styles.emptyIcon}>♪</span>
+                    {searchValue ? (
+                        <>
+                            <span className={styles.emptyTitle}>No timestamps match your search</span>
+                            <span className={styles.emptySubtitle}>Try a different song name.</span>
+                        </>
+                    ) : (
+                        <>
+                            <span className={styles.emptyTitle}>No saved timestamps yet</span>
+                            <span className={styles.emptySubtitle}>Save a moment from a song and it will show up here.</span>
+                        </>
+                    )}
+                </div>
+            ) : (
             <div className={styles.grid}>
-                    {timestampsBySong?.length !== 0 && 
-                    timestampsBySong?.map((tsGroup, key) => {
+                    {timestampsBySong?.map((tsGroup, key) => {
                         var entries = Object.values(tsGroup)
                         var song = entries[0]?.song
                         var album = song?.album
                         var songName = song?.name
                         var albumCover = album?.images[0]?.url
+                        var artistName = entries[0]?.song.artists[0]?.name ? entries[0].song.artists[0].name : entries[0].song.album.artists[0].name
                         return(
-                            <div className={styles.cardWrapper} key={key}>
-                                <Card style={{width:'100%', backgroundColor: '#000000', border: 'none', borderRadius: '0', color: '#FFFFFF'}}>
-                                    <CardImg top width="100%" src={albumCover} alt="Album Cover" style={{width:'100%', borderRadius: '0'}} className={styles.image}/>
-                                    <CardBody>
-                                        <CardTitle tag="h5" style={{color: '#FFFFFF', fontWeight: 700, fontSize: '14px', textTransform: 'uppercase'}}>#{String(key+1).padStart(2,'0')} {songName}</CardTitle>
-                                        <CardSubtitle tag="h6" style={{color: '#84898e', marginBottom: '8px', fontSize: '12px', textTransform: 'uppercase'}}>{entries[0]?.song.artists[0]?.name ? entries[0].song.artists[0].name: entries[0].song.album.artists[0].name}</CardSubtitle>
-                                        <CardSubtitle tag="h6" style={{color: '#84898e', marginBottom: '8px', fontSize: '11px', textTransform: 'uppercase'}}>{album?.name}</CardSubtitle>
-                                        <CardText style={{color: '#ffc700', fontSize: '12px', textTransform: 'uppercase'}}>{'///TIMESTAMPS'}</CardText>
-                                        {entries.map((timestamp, key) => {
-                                            var totalTime = song.duration_ms
-                                            var timeSet = timestamp.position_ms
-                                            var track = song
-                                            return(
-                                                <div className="column" key={key}>
-                                                    <Button
-                                                        style={{backgroundColor:'#000000', color: '#FFFFFF', marginBottom:'4px', height: '46px', fontSize:'12px', borderRadius: '0', border: '1px solid rgba(132,137,142,0.4)', fontWeight: 700, textTransform: 'uppercase', width: '100%'}}
-                                                        onClick={() => {
-                                                            if(!selectedSong) {
-                                                            }
-                                                            else{
-                                                                setSelectedSong(0,track?.uri,track);
-                                                                playSong(token,timeSet,track?.uri,track)
-                                                            }}
-
+                            <div className={styles.card} key={key}>
+                                <div className={styles.cardHeader}>
+                                    {albumCover &&
+                                        <img src={albumCover} alt="" className={styles.cover}/>
+                                    }
+                                    <div className={styles.cardMeta}>
+                                        <span className={styles.songTitle}>{songName}</span>
+                                        <span className={styles.artistName}>{artistName}</span>
+                                        <span className={styles.albumName}>{album?.name}</span>
+                                    </div>
+                                </div>
+                                <div className={styles.timestampList}>
+                                    {entries.map((timestamp, key) => {
+                                        var totalTime = song.duration_ms
+                                        var timeSet = timestamp.position_ms
+                                        var track = song
+                                        return(
+                                            <div className={styles.timestampItem} key={key}>
+                                                <button
+                                                    className={styles.timestampButton}
+                                                    onClick={() => {
+                                                        if(!selectedSong) {
                                                         }
-                                                    >
-                                                        Timestamp #{key+1} {millisToMinutesAndSeconds(timeSet)} of {millisToMinutesAndSeconds(totalTime)}
-                                                    </Button>
-                                                    {timestamp.note && (
-                                                        <div style={{
-                                                            color: '#84898e',
-                                                            fontSize: '11px',
-                                                            marginBottom: '10px',
-                                                            paddingLeft: '12px',
-                                                            textTransform: 'uppercase',
-                                                        }}>
-                                                            &gt; {timestamp.note}
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            )
-                                        })
-
-                                        }
-                                    </CardBody>
-                                </Card>
+                                                        else{
+                                                            setSelectedSong(0,track?.uri,track);
+                                                            playSong(token,timeSet,track?.uri,track)
+                                                        }
+                                                    }}
+                                                >
+                                                    <span className={styles.playIcon}>▶</span>
+                                                    <span className={styles.timeLabel}>{millisToMinutesAndSeconds(timeSet)} / {millisToMinutesAndSeconds(totalTime)}</span>
+                                                </button>
+                                                {timestamp.note && (
+                                                    <span className={styles.note}>"{timestamp.note}"</span>
+                                                )}
+                                            </div>
+                                        )
+                                    })}
+                                </div>
                             </div>
                         )
                     })}
             </div>
+            )}
         </div>
 
     )
@@ -123,7 +168,9 @@ const mapStateToProps = (state) => {
     return {
         timestamps:state.User.databaseUser.timestamps,
         token:state.User.token,
-        selectedSong: state.Player.selectedSong
+        selectedSong: state.Player.selectedSong,
+        userId: state.User.profile?.id,
+        databaseUserLoaded: Object.keys(state.User.databaseUser).length > 0
     }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Timestamps);

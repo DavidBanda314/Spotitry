@@ -7,6 +7,7 @@ const tabs = [
     { path: 'history', label: 'History' },
     { path: 'discover', label: 'Discover' },
     { path: 'timestamps', label: 'Saved' },
+    { path: 'stats', label: 'Stats' },
     { path: 'account', label: 'Profile' },
 ]
 

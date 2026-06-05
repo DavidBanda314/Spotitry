@@ -4,8 +4,7 @@ import { connect } from 'react-redux'
 import emptyProfile from '../../../images/empty_profile.jpeg'
 
 const Account = (props) => {
-    const { profile } = props
-    console.log(profile)
+    const { profile, databaseUser, topArtists } = props
 
     const handleLogout = () => {
         localStorage.removeItem('token')
@@ -13,6 +12,13 @@ const Account = (props) => {
         localStorage.removeItem('refresh_token')
         window.location.href = '/'
     }
+
+    const followersCount = profile?.followers?.total ?? 0
+    const savedCount = Object.values(databaseUser?.timestamps ?? {}).reduce(
+        (total, songGroup) => total + Object.keys(songGroup ?? {}).length,
+        0
+    )
+    const topArtistsCount = topArtists?.length ?? 0
 
     return(
         <div className={styles.header}>
@@ -32,6 +38,20 @@ const Account = (props) => {
                         <div className={styles.followers}>{"Loading..."}</div>
                     </div>
                     }
+                    <div className={styles.stats}>
+                        <div className={styles.stat}>
+                            <div className={styles.statNumber}>{followersCount}</div>
+                            <div className={styles.statLabel}>Followers</div>
+                        </div>
+                        <div className={styles.stat}>
+                            <div className={styles.statNumber}>{savedCount}</div>
+                            <div className={styles.statLabel}>Saved</div>
+                        </div>
+                        <div className={styles.stat}>
+                            <div className={styles.statNumber}>{topArtistsCount}</div>
+                            <div className={styles.statLabel}>Top Artists</div>
+                        </div>
+                    </div>
                 </div>
                 <button className={styles.logoutButton} onClick={handleLogout}>
                     Log out
@@ -44,7 +64,9 @@ const Account = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        profile: state?.User?.profile
+        profile: state?.User?.profile,
+        databaseUser: state?.User?.databaseUser,
+        topArtists: state?.User?.topArtists
     }
 }
 
