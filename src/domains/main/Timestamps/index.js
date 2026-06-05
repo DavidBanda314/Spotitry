@@ -10,7 +10,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons'
 
 
 const Timestamps = (props) => {
-    const {token, timestamps, refetchUser,playSong, setSelectedSong, selectedSong} = props
+    const {token, timestamps, playSong, setSelectedSong, selectedSong} = props
     const [timestampsBySong,setTimeStampsBySong] = useState([])
     const [searchValue, setSearchValue] = useState('')
     const [allTimeStampsBySong,setAllTimeStampsBySong] = useState('')
@@ -48,13 +48,11 @@ const Timestamps = (props) => {
                 </InputGroup>
             </div>
             <div className={styles.cardGrid}>
-                {timestampsBySong?.length != 0 && 
-                timestampsBySong?.map((timestamps, key) => {
-                    var timestamps = Object.values(timestamps)
-                    var song = timestamps[0]?.song
+                {timestampsBySong?.length !== 0 && 
+                timestampsBySong?.map((tsGroup, key) => {
+                    var entries = Object.values(tsGroup)
+                    var song = entries[0]?.song
                     var album = song?.album
-                    var artist = song?.artists[0]
-                    var featuredArtists = song?.artists.splice(0,1)
                     var songName = song?.name
                     var albumCover = album?.images[0]?.url
                     return(
@@ -66,11 +64,11 @@ const Timestamps = (props) => {
                             />
                             <p className={styles.cardTitle}>{songName}</p>
                             <p className={styles.cardSubtitle}>
-                                {timestamps[0]?.song.artists[0]?.name ? timestamps[0].song.artists[0].name: timestamps[0].song.album.artists[0].name}
+                                {entries[0]?.song.artists[0]?.name ? entries[0].song.artists[0].name: entries[0].song.album.artists[0].name}
                             </p>
                             <p className={styles.cardSubtitle}>{album?.name}</p>
                             <p className={styles.timestampsLabel}>Timestamps:</p>
-                            {timestamps.map((timestamp, key) => {
+                            {entries.map((timestamp, key) => {
                                 var totalTime = song.duration_ms
                                 var timeSet = timestamp.position_ms
                                 var track = song

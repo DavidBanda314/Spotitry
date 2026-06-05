@@ -15,6 +15,7 @@ const NavBar = () => {
         setTab(tabs.indexOf(tab));
         history.push(tab)
 
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       }, []);
     return(
         <>
@@ -22,10 +23,10 @@ const NavBar = () => {
             <Tabs
                 className={styles.tabs}
                 value={tab}
-                onChange={(event,value)=>(
-                    setTab(value),
-                    history.push(tabs[value])
-                )}
+                onChange={(event,value)=>{
+                    setTab(value);
+                    history.push(tabs[value]);
+                }}
                 indicatorColor='primary'
                 centered
             >

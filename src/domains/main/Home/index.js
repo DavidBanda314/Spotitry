@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import styles from './index.module.css'
 import { playSongRequested , setSelectedSong, getPlaybackInfoRequested} from '../redux/Actions/PlaybackActions.js'
 import { connect } from 'react-redux'
@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const Home = (props) => {
-    var { token, topTracks, topArtists, setSelectedSong, selectedSong, getPlaybackInfo, playSong } = props
+    var { token, topTracks, topArtists, setSelectedSong, selectedSong, getPlaybackInfo } = props
     return(
 
         <div className={styles.container}>
@@ -17,16 +17,14 @@ const Home = (props) => {
                         <div
                             key={key}
                             className={styles.card}
-                            onClick={() => (
-                                (selectedSong?.song?.album?.uri == track.album.uri ?
-                                (setSelectedSong(0,track.uri,track), getPlaybackInfo(token,0,0) )
-                                
-                                :
-                                setSelectedSong(track.track_number-1,track.album?.uri,track),
-                                getPlaybackInfo(token,0,0) 
-    
-                                ) 
-                            )}
+                            onClick={() => {
+                                if (selectedSong?.song?.album?.uri === track.album.uri) {
+                                    setSelectedSong(0,track.uri,track);
+                                } else {
+                                    setSelectedSong(track.track_number-1,track.album?.uri,track);
+                                }
+                                getPlaybackInfo(token,0,0);
+                            }}
                         >
                             <img
                                 className={styles.cardImage}
@@ -50,10 +48,10 @@ const Home = (props) => {
                         <div
                             key={key}
                             className={styles.card}
-                            onClick={() => (
-                                setSelectedSong(Math.floor(Math.random() * 10),artist.uri,artist), 
-                                getPlaybackInfo(token,0,0) 
-                            )}
+                            onClick={() => {
+                                setSelectedSong(Math.floor(Math.random() * 10),artist.uri,artist);
+                                getPlaybackInfo(token,0,0);
+                            }}
                         >
                             <img
                                 className={styles.cardImageRound}
