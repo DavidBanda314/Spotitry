@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo, useCallback } from 'react'
 import styles from '../Timestamps/index.module.css'
 import { connect } from 'react-redux'
 import { getProfileRequested } from '../redux/Actions/UserActions'
+import { parseSpecialCharacters } from '../../../utils/constants'
 import { playSongRequested, setSelectedSong } from '../redux/Actions/PlaybackActions'
 import { InputGroup, InputGroupAddon, Input, Button } from 'reactstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -53,7 +54,8 @@ const Timestamps = (props) => {
     const handleSaveNote = useCallback(async (ts) => {
         if (!userId) return
         setNoteSaving(true)
-        await fbUpdateTimestampNote(userId, ts._songKey, ts._pushId, noteDraft)
+        // Timestamps are stored under the sanitized user id (same as saveTimestamp), so parse it here too.
+        await fbUpdateTimestampNote(parseSpecialCharacters(userId), ts._songKey, ts._pushId, noteDraft)
         if (refetchUser) refetchUser(token)
         setNoteSaving(false)
         setNoteEditingId(null)
