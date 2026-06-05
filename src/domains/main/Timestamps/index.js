@@ -6,13 +6,7 @@ import { parseSpecialCharacters } from '../../../utils/constants'
 import { playSongRequested, setSelectedSong } from '../redux/Actions/PlaybackActions'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-<<<<<<< Updated upstream
-import { faSearch, faListUl, faLink, faPlus, faMinus, faTrash } from '@fortawesome/free-solid-svg-icons'
-||||||| constructed merge base
-import { faSearch, faListUl, faLink, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
-=======
-import { faSearch, faListUl, faLink, faPlus, faMinus, faCopy, faShareAlt } from '@fortawesome/free-solid-svg-icons'
->>>>>>> Stashed changes
+import { faSearch, faListUl, faLink, faPlus, faMinus, faTrash, faCopy, faShareAlt } from '@fortawesome/free-solid-svg-icons'
 import CreatePlaylistModal from '../../../components/CreatePlaylistModal'
 import { SkeletonGrid } from '../../../components/Skeleton'
 import {
