@@ -3,7 +3,7 @@ import styles from '../Timestamps/index.module.css'
 import { connect } from 'react-redux'
 import { getProfileRequested } from '../redux/Actions/UserActions'
 import { parseSpecialCharacters } from '../../../utils/constants'
-import { playSongRequested, setSelectedSong } from '../redux/Actions/PlaybackActions'
+import { playSongRequested } from '../redux/Actions/PlaybackActions'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faListUl, faLink, faPlus, faMinus, faTrash, faCopy, faShareAlt } from '@fortawesome/free-solid-svg-icons'
@@ -21,7 +21,7 @@ import {
 
 
 const Timestamps = (props) => {
-    const {token, timestamps, playSong, setSelectedSong, selectedSong, userId, databaseUserLoaded, refetchUser} = props
+    const {token, timestamps, playSong, userId, databaseUserLoaded, refetchUser} = props
     const [timestampsBySong,setTimeStampsBySong] = useState([])
     const [searchValue, setSearchValue] = useState('')
     const [allTimeStampsBySong,setAllTimeStampsBySong] = useState([])
@@ -419,12 +419,7 @@ const Timestamps = (props) => {
                                                     <button
                                                         className={styles.timestampButton}
                                                         onClick={() => {
-                                                            if(!selectedSong) {
-                                                            }
-                                                            else{
-                                                                setSelectedSong(0,track?.uri,track);
-                                                                playSong(token,timeSet,track?.uri,track)
-                                                            }
+                                                            playSong(token,timeSet,track?.uri,track)
                                                         }}
                                                     >
                                                         <span className={styles.playIcon}>&#9654;</span>
@@ -574,16 +569,14 @@ const Timestamps = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        playSong: (token, deviceId, songURI, song) => dispatch(playSongRequested(token, deviceId, songURI,song)),
+        playSong: (token, position_ms, songURI, song) => dispatch(playSongRequested(token, position_ms, songURI,song)),
         refetchUser: (token) => dispatch(getProfileRequested(token)),
-        setSelectedSong: (token, songURI, song) => dispatch(setSelectedSong(token, songURI, song))
     }
 }
 const mapStateToProps = (state) => {
     return {
         timestamps:state.User.databaseUser.timestamps,
         token:state.User.token,
-        selectedSong: state.Player.selectedSong,
         userId: state.User.profile?.id,
         databaseUserLoaded: Object.keys(state.User.databaseUser).length > 0
     }
