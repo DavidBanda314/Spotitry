@@ -8,6 +8,8 @@ import Account from './domains/main/Account';
 import Discover from './domains/main/Discover';
 import History from './domains/main/History';
 import Stats from './domains/main/Stats';
+import Search from './domains/main/Search';
+import GlobalSearch from './components/GlobalSearch';
 import { StoreToken } from './domains/main/redux/Actions/UserActions.js'
 import { getPlaybackInfoRequested } from './domains/main/redux/Actions/PlaybackActions.js'
 import { connect } from 'react-redux'
@@ -61,6 +63,7 @@ const AuthenticatedApp = (props) => {
       <>
       <header className={styles.topBar}>
         <span className={styles.brand}>Spoti<span className={styles.brandAccent}>try</span></span>
+        <GlobalSearch/>
       </header>
       {song && 
       <div className={styles.player}>
@@ -199,6 +202,9 @@ const AuthenticatedApp = (props) => {
             </Route>
             <Route exact path='/discover'>
               <Discover/>
+            </Route>
+            <Route exact path='/search'>
+              <Search/>
             </Route>
             <Route exact path='/history'>
               <History/>
