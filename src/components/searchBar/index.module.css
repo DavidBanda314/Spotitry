@@ -1,36 +1,7 @@
 .SearchBar {
     width: 100%;
-}
-
-.SearchBar :global(.input-group) {
-    background-color: #242424;
+    background-color: #1a1a1a;
     border-radius: 500px;
-    overflow: hidden;
-    border: none;
-}
-
-.SearchBar :global(.input-group) input {
-    background-color: #242424;
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     color: #FFFFFF;
-    padding: 12px 16px;
-    font-size: 14px;
-}
-
-.SearchBar :global(.input-group) input::placeholder {
-    color: #A7A7A7;
-}
-
-.SearchBar :global(.input-group) input:focus {
-    background-color: #2A2A2A;
-    box-shadow: none;
-    outline: none;
-    border: none;
-}
-
-.SearchBar :global(.input-group-append) button {
-    background-color: transparent;
-    border: none;
-    color: #A7A7A7;
-    padding: 8px 16px;
 }

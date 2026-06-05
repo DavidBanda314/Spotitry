@@ -7,6 +7,7 @@ import { InputGroup, InputGroupAddon, Input, Button } from 'reactstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import { Card, CardImg, CardBody, CardTitle, CardSubtitle, CardText, Row } from 'reactstrap'
 
 
 const Timestamps = (props) => {
@@ -47,56 +48,56 @@ const Timestamps = (props) => {
                     }}></Input>
                 </InputGroup>
             </div>
-            <div className={styles.cardGrid}>
-                {timestampsBySong?.length !== 0 && 
-                timestampsBySong?.map((tsGroup, key) => {
-                    var entries = Object.values(tsGroup)
-                    var song = entries[0]?.song
-                    var album = song?.album
-                    var songName = song?.name
-                    var albumCover = album?.images[0]?.url
-                    return(
-                        <div className={styles.timestampCard} key={key}>
-                            <img
-                                className={styles.cardImage}
-                                src={albumCover}
-                                alt="Album Cover"
-                            />
-                            <p className={styles.cardTitle}>{songName}</p>
-                            <p className={styles.cardSubtitle}>
-                                {entries[0]?.song.artists[0]?.name ? entries[0].song.artists[0].name: entries[0].song.album.artists[0].name}
-                            </p>
-                            <p className={styles.cardSubtitle}>{album?.name}</p>
-                            <p className={styles.timestampsLabel}>Timestamps:</p>
-                            {entries.map((timestamp, key) => {
-                                var totalTime = song.duration_ms
-                                var timeSet = timestamp.position_ms
-                                var track = song
-                                return(
-                                    <div key={key}>
-                                        <Button
-                                            className={styles.timestampButton}
-                                            onClick={() => {
-                                                if(!selectedSong) {
-                                                }
-                                                else{
-                                                    setSelectedSong(0,track?.uri,track);
-                                                    playSong(token,timeSet,track?.uri,track)
-                                                }}
+            <div>
+                <Row>    
+                    {timestampsBySong?.length !== 0 && 
+                    timestampsBySong?.map((tsGroup, key) => {
+                        var entries = Object.values(tsGroup)
+                        var song = entries[0]?.song
+                        var album = song?.album
+                        var songName = song?.name
+                        var albumCover = album?.images[0]?.url
+                        return(
+                            <div className={styles.container} key={key}>
+                                <Card style={{width:'200px', backgroundColor: '#1a1a1a', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '12px', color: '#FFFFFF'}}>
+                                    <CardImg top width="100%" src={albumCover} alt="Album Cover" style={{width:'200px',padding:'none', borderRadius: '12px 12px 0 0'}} className={styles.image}/>
+                                    <CardBody>
+                                        <CardTitle tag="h5" style={{color: '#FFFFFF', fontWeight: 700}}>{songName}</CardTitle>
+                                        <CardSubtitle tag="h6" style={{color: 'rgba(255,255,255,0.6)', marginBottom: '8px'}}>{entries[0]?.song.artists[0]?.name ? entries[0].song.artists[0].name: entries[0].song.album.artists[0].name}</CardSubtitle>
+                                        <CardSubtitle tag="h6" style={{color: 'rgba(255,255,255,0.4)', marginBottom: '8px'}}>{album?.name}</CardSubtitle>
+                                        <CardText style={{color: 'rgba(255,255,255,0.6)'}}>Timestamps:</CardText>
+                                        {entries.map((timestamp, key) => {
+                                            var totalTime = song.duration_ms
+                                            var timeSet = timestamp.position_ms
+                                            var track = song
+                                            return(
+                                                <div className="column" key={key}>
+                                                    <Button
+                                                        style={{backgroundColor:'#1a1a1a', color: '#FFFFFF', marginBottom:'10px', height: '50px', fontSize:'13px', borderRadius: '500px', border: '1px solid rgba(255,255,255,0.1)', fontWeight: 600}}
+                                                        onClick={() => {
+                                                            if(!selectedSong) {
+                                                            }
+                                                            else{
+                                                                setSelectedSong(0,track?.uri,track);
+                                                                playSong(token,timeSet,track?.uri,track)
+                                                            }}
 
-                                            }
-                                        >
-                                            Timestamp #{key+1} {millisToMinutesAndSeconds(timeSet)} of {millisToMinutesAndSeconds(totalTime)}
-                                        </Button>
+                                                        }
+                                                    >
+                                                        Timestamp #{key+1} {millisToMinutesAndSeconds(timeSet)} of {millisToMinutesAndSeconds(totalTime)}
+                                                    </Button>
 
-                                    </div>
-                                )
-                            })
+                                                </div>
+                                            )
+                                        })
 
-                            }
-                        </div>
-                    )
-                })}
+                                        }
+                                    </CardBody>
+                                </Card>
+                            </div>
+                        )
+                    })}
+                </Row>
             </div>
         </div>
 

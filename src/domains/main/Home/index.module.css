@@ -1,83 +1,27 @@
 .container {
-    padding: 24px 32px 100px;
-    background-color: #121212;
-    min-height: calc(100vh - 64px);
+    padding: 32px 48px 120px;
+    background-color: #000000;
+    min-height: calc(100vh - 48px);
+}
+
+.sectionHeader {
+    display: flex;
+    align-items: center;
+    margin: 48px 0 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .sectionTitle {
     color: #FFFFFF;
-    font-size: 24px;
-    font-weight: 700;
-    margin: 32px 0 16px;
-    letter-spacing: -0.02em;
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    flex: 1;
 }
 
-.sectionTitle:first-child {
-    margin-top: 0;
-}
-
-.cardGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 24px;
-    margin-bottom: 32px;
-}
-
-.card {
-    background-color: #181818;
-    border-radius: 8px;
-    padding: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    border: none;
-    width: 100%;
-    height: auto;
-}
-
-.card:hover {
-    background-color: #282828;
-}
-
-.cardImage {
-    width: 100%;
-    aspect-ratio: 1;
-    object-fit: cover;
-    border-radius: 4px;
-    margin-bottom: 16px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-}
-
-.cardImageRound {
-    width: 100%;
-    aspect-ratio: 1;
-    object-fit: cover;
-    border-radius: 50%;
-    margin-bottom: 16px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-}
-
-.cardTitle {
-    color: #FFFFFF;
-    font-size: 16px;
-    font-weight: 700;
-    margin: 0 0 4px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.cardSubtitle {
-    color: #A7A7A7;
+.sectionAccent {
+    color: #1DB954;
     font-size: 14px;
-    font-weight: 400;
-    margin: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.rank {
-    color: #FFFFFF;
-    font-weight: 700;
-    margin-right: 4px;
+    font-weight: 600;
 }
