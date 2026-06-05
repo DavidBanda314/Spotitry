@@ -1,4 +1,4 @@
-import { all, takeLatest, call, put, select } from 'redux-saga/effects';
+import { all, takeLatest, call, put, select, take, race, delay } from 'redux-saga/effects';
 import * as Actions from '../Actions/UserActions'
 import axios from 'axios'
 import { PROFILE_ENDPOINT, TOP_ARTISTS_ENDPOINT, TOP_TRACKS_ENDPOINT, SEARCH_ENDPOINT, RECOMMENDATIONS_ENDPOINT, NEW_RELEASES_ENDPOINT, parseSpecialCharacters, } from '../../../../utils/constants'
@@ -141,19 +141,33 @@ export function* searchSongs({token,searchValue = ''}) {
 
 export function* getDiscoverFeed({token}) {
     try {
-        const topTracks = yield select((state) => state.User.topTracks)
-        const topArtists = yield select((state) => state.User.topArtists)
+        let topTracks = yield select((state) => state.User.topTracks)
+        let topArtists = yield select((state) => state.User.topArtists)
+
+        // Top tracks/artists are fetched asynchronously at login; if they haven't
+        // resolved yet, wait (bounded) so recommendations can be seeded properly.
+        if (!(topTracks && topTracks.length) && !(topArtists && topArtists.length)) {
+            yield race({
+                done: all([
+                    take([Actions.UserDataActions.GET_TOP_TRACKS_Succeeded, Actions.UserDataActions.GET_TOP_TRACKS_Failed]),
+                    take([Actions.UserDataActions.GET_TOP_ARTISTS_Succeeded, Actions.UserDataActions.GET_TOP_ARTISTS_Failed]),
+                ]),
+                timeout: delay(5000),
+            })
+            topTracks = yield select((state) => state.User.topTracks)
+            topArtists = yield select((state) => state.User.topArtists)
+        }
+
         const seedTracks = (topTracks || []).slice(0, 2).map((t) => t.id).filter(Boolean)
         const seedArtists = (topArtists || []).slice(0, 3 - seedTracks.length).map((a) => a.id).filter(Boolean)
 
         if (seedTracks.length || seedArtists.length) {
+            const params = { limit: 20 }
+            if (seedTracks.length) params.seed_tracks = seedTracks.join(',')
+            if (seedArtists.length) params.seed_artists = seedArtists.join(',')
             const response = yield call(axios.get, RECOMMENDATIONS_ENDPOINT, {
                 headers: { 'Authorization': 'Bearer ' + token },
-                params: {
-                    limit: 20,
-                    seed_tracks: seedTracks.join(','),
-                    seed_artists: seedArtists.join(','),
-                },
+                params,
             })
             const tracks = response?.data?.tracks || []
             if (tracks.length) {
