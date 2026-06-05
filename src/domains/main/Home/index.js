@@ -21,9 +21,10 @@ function getRecentTimestamps(timestamps) {
 }
 
 const Home = (props) => {
-    var { token, topTracks, topArtists, setSelectedSong, selectedSong, getPlaybackInfo, playSong, timestamps } = props
+    var { token, topTracks, topArtists, setSelectedSong, selectedSong, getPlaybackInfo, playSong, timestamps, loading } = props
     var recentTimestamps = getRecentTimestamps(timestamps);
-    const isLoading = topTracks.length === 0 && topArtists.length === 0
+    const isTracksLoading = loading && topTracks.length === 0
+    const isArtistsLoading = loading && topArtists.length === 0
     return(
         <div className={styles.container}>
             {recentTimestamps.length > 0 && (
@@ -59,7 +60,7 @@ const Home = (props) => {
             <div className={styles.sectionHeader}>
                 <h4 className={styles.sectionTitle}>Your Top Songs</h4>
             </div>
-            {isLoading ? (
+            {isTracksLoading ? (
                 <SkeletonGrid count={6} cardHeight="240px" />
             ) : (
             <div className={styles.grid}>
@@ -92,7 +93,7 @@ const Home = (props) => {
             <div className={styles.sectionHeader}>
                 <h4 className={styles.sectionTitle}>Your Top Artists</h4>
             </div>
-            {isLoading ? (
+            {isArtistsLoading ? (
                 <SkeletonGrid count={6} cardHeight="240px" borderRadius="50%" />
             ) : (
             <div className={styles.grid}>
@@ -132,7 +133,8 @@ const mapStateToProps = (state) => {
         topTracks:state.User.topTracks,
         topArtists: state.User.topArtists,
         selectedSong: state.Player.selectedSong,
-        timestamps: state.User.databaseUser.timestamps
+        timestamps: state.User.databaseUser.timestamps,
+        loading: state.User.loading,
     }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Home);
