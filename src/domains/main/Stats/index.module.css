@@ -12,13 +12,12 @@
 }
 
 .sectionTitle {
-    color: var(--yellow);
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.02em;
+    color: #FFFFFF;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
     flex: 1;
     margin: 0;
-    text-transform: uppercase;
 }
 
 .tabs {
@@ -29,31 +28,30 @@
 
 .tab {
     background: none;
-    border: 1px solid var(--line);
-    border-radius: 0;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 500px;
     padding: 8px 16px;
-    color: var(--fg);
-    font-size: 12px;
-    font-weight: 700;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
+    font-weight: 600;
     cursor: pointer;
-    text-transform: uppercase;
-    transition: background-color 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 .tab:hover {
-    color: var(--fg-bright);
-    border-color: var(--fg-bright);
+    color: #FFFFFF;
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
 .tabActive {
-    background-color: var(--yellow);
+    background-color: #1DB954;
     color: #000000;
-    border-color: var(--yellow);
+    border-color: #1DB954;
 }
 
 .tabActive:hover {
     color: #000000;
-    border-color: var(--yellow);
+    border-color: #1DB954;
 }
 
 .list {
@@ -66,37 +64,32 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    background-color: #000000;
-    border: 1px solid var(--line);
-    border-radius: 0;
+    background-color: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
     padding: 10px 12px;
 }
 
 .rank {
-    color: var(--fg);
-    font-size: 13px;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 14px;
     font-weight: 700;
-    min-width: 28px;
+    min-width: 24px;
     text-align: center;
-    font-variant-numeric: tabular-nums;
 }
 
 .itemImage {
     width: 48px;
     height: 48px;
-    border-radius: 0;
+    border-radius: 4px;
     object-fit: cover;
-    border: 1px solid var(--line);
-    filter: grayscale(1) contrast(1.05);
 }
 
 .itemImageRound {
     width: 48px;
     height: 48px;
-    border-radius: 0;
+    border-radius: 50%;
     object-fit: cover;
-    border: 1px solid var(--line);
-    filter: grayscale(1) contrast(1.05);
 }
 
 .itemInfo {
@@ -105,24 +98,22 @@
 }
 
 .itemName {
-    color: var(--fg-bright);
-    font-size: 13px;
+    color: #FFFFFF;
+    font-size: 14px;
     font-weight: 700;
     margin: 0 0 2px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    text-transform: uppercase;
 }
 
 .itemSub {
-    color: var(--fg);
-    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
     margin: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    text-transform: uppercase;
 }
 
 .genreList {
@@ -144,52 +135,48 @@
 }
 
 .genreName {
-    color: var(--fg-bright);
-    font-size: 13px;
-    font-weight: 700;
-    text-transform: uppercase;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: capitalize;
 }
 
 .genrePercent {
-    color: var(--fg);
+    color: rgba(255, 255, 255, 0.5);
     font-size: 12px;
-    font-variant-numeric: tabular-nums;
 }
 
 .genreBarBg {
     width: 100%;
     height: 8px;
-    background-color: #000000;
-    border: 1px solid var(--line);
-    border-radius: 0;
+    background-color: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
     overflow: hidden;
 }
 
 .genreBar {
     height: 100%;
-    background-color: var(--yellow);
-    border-radius: 0;
+    background-color: #1DB954;
+    border-radius: 4px;
     transition: width 0.3s ease;
 }
 
 .loading {
-    color: var(--fg);
+    color: rgba(255, 255, 255, 0.5);
     text-align: center;
     padding: 40px 0;
-    font-size: 13px;
-    text-transform: uppercase;
+    font-size: 14px;
 }
 
 .error {
-    color: var(--red);
+    color: #e74c3c;
     text-align: center;
     padding: 40px 0;
-    font-size: 13px;
-    text-transform: uppercase;
+    font-size: 14px;
 }
 
 @media (min-width: 600px) {
     .sectionTitle {
-        font-size: 14px;
+        font-size: 26px;
     }
 }

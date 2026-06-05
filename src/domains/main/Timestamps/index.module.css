@@ -1,32 +1,30 @@
 .container {
-    padding: 0 0 32px;
+    padding: 16px;
     background-color: #000000;
     max-width: 1100px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 0;
-    color: var(--fg);
+    gap: 16px;
+    color: #FFFFFF;
 }
 
 .createPlaylistBtn {
     align-self: flex-start;
-    margin: 16px;
     background: transparent;
-    color: var(--blue);
-    border: 1px solid var(--blue);
-    border-radius: 0;
+    color: #FFFFFF;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 500px;
     padding: 10px 20px;
-    font-size: 13px;
-    font-weight: 700;
+    font-size: 14px;
+    font-weight: 600;
     cursor: pointer;
-    text-transform: uppercase;
-    transition: background 0.12s, color 0.12s;
+    transition: background 0.2s, border-color 0.2s;
 }
 
 .createPlaylistBtn:hover:not(:disabled) {
-    background: var(--blue);
-    color: #000000;
+    background: #1DB954;
+    border-color: #1DB954;
 }
 
 .createPlaylistBtn:disabled {
@@ -36,20 +34,18 @@
 
 .searchWrapper {
     width: 100%;
-    padding: 0 16px 16px;
-    border-bottom: 1px solid var(--line);
 }
 
 .grid {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
-    gap: 0;
-    border-top: 1px solid var(--line);
+    gap: 12px;
 }
 
 @media (min-width: 600px) {
     .grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
     }
 }
 
@@ -63,11 +59,10 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
-    background-color: #000000;
-    border-right: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-    border-radius: 0;
-    padding: 14px 16px;
+    background-color: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    padding: 14px;
 }
 
 .cardHeader {
@@ -80,11 +75,9 @@
 .cover {
     width: 56px;
     height: 56px;
-    border-radius: 0;
+    border-radius: 8px;
     object-fit: cover;
     flex-shrink: 0;
-    border: 1px solid var(--line);
-    filter: grayscale(1) contrast(1.05);
 }
 
 .cardMeta {
@@ -94,31 +87,28 @@
 }
 
 .songTitle {
-    color: var(--fg-bright);
-    font-size: 14px;
+    color: #FFFFFF;
+    font-size: 15px;
     font-weight: 700;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    text-transform: uppercase;
 }
 
 .artistName {
-    color: var(--fg);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.albumName {
+    color: rgba(255, 255, 255, 0.4);
     font-size: 12px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    text-transform: uppercase;
-}
-
-.albumName {
-    color: var(--fg);
-    font-size: 11px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    text-transform: uppercase;
 }
 
 .timestampList {
@@ -166,50 +156,49 @@
     align-items: center;
     gap: 10px;
     width: 100%;
-    background-color: #000000;
-    border: 1px solid var(--line);
-    border-radius: 0;
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
     padding: 10px 12px;
-    color: var(--fg);
-    font-size: 13px;
-    font-weight: 700;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 600;
     cursor: pointer;
-    text-transform: uppercase;
-    transition: border-color 0.12s ease, color 0.12s ease;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
 .timestampButton:hover {
-    color: var(--fg-bright);
-    border-color: var(--fg-bright);
+    background-color: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.18);
 }
 
 .playIcon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 22px;
-    height: 22px;
-    border-radius: 0;
-    background-color: var(--yellow);
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background-color: #1DB954;
     color: #000000;
-    font-size: 10px;
+    font-size: 11px;
     flex-shrink: 0;
 }
 
+.timestampButton:hover .playIcon {
+    background-color: #1ed760;
+}
+
 .timeLabel {
-    color: var(--fg);
+    color: rgba(255, 255, 255, 0.85);
     font-variant-numeric: tabular-nums;
 }
 
-.timestampButton:hover .timeLabel {
-    color: var(--fg-bright);
-}
-
 .note {
-    color: var(--fg);
-    font-size: 11px;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 12px;
+    font-style: italic;
     padding-left: 4px;
-    text-transform: uppercase;
 }
 
 .emptyState {
@@ -220,24 +209,23 @@
     gap: 8px;
     text-align: center;
     padding: 64px 24px;
-    background-color: #000000;
-    border-top: 1px solid var(--line);
+    background-color: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
 }
 
 .emptyIcon {
     font-size: 36px;
-    color: var(--yellow);
+    color: #1DB954;
 }
 
 .emptyTitle {
-    color: var(--fg-bright);
-    font-size: 15px;
+    color: #FFFFFF;
+    font-size: 16px;
     font-weight: 700;
-    text-transform: uppercase;
 }
 
 .emptySubtitle {
-    color: var(--fg);
-    font-size: 12px;
-    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 13px;
 }

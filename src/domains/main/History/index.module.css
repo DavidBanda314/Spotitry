@@ -1,29 +1,30 @@
 .container {
-    padding: 0 0 32px;
+    padding: 16px;
     background-color: #000000;
     max-width: 1100px;
     margin: 0 auto;
-    color: var(--fg);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    color: #FFFFFF;
 }
 
 .createPlaylistBtn {
     align-self: flex-start;
-    margin: 16px;
     background: transparent;
-    color: var(--blue);
-    border: 1px solid var(--blue);
-    border-radius: 0;
+    color: #FFFFFF;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 500px;
     padding: 10px 20px;
-    font-size: 13px;
-    font-weight: 700;
+    font-size: 14px;
+    font-weight: 600;
     cursor: pointer;
-    text-transform: uppercase;
-    transition: background 0.12s, color 0.12s;
+    transition: background 0.2s, border-color 0.2s;
 }
 
 .createPlaylistBtn:hover:not(:disabled) {
-    background: var(--blue);
-    color: #000000;
+    background: #1DB954;
+    border-color: #1DB954;
 }
 
 .createPlaylistBtn:disabled {
@@ -33,15 +34,12 @@
 
 .searchWrapper {
     width: 100%;
-    padding: 16px;
-    border-bottom: 1px solid var(--line);
 }
 
 .cardGrid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 0;
-    border-top: 1px solid var(--line);
+    gap: 12px;
 }
 
 .emptyState {
@@ -79,6 +77,7 @@
 @media (min-width: 600px) {
     .cardGrid {
         grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
     }
 }
 

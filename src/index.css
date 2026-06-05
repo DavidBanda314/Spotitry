@@ -1,16 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-
-:root {
-  --bg: #000000;
-  --fg: #84898e;
-  --fg-bright: #ffffff;
-  --yellow: #ffc700;
-  --blue: #40aaff;
-  --red: #f00007;
-  --line: rgba(132, 137, 142, 0.4);
-  --mono: 'Space Mono', 'SFMono-Regular', Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 * {
   box-sizing: border-box;
@@ -19,29 +7,29 @@
 }
 
 html, body {
-  background-color: var(--bg);
+  background-color: #000000;
   margin: 0;
   padding: 0;
 }
 
 body {
-  font-family: var(--mono);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+    'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: var(--fg);
-  line-height: 1.1;
-  text-transform: uppercase;
+  color: #FFFFFF;
+  line-height: 1.5;
 }
 
 a {
-  color: var(--fg);
+  color: #1DB954;
   text-decoration: none;
-  transition: color 0.12s ease;
+  transition: color 0.2s ease;
 }
 
 a:hover {
-  color: var(--fg-bright);
-  text-decoration: none;
+  color: #1ed760;
+  text-decoration: underline;
 }
 
 ::-webkit-scrollbar {
@@ -49,62 +37,19 @@ a:hover {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg);
+  background: #000000;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--fg);
+  background: hsla(0, 0%, 100%, 0.3);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--fg-bright);
+  background: hsla(0, 0%, 100%, 0.5);
 }
 
 code {
-  font-family: var(--mono);
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
 }
-
-input,
-button {
-  font-family: var(--mono);
-  text-transform: uppercase;
-}
-
-::placeholder {
-  color: var(--fg);
-  text-transform: uppercase;
-}
-
-/* Brutalist overrides for reactstrap / bootstrap controls used across views */
-.form-control {
-  background-color: #000000 !important;
-  border: 1px solid var(--line) !important;
-  border-radius: 0 !important;
-  color: var(--fg-bright) !important;
-  font-family: var(--mono) !important;
-  text-transform: uppercase;
-  box-shadow: none !important;
-  font-size: 13px !important;
-}
-
-.form-control:focus {
-  border-color: var(--fg-bright) !important;
-  background-color: #000000 !important;
-  color: var(--fg-bright) !important;
-}
-
-.input-group .btn,
-.btn {
-  border-radius: 0 !important;
-  font-family: var(--mono) !important;
-  text-transform: uppercase !important;
-  box-shadow: none !important;
-}
-
-.input-group-append .btn,
-.input-group-prepend .btn {
-  background-color: var(--yellow) !important;
-  border: 1px solid var(--yellow) !important;
-  color: #000000 !important;
-}
-
