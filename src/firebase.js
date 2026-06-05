@@ -61,3 +61,49 @@ export async function getTimestamps(userId){
     console.log(error)
   }
 }
+
+export async function setProfilePublic(userId, isPublic) {
+  try {
+    await db.ref('users/' + userId + '/isPublic').set(isPublic);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function updatePublicProfile(userId, profileData) {
+  try {
+    await db.ref('users/' + userId + '/publicProfile').set(profileData);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function fetchPublicProfile(userId) {
+  try {
+    const snapshot = await db.ref('users/' + userId).get();
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+      if (data.isPublic) {
+        return { isPublic: true, publicProfile: data.publicProfile || null };
+      }
+      return { isPublic: false };
+    }
+    return null;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+export async function getIsPublic(userId) {
+  try {
+    const snapshot = await db.ref('users/' + userId + '/isPublic').get();
+    if (snapshot.exists()) {
+      return snapshot.val();
+    }
+    return false;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}

@@ -5,7 +5,8 @@ import { useDispatch } from 'react-redux'
 import UnauthenticatedApp from './domains/login/unauthenticated-app'
 import AuthenticatedApp from './authenticated-app'
 import SharePage from './domains/main/Share'
-import {useHistory, useLocation } from "react-router-dom";
+import ProfilePage from './domains/main/Profile'
+import {useHistory, useLocation, Route } from "react-router-dom";
 
 const App = (props) => {
   const [authCode] = useState(() => new URLSearchParams(window.location.search).get('code'))
@@ -94,6 +95,10 @@ const App = (props) => {
 
   if (location.pathname === '/share' && !isLoggedIn && !localStorage.getItem("token")) {
     return <SharePage />
+  }
+
+  if (location.pathname.startsWith('/profile/') && !isLoggedIn && !localStorage.getItem("token")) {
+    return <Route path="/profile/:userId"><ProfilePage /></Route>
   }
 
   if(isLoggedIn || localStorage.getItem("token")){
