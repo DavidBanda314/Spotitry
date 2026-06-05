@@ -22,7 +22,7 @@ const SearchBar = (props) => {
                         <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
                     </Button>
                 </InputGroupAddon>
-                <Input placeholder = "Search" onChange={(event) => {
+                <Input placeholder = "SEARCH" onChange={(event) => {
                     // console.log(event.target.value)
                     // var temp = allTimeStampsBySong?.filter((timestamps) => (timestamps[0].song.name.toLowerCase().includes(event.target.value.toLowerCase())))
                     // setTimeStampsBySong(temp)

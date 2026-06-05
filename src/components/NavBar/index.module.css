@@ -5,50 +5,47 @@
     right: 0;
     z-index: 200;
     display: flex;
-    justify-content: space-around;
+    justify-content: stretch;
     align-items: stretch;
-    background-color: rgba(0, 0, 0, 0.95);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: #000000;
+    border-top: 1px solid var(--line);
     padding-bottom: env(safe-area-inset-bottom, 0px);
-    height: calc(58px + env(safe-area-inset-bottom, 0px));
+    height: calc(48px + env(safe-area-inset-bottom, 0px));
 }
 
 .item {
     flex: 1;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 4px;
-    padding: 8px 0;
     background: none;
     border: none;
+    border-right: 1px solid var(--line);
     cursor: pointer;
-    color: rgba(255, 255, 255, 0.55);
-    transition: color 0.15s ease, transform 0.15s ease;
+    color: var(--fg);
+    transition: color 0.12s ease, background 0.12s ease;
     -webkit-tap-highlight-color: transparent;
 }
 
-.item:hover {
-    color: rgba(255, 255, 255, 0.85);
+.item:last-child {
+    border-right: none;
 }
 
-.item:active {
-    transform: scale(0.92);
+.item:hover {
+    color: var(--fg-bright);
 }
 
 .active {
-    color: #1DB954;
+    color: #000000;
+    background: var(--yellow);
 }
 
-.icon {
-    font-size: 20px;
+.active:hover {
+    color: #000000;
 }
 
 .label {
-    font-size: 10px;
-    font-weight: 600;
+    font-size: 11px;
+    font-weight: 700;
     letter-spacing: 0.02em;
 }

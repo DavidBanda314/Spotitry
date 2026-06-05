@@ -50,48 +50,51 @@ const AuthenticatedApp = (props) => {
       {token &&
       <>
       <header className={styles.topBar}>
-        <span className={styles.brand}>Spoti<span className={styles.brandAccent}>try</span></span>
+        <span className={styles.brand}>SPOTI<span className={styles.brandAccent}>TRY</span></span>
+        <span style={{fontSize: '12px', color: '#40aaff'}}>{'///PLAYER'}</span>
       </header>
       {song && 
       <div className={styles.player}>
         {showNoteInput && (
           <div style={{
-            backgroundColor: '#282828',
+            backgroundColor: '#000000',
             padding: '12px 16px',
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
-            borderTop: '1px solid rgba(255,255,255,0.1)',
+            borderTop: '1px solid rgba(132,137,142,0.4)',
           }}>
             <input
               type="text"
               value={noteText}
               onChange={(e) => setNoteText(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter') saveTimestampWithNote(); if (e.key === 'Escape') cancelNote(); }}
-              placeholder="Add a note (optional)..."
+              placeholder="ADD A NOTE (OPTIONAL)..."
               autoFocus
               style={{
                 flex: 1,
-                backgroundColor: '#3a3a3a',
-                border: '1px solid rgba(255,255,255,0.2)',
-                borderRadius: '500px',
-                padding: '8px 16px',
+                backgroundColor: '#000000',
+                border: '1px solid rgba(132,137,142,0.4)',
+                borderRadius: '0',
+                padding: '8px 12px',
                 color: '#FFFFFF',
-                fontSize: '14px',
+                fontSize: '13px',
                 outline: 'none',
+                textTransform: 'uppercase',
               }}
             />
             <button
               onClick={saveTimestampWithNote}
               style={{
-                backgroundColor: '#1DB954',
+                backgroundColor: '#ffc700',
                 color: '#000',
                 border: 'none',
-                borderRadius: '500px',
+                borderRadius: '0',
                 padding: '8px 20px',
-                fontSize: '14px',
+                fontSize: '13px',
                 fontWeight: 700,
                 cursor: 'pointer',
+                textTransform: 'uppercase',
               }}
             >
               Save
@@ -100,12 +103,13 @@ const AuthenticatedApp = (props) => {
               onClick={cancelNote}
               style={{
                 backgroundColor: 'transparent',
-                color: 'rgba(255,255,255,0.6)',
-                border: '1px solid rgba(255,255,255,0.2)',
-                borderRadius: '500px',
+                color: '#84898e',
+                border: '1px solid rgba(132,137,142,0.4)',
+                borderRadius: '0',
                 padding: '8px 16px',
-                fontSize: '14px',
+                fontSize: '13px',
                 cursor: 'pointer',
+                textTransform: 'uppercase',
               }}
             >
               Cancel
@@ -116,7 +120,7 @@ const AuthenticatedApp = (props) => {
           display: 'flex',
           alignItems: 'center',
           backgroundColor: '#000000',
-          borderTop: '1px solid rgba(255,255,255,0.1)',
+          borderTop: '1px solid rgba(132,137,142,0.4)',
         }}>
           <div style={{flex: 1}}>
             <SpotifyPlayer
@@ -124,10 +128,10 @@ const AuthenticatedApp = (props) => {
                 bgColor:'#000000',
                 color:'#FFFFFF',
                 trackNameColor:'#FFFFFF',
-                trackArtistColor:'rgba(255, 255, 255, 0.6)',
-                sliderColor:'#1DB954',
+                trackArtistColor:'#84898e',
+                sliderColor:'#ffc700',
                 sliderHandleColor:'#FFFFFF',
-                sliderTrackColor:'rgba(255, 255, 255, 0.2)',
+                sliderTrackColor:'rgba(132, 137, 142, 0.4)',
               }}
               token={token}
               uris={[songURI]}
@@ -145,13 +149,15 @@ const AuthenticatedApp = (props) => {
               border: 'none',
               cursor: 'pointer',
               padding: '8px 16px',
-              fontSize: '20px',
-              color: timestampSaved ? '#1DB954' : 'rgba(255,255,255,0.7)',
+              fontSize: '13px',
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              color: timestampSaved ? '#ffc700' : '#84898e',
               transition: 'color 0.2s ease',
               flexShrink: 0,
             }}
           >
-            {timestampSaved ? '✓ Saved' : '⏱'}
+            {timestampSaved ? '[SAVED]' : '[+TS]'}
           </button>
         </div>
       </div>

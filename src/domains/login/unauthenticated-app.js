@@ -1,7 +1,13 @@
 import styles from  './unauthenticated.module.css'
 import React, { useEffect, useState, useCallback} from "react";
-import { spotifyLogo, clientId, hash, scopes, signUp, authEndpoint, generatePKCEChallenge} from '../../utils/constants'
+import { clientId, hash, scopes, signUp, authEndpoint, generatePKCEChallenge} from '../../utils/constants'
 
+
+const features = [
+  { title: 'Top Songs & Artists', desc: 'Your most played tracks and favorite artists, indexed.' },
+  { title: 'Listening History', desc: 'Browse and search everything you have recently played.' },
+  { title: 'Timestamps', desc: 'Save and revisit your favorite moments in any song.' },
+]
 
 const UnauthenticatedApp = () => {
     const [accessToken, setAccessToken] = useState()
@@ -25,53 +31,48 @@ const UnauthenticatedApp = () => {
 
     return (
       <div className={styles.App}>
-            <div className={styles.header}>
-              <span style={{fontSize: '24px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.02em'}}>Spotitry</span>
-            </div>
-        <header className={styles.AppHeader}>
-        
-        <img src={spotifyLogo} className={styles.AppLogo} alt="Spotify Logo" />
-        <h1 className={styles.heroTitle}>The ultimate home for music</h1>
-        <p className={styles.heroSubtitle}>
-          Discover your top tracks, explore your listening history, and create timestamps for your favorite moments.
-        </p>
-        <div className={styles.buttonGroup}>
-          {!accessToken && (
-            <button className={styles.loginButton} onClick={handleLogin}>
-              Log in with Spotify
-            </button>
-          )}
-          {!accessToken && (
-            <a className={styles.signUpButton} href={`${signUp}`}>
-              Sign up free
-            </a>
-          )}
-        </div>
+        <header className={styles.topBar}>
+          <span className={styles.brand}>SPOTITRY</span>
+          <span className={styles.tag}>{'///MUSIC INDEX'}</span>
         </header>
 
-        <section className={styles.features}>
-          <h2 className={styles.featuresTitle}>Everything you need to explore your music</h2>
-          <div className={styles.featureGrid}>
-            <div className={styles.featureCard}>
-              <div className={styles.featureCardTitle}>Top Songs & Artists</div>
-              <div className={styles.featureCardDesc}>See your most played tracks and favorite artists, all in one place.</div>
-            </div>
-            <div className={styles.featureCard}>
-              <div className={styles.featureCardTitle}>Listening History</div>
-              <div className={styles.featureCardDesc}>Browse and search through your recently played tracks with ease.</div>
-            </div>
-            <div className={styles.featureCard}>
-              <div className={styles.featureCardTitle}>Timestamps</div>
-              <div className={styles.featureCardDesc}>Save and revisit your favorite moments in any song.</div>
-            </div>
+        <section className={styles.hero}>
+          <h1 className={styles.heroTitle}>THE ULTIMATE HOME FOR MUSIC</h1>
+          <p className={styles.heroSubtitle}>
+            Discover your top tracks, explore your listening history, and timestamp your favorite moments.
+          </p>
+          <div className={styles.buttonGroup}>
+            {!accessToken && (
+              <button className={styles.loginButton} onClick={handleLogin}>
+                [ LOG IN WITH SPOTIFY <span className={styles.arrow}>&#8599;</span> ]
+              </button>
+            )}
+            {!accessToken && (
+              <a className={styles.signUpButton} href={`${signUp}`}>
+                [ SIGN UP FREE <span className={styles.arrow}>&#8599;</span> ]
+              </a>
+            )}
           </div>
         </section>
 
+        <section className={styles.features}>
+          <div className={styles.featuresTitle}>{'///EVERYTHING YOU NEED'}</div>
+          <ul className={styles.featureList}>
+            {features.map((f, i) => (
+              <li className={styles.featureRow} key={f.title}>
+                <span className={styles.featureNum}>#{String(i + 1).padStart(2, '0')}</span>
+                <span className={styles.featureTitle}>{f.title}</span>
+                <span className={styles.featureDesc}>{f.desc}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
         <div className={styles.footer}>
-          &copy; 2024 Spotitry &middot; Powered by Spotify
+          &copy; 2024 SPOTITRY &middot; POWERED BY SPOTIFY
         </div>
       </div>
     );
   }
-  
+
   export default UnauthenticatedApp;

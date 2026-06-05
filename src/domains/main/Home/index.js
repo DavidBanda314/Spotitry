@@ -9,7 +9,7 @@ const Home = (props) => {
     return(
         <div className={styles.container}>
             <div className={styles.sectionHeader}>
-                <h4 className={styles.sectionTitle}>Your Top Songs</h4>
+                <h4 className={styles.sectionTitle}>{'///YOUR TOP SONGS'}</h4>
             </div>
             <div className={styles.grid}>
                 {topTracks.slice(0,10)?.map((track,key) => {
@@ -28,7 +28,7 @@ const Home = (props) => {
                         >
                             <img className={styles.cardImage} alt="Album Cover" src={track.album.images[0].url}/>
                             <div className={styles.cardBody}>
-                                <p className={styles.cardTitle}>{key+1}. {track.name}</p>
+                                <p className={styles.cardTitle}>#{String(key+1).padStart(2,'0')} {track.name}</p>
                                 <p className={styles.cardSubtitle}>{track.artists[0].name}</p>
                                 <p className={styles.cardMeta}>{track.album.name}</p>
                             </div>
@@ -38,7 +38,7 @@ const Home = (props) => {
             </div>
 
             <div className={styles.sectionHeader}>
-                <h4 className={styles.sectionTitle}>Your Top Artists</h4>
+                <h4 className={styles.sectionTitle}>{'///YOUR TOP ARTISTS'}</h4>
             </div>
             <div className={styles.grid}>
                 {topArtists.slice(0,10)?.map((artist,key) => {
@@ -53,7 +53,7 @@ const Home = (props) => {
                         >
                             <img className={`${styles.cardImage} ${styles.artistImage}`} alt="Artist Pic" src={artist.images[0].url}/>
                             <div className={styles.cardBody}>
-                                <p className={styles.cardTitle}>{key+1}. {artist.name}</p>
+                                <p className={styles.cardTitle}>#{String(key+1).padStart(2,'0')} {artist.name}</p>
                             </div>
                         </div>
                     )

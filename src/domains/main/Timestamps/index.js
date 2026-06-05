@@ -58,13 +58,13 @@ const Timestamps = (props) => {
                         var albumCover = album?.images[0]?.url
                         return(
                             <div className={styles.cardWrapper} key={key}>
-                                <Card style={{width:'100%', backgroundColor: '#1a1a1a', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '12px', color: '#FFFFFF'}}>
-                                    <CardImg top width="100%" src={albumCover} alt="Album Cover" style={{width:'100%', borderRadius: '12px 12px 0 0'}} className={styles.image}/>
+                                <Card style={{width:'100%', backgroundColor: '#000000', border: 'none', borderRadius: '0', color: '#FFFFFF'}}>
+                                    <CardImg top width="100%" src={albumCover} alt="Album Cover" style={{width:'100%', borderRadius: '0'}} className={styles.image}/>
                                     <CardBody>
-                                        <CardTitle tag="h5" style={{color: '#FFFFFF', fontWeight: 700}}>{songName}</CardTitle>
-                                        <CardSubtitle tag="h6" style={{color: 'rgba(255,255,255,0.6)', marginBottom: '8px'}}>{entries[0]?.song.artists[0]?.name ? entries[0].song.artists[0].name: entries[0].song.album.artists[0].name}</CardSubtitle>
-                                        <CardSubtitle tag="h6" style={{color: 'rgba(255,255,255,0.4)', marginBottom: '8px'}}>{album?.name}</CardSubtitle>
-                                        <CardText style={{color: 'rgba(255,255,255,0.6)'}}>Timestamps:</CardText>
+                                        <CardTitle tag="h5" style={{color: '#FFFFFF', fontWeight: 700, fontSize: '14px', textTransform: 'uppercase'}}>#{String(key+1).padStart(2,'0')} {songName}</CardTitle>
+                                        <CardSubtitle tag="h6" style={{color: '#84898e', marginBottom: '8px', fontSize: '12px', textTransform: 'uppercase'}}>{entries[0]?.song.artists[0]?.name ? entries[0].song.artists[0].name: entries[0].song.album.artists[0].name}</CardSubtitle>
+                                        <CardSubtitle tag="h6" style={{color: '#84898e', marginBottom: '8px', fontSize: '11px', textTransform: 'uppercase'}}>{album?.name}</CardSubtitle>
+                                        <CardText style={{color: '#ffc700', fontSize: '12px', textTransform: 'uppercase'}}>{'///TIMESTAMPS'}</CardText>
                                         {entries.map((timestamp, key) => {
                                             var totalTime = song.duration_ms
                                             var timeSet = timestamp.position_ms
@@ -72,7 +72,7 @@ const Timestamps = (props) => {
                                             return(
                                                 <div className="column" key={key}>
                                                     <Button
-                                                        style={{backgroundColor:'#1a1a1a', color: '#FFFFFF', marginBottom:'4px', height: '50px', fontSize:'13px', borderRadius: '500px', border: '1px solid rgba(255,255,255,0.1)', fontWeight: 600}}
+                                                        style={{backgroundColor:'#000000', color: '#FFFFFF', marginBottom:'4px', height: '46px', fontSize:'12px', borderRadius: '0', border: '1px solid rgba(132,137,142,0.4)', fontWeight: 700, textTransform: 'uppercase', width: '100%'}}
                                                         onClick={() => {
                                                             if(!selectedSong) {
                                                             }
@@ -87,13 +87,13 @@ const Timestamps = (props) => {
                                                     </Button>
                                                     {timestamp.note && (
                                                         <div style={{
-                                                            color: 'rgba(255,255,255,0.5)',
-                                                            fontSize: '12px',
-                                                            fontStyle: 'italic',
+                                                            color: '#84898e',
+                                                            fontSize: '11px',
                                                             marginBottom: '10px',
                                                             paddingLeft: '12px',
+                                                            textTransform: 'uppercase',
                                                         }}>
-                                                            "{timestamp.note}"
+                                                            &gt; {timestamp.note}
                                                         </div>
                                                     )}
                                                 </div>
