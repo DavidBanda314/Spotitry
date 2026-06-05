@@ -88,7 +88,7 @@ const Stats = () => {
     <div className={styles.container}>
       {/* Top Tracks */}
       <div className={styles.sectionHeader}>
-        <h4 className={styles.sectionTitle}>{'///TOP TRACKS'}</h4>
+        <h4 className={styles.sectionTitle}>Top Tracks</h4>
       </div>
       <div className={styles.tabs}>
         {TIME_RANGES.map((r) => (
@@ -128,7 +128,7 @@ const Stats = () => {
 
       {/* Top Artists */}
       <div className={styles.sectionHeader}>
-        <h4 className={styles.sectionTitle}>{'///TOP ARTISTS'}</h4>
+        <h4 className={styles.sectionTitle}>Top Artists</h4>
       </div>
       <div className={styles.tabs}>
         {TIME_RANGES.map((r) => (
@@ -168,7 +168,7 @@ const Stats = () => {
 
       {/* Top Genres */}
       <div className={styles.sectionHeader}>
-        <h4 className={styles.sectionTitle}>{'///TOP GENRES'}</h4>
+        <h4 className={styles.sectionTitle}>Top Genres</h4>
       </div>
       {genres.length > 0 ? (
         <div className={styles.genreList}>

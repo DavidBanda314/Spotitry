@@ -1,143 +1,159 @@
 .App {
   min-height: 100vh;
   background-color: #000000;
-  color: var(--fg);
+  overflow: hidden;
+}
+
+.header {
+  background-color: #000000;
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
+}
+
+.AppHeader {
+  background: linear-gradient(180deg, #1DB954 0%, #121212 40%, #000000 100%);
+  min-height: calc(100vh - 60px);
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  text-align: center;
 }
 
-.topBar {
-  background-color: #000000;
-  padding: 14px 16px;
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--line);
-}
-
-.brand {
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--fg-bright);
-}
-
-.tag {
-  font-size: 12px;
-  color: var(--yellow);
-}
-
-.hero {
-  padding: 48px 16px 56px;
-  border-bottom: 1px solid var(--line);
+.AppLogo {
+  height: 80px;
+  pointer-events: none;
+  margin-bottom: 32px;
 }
 
 .heroTitle {
-  font-size: clamp(40px, 11vw, 120px);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 0.92;
-  color: var(--fg-bright);
-  margin-bottom: 20px;
+  font-size: clamp(40px, 8vw, 72px);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  color: #FFFFFF;
+  margin-bottom: 16px;
+  max-width: 800px;
 }
 
 .heroSubtitle {
-  font-size: clamp(13px, 2.2vw, 16px);
-  color: var(--fg);
-  margin-bottom: 32px;
-  max-width: 640px;
-  line-height: 1.4;
+  font-size: clamp(16px, 2.5vw, 20px);
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 40px;
+  max-width: 600px;
+  line-height: 1.6;
 }
 
 .buttonGroup {
   display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
+  gap: 16px;
   align-items: center;
 }
 
-.loginButton,
-.signUpButton {
-  background: none;
+.loginButton {
+  background-color: #1DB954;
+  color: #000000;
   border: none;
-  color: var(--yellow);
-  font-size: clamp(16px, 3vw, 22px);
+  border-radius: 500px;
+  padding: 14px 48px;
+  font-size: 16px;
   font-weight: 700;
   cursor: pointer;
-  padding: 0;
-  text-transform: uppercase;
-  transition: color 0.12s ease;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+  letter-spacing: 0.02em;
+}
+
+.loginButton:hover {
+  background-color: #1ed760;
+  transform: scale(1.04);
 }
 
 .signUpButton {
-  color: var(--blue);
+  background-color: transparent;
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 500px;
+  padding: 14px 48px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
   text-decoration: none;
-}
-
-.loginButton:hover,
-.signUpButton:hover {
-  color: var(--fg-bright);
-}
-
-.arrow {
   display: inline-block;
+  letter-spacing: 0.02em;
+}
+
+.signUpButton:hover {
+  border-color: #FFFFFF;
+  transform: scale(1.04);
 }
 
 .features {
-  padding: 40px 16px 56px;
-  flex: 1;
+  background-color: #000000;
+  padding: 80px 32px;
+  text-align: center;
 }
 
 .featuresTitle {
-  font-size: 13px;
-  color: var(--red);
-  margin-bottom: 20px;
-}
-
-.featureList {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.featureRow {
-  display: grid;
-  grid-template-columns: 56px 1fr;
-  gap: 0 16px;
-  padding: 18px 0;
-  border-top: 1px solid var(--line);
-  align-items: baseline;
-}
-
-.featureRow:last-child {
-  border-bottom: 1px solid var(--line);
-}
-
-.featureNum {
-  color: var(--fg);
-  font-size: 14px;
-}
-
-.featureTitle {
-  color: var(--fg-bright);
-  font-size: clamp(22px, 5vw, 40px);
-  font-weight: 700;
+  font-size: 32px;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin-bottom: 48px;
   letter-spacing: -0.02em;
-  line-height: 1;
 }
 
-.featureDesc {
-  grid-column: 2;
-  color: var(--fg);
-  font-size: 13px;
-  margin-top: 8px;
-  line-height: 1.4;
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 32px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.featureCard {
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  padding: 32px 24px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.featureIcon {
+  font-size: 36px;
+  margin-bottom: 16px;
+}
+
+.featureCardTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 8px;
+}
+
+.featureCardDesc {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.6;
 }
 
 .footer {
   background-color: #000000;
-  padding: 20px 16px;
-  color: var(--fg);
-  font-size: 11px;
-  border-top: 1px solid var(--line);
+  padding: 32px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+@keyframes AppLogo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

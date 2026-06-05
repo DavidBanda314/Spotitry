@@ -8,8 +8,11 @@ import Account from './domains/main/Account';
 import Discover from './domains/main/Discover';
 import History from './domains/main/History';
 import Stats from './domains/main/Stats';
+import Search from './domains/main/Search';
+import GlobalSearch from './components/GlobalSearch';
 import Share from './domains/main/Share';
 import Profile from './domains/main/Profile';
+import Compare from './domains/main/Compare';
 import { StoreToken } from './domains/main/redux/Actions/UserActions.js'
 import { getPlaybackInfoRequested } from './domains/main/redux/Actions/PlaybackActions.js'
 import { connect } from 'react-redux'
@@ -62,51 +65,49 @@ const AuthenticatedApp = (props) => {
       {token &&
       <>
       <header className={styles.topBar}>
-        <span className={styles.brand}>SPOTI<span className={styles.brandAccent}>TRY</span></span>
-        <span style={{fontSize: '12px', color: '#40aaff'}}>{'///PLAYER'}</span>
+        <span className={styles.brand}>Spoti<span className={styles.brandAccent}>try</span></span>
+        <GlobalSearch/>
       </header>
       {song && 
       <div className={styles.player}>
         {showNoteInput && (
           <div style={{
-            backgroundColor: '#000000',
+            backgroundColor: '#282828',
             padding: '12px 16px',
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
-            borderTop: '1px solid rgba(132,137,142,0.4)',
+            borderTop: '1px solid rgba(255,255,255,0.1)',
           }}>
             <input
               type="text"
               value={noteText}
               onChange={(e) => setNoteText(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter') saveTimestampWithNote(); if (e.key === 'Escape') cancelNote(); }}
-              placeholder="ADD A NOTE (OPTIONAL)..."
+              placeholder="Add a note (optional)..."
               autoFocus
               style={{
                 flex: 1,
-                backgroundColor: '#000000',
-                border: '1px solid rgba(132,137,142,0.4)',
-                borderRadius: '0',
-                padding: '8px 12px',
+                backgroundColor: '#3a3a3a',
+                border: '1px solid rgba(255,255,255,0.2)',
+                borderRadius: '500px',
+                padding: '8px 16px',
                 color: '#FFFFFF',
-                fontSize: '13px',
+                fontSize: '14px',
                 outline: 'none',
-                textTransform: 'uppercase',
               }}
             />
             <button
               onClick={saveTimestampWithNote}
               style={{
-                backgroundColor: '#ffc700',
+                backgroundColor: '#1DB954',
                 color: '#000',
                 border: 'none',
-                borderRadius: '0',
+                borderRadius: '500px',
                 padding: '8px 20px',
-                fontSize: '13px',
+                fontSize: '14px',
                 fontWeight: 700,
                 cursor: 'pointer',
-                textTransform: 'uppercase',
               }}
             >
               Save
@@ -115,13 +116,12 @@ const AuthenticatedApp = (props) => {
               onClick={cancelNote}
               style={{
                 backgroundColor: 'transparent',
-                color: '#84898e',
-                border: '1px solid rgba(132,137,142,0.4)',
-                borderRadius: '0',
+                color: 'rgba(255,255,255,0.6)',
+                border: '1px solid rgba(255,255,255,0.2)',
+                borderRadius: '500px',
                 padding: '8px 16px',
-                fontSize: '13px',
+                fontSize: '14px',
                 cursor: 'pointer',
-                textTransform: 'uppercase',
               }}
             >
               Cancel
@@ -132,7 +132,7 @@ const AuthenticatedApp = (props) => {
           display: 'flex',
           alignItems: 'center',
           backgroundColor: '#000000',
-          borderTop: '1px solid rgba(132,137,142,0.4)',
+          borderTop: '1px solid rgba(255,255,255,0.1)',
         }}>
           <div style={{flex: 1}}>
             <SpotifyPlayer
@@ -140,10 +140,10 @@ const AuthenticatedApp = (props) => {
                 bgColor:'#000000',
                 color:'#FFFFFF',
                 trackNameColor:'#FFFFFF',
-                trackArtistColor:'#84898e',
-                sliderColor:'#ffc700',
+                trackArtistColor:'rgba(255, 255, 255, 0.6)',
+                sliderColor:'#1DB954',
                 sliderHandleColor:'#FFFFFF',
-                sliderTrackColor:'rgba(132, 137, 142, 0.4)',
+                sliderTrackColor:'rgba(255, 255, 255, 0.2)',
               }}
               token={token}
               uris={[songURI]}
@@ -163,15 +163,13 @@ const AuthenticatedApp = (props) => {
               border: 'none',
               cursor: 'pointer',
               padding: '8px 16px',
-              fontSize: '13px',
-              fontWeight: 700,
-              textTransform: 'uppercase',
-              color: timestampSaved ? '#ffc700' : '#84898e',
+              fontSize: '20px',
+              color: timestampSaved ? '#1DB954' : 'rgba(255,255,255,0.7)',
               transition: 'color 0.2s ease',
               flexShrink: 0,
             }}
           >
-            {timestampSaved ? '[SAVED]' : '[+TS]'}
+            {timestampSaved ? '✓ Saved' : '⏱'}
           </button>
         </div>
       </div>
@@ -208,6 +206,9 @@ const AuthenticatedApp = (props) => {
             <Route exact path='/discover'>
               <Discover/>
             </Route>
+            <Route exact path='/search'>
+              <Search/>
+            </Route>
             <Route exact path='/history'>
               <History/>
             </Route>
@@ -219,6 +220,9 @@ const AuthenticatedApp = (props) => {
             </Route>
             <Route exact path='/profile/:userId'>
               <Profile/>
+            </Route>
+            <Route exact path='/compare'>
+              <Compare/>
             </Route>
           </Switch>
         </CSSTransition>

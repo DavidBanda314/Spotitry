@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
+import { useHistory } from 'react-router-dom'
 import styles from './index.module.css'
 import { connect } from 'react-redux'
 import emptyProfile from '../../../images/empty_profile.jpeg'
@@ -9,6 +10,7 @@ const Account = (props) => {
     const [isPublic, setIsPublic] = useState(false)
     const [loading, setLoading] = useState(true)
     const [copied, setCopied] = useState(false)
+    const history = useHistory()
 
     const userId = databaseUser?.userId
 
@@ -150,6 +152,9 @@ const Account = (props) => {
                     )}
                 </div>
 
+                <button className={styles.compareButton} onClick={() => history.push('/compare')}>
+                    Compare Tastes
+                </button>
                 <button className={styles.logoutButton} onClick={handleLogout}>
                     Log out
                 </button>

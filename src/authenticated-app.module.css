@@ -4,45 +4,49 @@
     left: 0;
     right: 0;
     z-index: 200;
-    height: 48px;
+    height: 52px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #000000;
-    border-bottom: 1px solid var(--line);
-    padding: 0 16px;
+    gap: 12px;
+    padding-left: 16px;
+    padding-right: 16px;
+    background-color: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     padding-top: env(safe-area-inset-top, 0px);
 }
 
 .brand {
-    font-size: 18px;
-    font-weight: 700;
+    font-size: 20px;
+    font-weight: 800;
     letter-spacing: -0.02em;
-    color: var(--fg-bright);
+    color: #FFFFFF;
 }
 
 .brandAccent {
-    color: var(--yellow);
+    color: #1DB954;
 }
 
 .content {
-    padding-top: calc(48px + env(safe-area-inset-top, 0px));
+    padding-top: calc(52px + env(safe-area-inset-top, 0px));
     /* room for the bottom nav */
-    padding-bottom: calc(48px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px));
     min-height: 100vh;
     background-color: #000000;
 }
 
 /* when a song is selected, also clear the fixed player (~90px) above the nav */
 .withPlayer {
-    padding-bottom: calc(48px + 90px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(58px + 90px + env(safe-area-inset-bottom, 0px));
 }
 
 .player {
     position: fixed;
     left: 0;
     right: 0;
-    bottom: calc(48px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(58px + env(safe-area-inset-bottom, 0px));
     z-index: 150;
 }
 

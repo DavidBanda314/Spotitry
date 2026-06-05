@@ -1,8 +1,8 @@
 .header {
     background-color: #000000;
-    padding: 0;
-    color: var(--fg);
-    max-width: 640px;
+    padding: 24px 16px;
+    color: #FFFFFF;
+    max-width: 600px;
     margin: 0 auto;
 }
 
@@ -13,46 +13,42 @@
 .row {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
+    align-items: center;
+    text-align: center;
     gap: 8px;
-    padding: 24px 16px;
-    background: #000000;
-    border-bottom: 1px solid var(--line);
+    padding: 32px 24px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .profilePic {
-    border-radius: 0;
+    border-radius: 50%;
     width: 120px;
     height: 120px;
     object-fit: cover;
-    border: 1px solid var(--line);
-    filter: grayscale(1) contrast(1.05);
-    margin-bottom: 12px;
+    border: 3px solid #1DB954;
+    margin-bottom: 8px;
 }
 
 .name {
-    color: var(--fg-bright);
-    font-size: clamp(28px, 8vw, 48px);
-    font-weight: 700;
+    color: #FFFFFF;
+    font-size: 24px;
+    font-weight: 800;
     letter-spacing: -0.02em;
-    line-height: 1;
-    text-transform: uppercase;
 }
 
 .email {
-    color: var(--fg);
-    font-size: 13px;
-    font-weight: 400;
-    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    font-weight: 500;
 }
 
 .followers {
-    color: var(--yellow);
-    font-size: 14px;
+    color: #1DB954;
+    font-size: 15px;
     font-weight: 700;
     margin-top: 4px;
-    text-transform: uppercase;
 }
 
 .column {
@@ -63,66 +59,81 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    align-items: stretch;
+    align-items: center;
     width: 100%;
     margin-top: 16px;
-    padding: 0;
-    background: #000000;
-    border-radius: 0;
-    border: 1px solid var(--line);
+    padding: 16px 8px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .stat {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     flex: 1;
-    padding: 16px 8px;
-    border-right: 1px solid var(--line);
-}
-
-.stat:last-child {
-    border-right: none;
 }
 
 .statNumber {
-    color: var(--yellow);
-    font-size: 22px;
-    font-weight: 700;
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight: 800;
     line-height: 1.2;
-    font-variant-numeric: tabular-nums;
 }
 
 .statLabel {
-    color: var(--fg);
-    font-size: 11px;
-    font-weight: 700;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 12px;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.06em;
     margin-top: 4px;
 }
 
-.logoutButton {
+.compareButton {
     display: block;
     width: calc(100% - 32px);
-    margin: 16px;
+    margin: 16px 16px 0;
     padding: 14px 24px;
     background: transparent;
-    color: var(--red);
+    color: var(--yellow);
     font-size: 14px;
     font-weight: 700;
     letter-spacing: 0.02em;
-    border: 1px solid var(--red);
+    border: 1px solid var(--yellow);
     border-radius: 0;
     cursor: pointer;
     text-transform: uppercase;
     transition: background 0.12s ease, color 0.12s ease;
+    font-family: var(--mono);
+}
+
+.compareButton:hover {
+    background: var(--yellow);
+    color: #000000;
+}
+
+.logoutButton {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+    padding: 14px 24px;
+    background: transparent;
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 500px;
+    cursor: pointer;
+    transition: transform 0.1s ease, border-color 0.2s ease, background 0.2s ease;
 }
 
 .logoutButton:hover {
-    background: var(--red);
-    color: #000000;
+    transform: scale(1.02);
+    border-color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.06);
 }
 
 .publicProfileSection {
@@ -216,5 +227,8 @@
     .profilePic {
         width: 150px;
         height: 150px;
+    }
+    .name {
+        font-size: 28px;
     }
 }

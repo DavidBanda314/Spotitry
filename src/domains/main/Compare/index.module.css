@@ -1,0 +1,360 @@
+.container {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0;
+    color: var(--fg);
+}
+
+.inputSection {
+    padding: 24px 16px;
+    border-bottom: 1px solid var(--line);
+}
+
+.sectionTitle {
+    color: var(--yellow);
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 16px;
+}
+
+.inputRow {
+    display: flex;
+    gap: 0;
+}
+
+.input {
+    flex: 1;
+    background-color: #000000;
+    border: 1px solid var(--line);
+    border-right: none;
+    border-radius: 0;
+    padding: 12px 16px;
+    color: var(--fg-bright);
+    font-size: 13px;
+    font-family: var(--mono);
+    text-transform: uppercase;
+    outline: none;
+}
+
+.input::placeholder {
+    color: var(--fg);
+    text-transform: uppercase;
+}
+
+.input:focus {
+    border-color: var(--yellow);
+}
+
+.compareButton {
+    background-color: var(--yellow);
+    color: #000000;
+    border: 1px solid var(--yellow);
+    border-radius: 0;
+    padding: 12px 24px;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: var(--mono);
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.compareButton:hover {
+    background-color: var(--fg-bright);
+    border-color: var(--fg-bright);
+}
+
+.compareButton:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.loading {
+    text-align: center;
+    padding: 48px 16px;
+    color: var(--fg);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.error {
+    text-align: center;
+    padding: 48px 16px;
+    color: var(--red);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.results {
+    padding: 0;
+}
+
+.scoreSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 16px;
+    border-bottom: 1px solid var(--line);
+}
+
+.friendInfo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.friendImage {
+    width: 48px;
+    height: 48px;
+    border-radius: 0;
+    object-fit: cover;
+    border: 1px solid var(--line);
+    filter: grayscale(1) contrast(1.05);
+}
+
+.friendName {
+    color: var(--fg-bright);
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.scoreCircle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 3px solid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.scoreValue {
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.scoreLabel {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--fg);
+    margin-top: 4px;
+}
+
+.sharedSection {
+    padding: 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.sharedHeader {
+    padding: 20px 16px 12px;
+    border-bottom: 1px solid var(--line);
+}
+
+.sharedGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 0;
+    border-top: 1px solid var(--line);
+}
+
+.sharedArtistCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 8px;
+    background-color: #000000;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    cursor: default;
+}
+
+.sharedArtistImage {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--line);
+    filter: grayscale(1) contrast(1.05);
+    margin-bottom: 8px;
+}
+
+.sharedArtistName {
+    color: var(--fg-bright);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+.sharedTrackCard {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background-color: #000000;
+    border-bottom: 1px solid var(--line);
+    cursor: pointer;
+    transition: background 0.12s ease;
+}
+
+.sharedTrackCard:hover {
+    background-color: rgba(255, 199, 0, 0.05);
+}
+
+.sharedTrackImage {
+    width: 48px;
+    height: 48px;
+    border-radius: 0;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid var(--line);
+    filter: grayscale(1) contrast(1.05);
+}
+
+.sharedTrackInfo {
+    flex: 1;
+    min-width: 0;
+}
+
+.sharedTrackName {
+    color: var(--fg-bright);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sharedTrackArtist {
+    color: var(--fg);
+    font-size: 12px;
+    text-transform: uppercase;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-top: 2px;
+}
+
+.emptyMessage {
+    color: var(--fg);
+    font-size: 13px;
+    text-transform: uppercase;
+    padding: 24px 16px;
+    text-align: center;
+}
+
+.sideBySide {
+    padding: 0;
+}
+
+.sideBySideHeader {
+    padding: 20px 16px 12px;
+    border-bottom: 1px solid var(--line);
+}
+
+.columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+}
+
+.column {
+    border-right: 1px solid var(--line);
+}
+
+.column:last-child {
+    border-right: none;
+}
+
+.columnHeader {
+    color: var(--yellow);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 12px;
+    border-bottom: 1px solid var(--line);
+    text-align: center;
+}
+
+.columnItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--line);
+}
+
+.columnImage {
+    width: 32px;
+    height: 32px;
+    border-radius: 0;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid var(--line);
+    filter: grayscale(1) contrast(1.05);
+}
+
+.columnImageCircle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid var(--line);
+    filter: grayscale(1) contrast(1.05);
+}
+
+.columnName {
+    color: var(--fg-bright);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+    min-width: 0;
+}
+
+.columnSub {
+    color: var(--fg);
+    font-size: 10px;
+    text-transform: uppercase;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.columnItemInfo {
+    flex: 1;
+    min-width: 0;
+}
+
+.subSectionTitle {
+    color: var(--fg);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid var(--line);
+    background: rgba(132, 137, 142, 0.05);
+}

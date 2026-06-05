@@ -90,7 +90,7 @@ const App = (props) => {
   }, [authCode]);
 
   if (isExchanging) {
-    return <div style={{color: '#ffc700', textAlign: 'center', marginTop: '50px', fontFamily: "'Space Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.04em'}}>{'///LOGGING IN...'}</div>;
+    return <div style={{color: 'white', textAlign: 'center', marginTop: '50px'}}>Logging in...</div>;
   }
 
   if (location.pathname === '/share' && !isLoggedIn && !localStorage.getItem("token")) {

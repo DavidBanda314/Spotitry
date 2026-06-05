@@ -1,45 +1,38 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 
-const MONO = "'Space Mono', 'SFMono-Regular', Menlo, Monaco, Consolas, 'Courier New', monospace";
-
 const theme = createMuiTheme({
     palette: {
       type: 'dark',
       primary: {
-        main: '#ffc700',
-        light: '#ffd84d',
-        dark: '#cca000',
+        main: '#1DB954',
+        light: '#1ed760',
+        dark: '#1aa34a',
       },
       secondary: {
-        main: '#40aaff',
-      },
-      error: {
-        main: '#f00007',
+        main: '#FFFFFF',
       },
       background: {
         default: '#000000',
-        paper: '#000000',
+        paper: '#1a1a1a',
       },
       text: {
-        primary: '#ffffff',
-        secondary: '#84898e',
+        primary: '#FFFFFF',
+        secondary: '#a0a0a0',
       },
     },
     typography: {
-      fontFamily: MONO,
+      fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif",
       h1: {
-        fontWeight: 700,
-        letterSpacing: '-0.02em',
-        textTransform: 'uppercase',
+        fontWeight: 900,
+        letterSpacing: '-0.04em',
       },
       h2: {
-        fontWeight: 700,
-        letterSpacing: '-0.02em',
-        textTransform: 'uppercase',
+        fontWeight: 800,
+        letterSpacing: '-0.03em',
       },
     },
     shape: {
-      borderRadius: 0,
+      borderRadius: 8,
     },
     overrides: {
       MuiPaper: {
@@ -49,18 +42,16 @@ const theme = createMuiTheme({
       },
       MuiTab: {
         root: {
-          textTransform: 'uppercase',
+          textTransform: 'none',
           fontWeight: 700,
           fontSize: '0.875rem',
-          fontFamily: MONO,
         },
       },
       MuiButton: {
         root: {
-          textTransform: 'uppercase',
-          borderRadius: 0,
+          textTransform: 'none',
+          borderRadius: 500,
           fontWeight: 700,
-          fontFamily: MONO,
         },
         contained: {
           boxShadow: 'none',
