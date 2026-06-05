@@ -4,25 +4,25 @@ import { connect } from 'react-redux'
 import SearchBar from '../../../components/searchBar'
 import { searchSongsRequested } from '../redux/Actions/UserActions.js'
 import { getPlaybackInfoRequested, playSongRequested, setSelectedSong } from '../redux/Actions/PlaybackActions.js'
-import { Input } from 'reactstrap'
 import { Button } from '@material-ui/core'
 
 
 const Discover = (props) => {
-    const {searchSongs, getPlaybackInfo, token, searchedSongs, playSong, currentlyPlaying,userId, setSelectedSong} = props
+    const {searchSongs, getPlaybackInfo, token, searchedSongs, currentlyPlaying,userId, setSelectedSong} = props
     const [searchValue, setSearchValue] = useState('') 
     useEffect(() => {
         getPlaybackInfo(token)
         if(searchValue){
             searchSongs(token,searchValue)
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[searchValue])
     return(
         <>
         <div className={styles.row1}>
             <div >
                 <>
-                    {currentlyPlaying && <img src={currentlyPlaying?.album?.images[1].url} className={styles.pic}/>}
+                    {currentlyPlaying && <img alt="" src={currentlyPlaying?.album?.images[1].url} className={styles.pic}/>}
                     <p className={styles.header}> {currentlyPlaying?.name}</p>
                 </>
                 <div className={styles.searchBar}>
@@ -40,7 +40,7 @@ const Discover = (props) => {
                                     }}
                                 >
 
-                                    <img src={song.album.images[0].url} className={styles.smallPic}/>
+                                    <img alt="" src={song.album.images[0].url} className={styles.smallPic}/>
                                     <p
                                     style={{cursor:'pointer', marginTop:'10px', marginLeft:'20px', color: '#FFFFFF'}}>{song.name}</p>
                                 </div>
@@ -80,7 +80,6 @@ const mapStateToProps = (state) => {
         searchedSongs:state.User.searchedSongs,
         availableDevices: state.Player.availableDevices.devices,
         currentlyPlaying: state.Player.playbackInfo?.item,
-        availableDevices: state.Player.availableDevices,
         userId: state.User.databaseUser.userId,
     }
 }

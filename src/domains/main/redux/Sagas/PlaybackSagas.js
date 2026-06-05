@@ -74,10 +74,11 @@ export function* getRecentlyPlayed({token}) {
 
 }
 
-export default function* () {
+function* playbackSaga() {
     yield all([
         yield takeLatest(Actions.playbackActions.getPlaybackInfoRequested, getPlaybackInfo),
         yield takeLatest(Actions.playbackActions.playSongRequested, playSong),
         yield takeLatest(Actions.playbackActions.getRecentlyPlayedRequested, getRecentlyPlayed)
     ]);
 }
+export default playbackSaga

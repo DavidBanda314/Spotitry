@@ -1,6 +1,6 @@
 import styles from  './unauthenticated.module.css'
 import React, { useEffect, useState} from "react";
-import { spotifyLogo, clientId, redirectUri, hash, scopes, signUp, authEndpoint} from '../../utils/constants'
+import { spotifyLogo, clientId, hash, scopes, signUp, authEndpoint} from '../../utils/constants'
 import {Tabs, Tab, Button, Box} from '@material-ui/core'
 
 const UnauthenticatedApp = () => {
@@ -13,6 +13,7 @@ const UnauthenticatedApp = () => {
           token: _token
         });
       }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[hash.access_token])
     const redirectUri = `${window.location.href}home`
     console.log(redirectUri)
