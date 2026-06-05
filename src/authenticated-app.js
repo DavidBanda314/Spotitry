@@ -20,6 +20,7 @@ const AuthenticatedApp = (props) => {
   const [timestampSaved, setTimestampSaved] = useState(false)
   const [showNoteInput, setShowNoteInput] = useState(false)
   const [noteText, setNoteText] = useState('')
+  const [play, setPlay] = useState(false)
   const location = useLocation()
 
   useEffect(() => {
@@ -28,6 +29,12 @@ const AuthenticatedApp = (props) => {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
+
+  useEffect(() => {
+    if(selectedSong?.songURI){
+      setPlay(true)
+    }
+  },[selectedSong])
 
   const handleTimestamp = () => {
     if (token && userId) {
@@ -135,7 +142,9 @@ const AuthenticatedApp = (props) => {
               token={token}
               uris={[songURI]}
               offset={position_ms}
+              play={play}
               autoPlay={true}
+              callback={(state) => { setPlay(state.isPlaying) }}
               showSaveIcon={true}
               persistDeviceSelection={true}
             />

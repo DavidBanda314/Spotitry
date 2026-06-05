@@ -51,6 +51,7 @@ const Discover = (props) => {
                             className={styles.row} key={key}
                             onClick={() => {
                                 setSelectedSong(song.track_number-1,song.album.uri,song)
+                                setSearchValue('')
                             }}
                         >
                             <img alt="" src={song.album.images[0].url} className={styles.smallPic}/>
