@@ -101,6 +101,36 @@ const AuthenticatedApp = (props) => {
     }
   }, [songURI, position_ms, song])
 
+  // Arm a one-shot seek whenever a selection carries a start position. The
+  // web player always begins a track at 0:00, so we seek to the timestamp once
+  // it reports the matching track is actually playing (avoids a race between
+  // the player's own play call and a separate seek).
+  const seekArmedRef = useRef(false)
+  const seekTargetRef = useRef(0)
+  useEffect(() => {
+    if (position_ms && position_ms > 0) {
+      seekTargetRef.current = position_ms
+      seekArmedRef.current = true
+    } else {
+      seekArmedRef.current = false
+    }
+  }, [songURI, position_ms])
+
+  const maybeSeekToTimestamp = useCallback((state) => {
+    if (!seekArmedRef.current || !state.isPlaying) return
+    if (!state.track || state.track.uri !== songURI) return
+    const deviceId = state.currentDeviceId || state.deviceId
+    if (!deviceId) return
+    const target = seekTargetRef.current
+    seekArmedRef.current = false
+    fetch(`${PLAYER_ENDPOINT}/seek?position_ms=${target}&device_id=${deviceId}`, {
+      method: 'PUT',
+      headers: { 'Authorization': 'Bearer ' + token },
+    })
+      .then(() => setProgressMs(target))
+      .catch(() => { seekArmedRef.current = true })
+  }, [songURI, token])
+
   const handlePlayPause = useCallback(() => {
     setPlay((prev) => !prev)
   }, [])
@@ -250,13 +280,13 @@ const AuthenticatedApp = (props) => {
               }}
               token={token}
               uris={[songURI]}
-              offset={position_ms}
               play={play}
               autoPlay={true}
               callback={(state) => {
                 setPlay(state.isPlaying)
-                if (state.progressMs !== undefined) { setProgressMs(state.progressMs) }
                 if (state.track && state.track.durationMs) { setDurationMs(state.track.durationMs) }
+                maybeSeekToTimestamp(state)
+                if (!seekArmedRef.current && state.progressMs !== undefined) { setProgressMs(state.progressMs) }
               }}
               showSaveIcon={true}
               persistDeviceSelection={true}
