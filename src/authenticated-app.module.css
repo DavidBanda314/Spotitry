@@ -50,6 +50,54 @@
     z-index: 150;
 }
 
+.playerRow {
+    display: flex;
+    align-items: center;
+    background-color: #000000;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.expandButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px 16px;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.7);
+    transition: color 0.2s ease;
+    flex-shrink: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.expandButton:hover {
+    color: #FFFFFF;
+}
+
+/* Full-screen Now-Playing reel */
+.playerExpanded {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 300;
+    background-color: #000000;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    animation: reelIn 0.25s ease;
+}
+
+@keyframes reelIn {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* Page transition animations */
 .fadeEnter {
     opacity: 0;
