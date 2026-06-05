@@ -159,7 +159,7 @@ const Discover = (props) => {
         <div className={styles.container}>
             {currentlyPlaying ? (
                 <div className={styles.nowPlaying}>
-                    <img alt="" src={currentlyPlaying?.album?.images?.[1]?.url || currentlyPlaying?.album?.images?.[0]?.url} className={styles.pic}/>
+                    <img alt="" src={currentlyPlaying?.album?.images?.[1]?.url || currentlyPlaying?.album?.images?.[0]?.url || currentlyPlaying?.images?.[1]?.url || currentlyPlaying?.images?.[0]?.url} className={styles.pic}/>
                     <div className={styles.nowPlayingMeta}>
                         <span className={styles.nowPlayingLabel}>Now playing</span>
                         <span className={styles.header}>{currentlyPlaying?.name}</span>
