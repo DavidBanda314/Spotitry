@@ -12,26 +12,17 @@ const App = (props) => {
     localStorage.removeItem('expiration');
     localStorage.removeItem('refresh_token');
   }
+
+  const [authCode] = useState(() => new URLSearchParams(window.location.search).get('code'))
   const [isLoggedIn, setIsLoggedIn] = useState(hash.access_token || !!localStorage.getItem("token"))
   const [isExchanging, setIsExchanging] = useState(false)
   const history = useHistory()
   var domain = window.location.pathname
 
-  const currentTime = new Date().getTime();
-  const expiration = localStorage.getItem('expiration');
-
-  if (expiration && currentTime > expiration) {
-    localStorage.removeItem('token');
-    localStorage.removeItem('expiration');
-    localStorage.removeItem('refresh_token');
-  }
-
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
-    if (code && !localStorage.getItem('token')) {
+    if (authCode && !localStorage.getItem('token')) {
       setIsExchanging(true);
-      exchangeCodeForToken(code).then((data) => {
+      exchangeCodeForToken(authCode).then((data) => {
         if (data.access_token) {
           setIsLoggedIn(true);
         }
@@ -41,7 +32,7 @@ const App = (props) => {
         setIsExchanging(false);
       });
     }
-  }, []);
+  }, [authCode]);
 
   if (isExchanging) {
     return <div style={{color: 'white', textAlign: 'center', marginTop: '50px'}}>Logging in...</div>;
@@ -52,7 +43,7 @@ const App = (props) => {
       <AuthenticatedApp/>
     )
   }
-  if(domain !== '/'){
+  if(domain !== '/' && !authCode){
     history.push('/') 
   }
   return <UnauthenticatedApp/>
