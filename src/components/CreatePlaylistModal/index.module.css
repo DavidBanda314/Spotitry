@@ -101,7 +101,7 @@
 
 .createBtn {
     background: var(--accent);
-    color: var(--text);
+    color: var(--on-accent);
     border: none;
     border-radius: 500px;
     padding: 12px;
@@ -131,7 +131,7 @@
     display: block;
     text-align: center;
     background: var(--accent);
-    color: var(--text);
+    color: var(--on-accent);
     border-radius: 500px;
     padding: 12px;
     font-size: 14px;
