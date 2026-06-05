@@ -88,6 +88,87 @@
     white-space: nowrap;
 }
 
+.timestampRow {
+    display: flex;
+    overflow-x: auto;
+    gap: 12px;
+    padding-bottom: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+.timestampRow::-webkit-scrollbar {
+    height: 6px;
+}
+
+.timestampRow::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
+}
+
+.timestampCard {
+    display: flex;
+    align-items: center;
+    min-width: 220px;
+    max-width: 260px;
+    background-color: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    padding: 10px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: border-color 0.2s ease, transform 0.15s ease;
+}
+
+.timestampCard:hover {
+    border-color: rgba(255, 255, 255, 0.18);
+}
+
+.timestampCard:active {
+    transform: scale(0.98);
+}
+
+.timestampArt {
+    width: 48px;
+    height: 48px;
+    border-radius: 6px;
+    object-fit: cover;
+    flex-shrink: 0;
+    margin-right: 10px;
+}
+
+.timestampInfo {
+    min-width: 0;
+    flex: 1;
+}
+
+.timestampSong {
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: 700;
+    margin: 0 0 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.timestampTime {
+    color: #1DB954;
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0 0 2px;
+}
+
+.timestampNote {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 11px;
+    font-style: italic;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 @media (min-width: 600px) {
     .grid {
         grid-template-columns: repeat(3, 1fr);
