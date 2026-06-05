@@ -1,15 +1,24 @@
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styles from './index.module.css'
 import { connect } from 'react-redux'
 import SearchBar from '../../../components/searchBar'
 import { searchSongsRequested } from '../redux/Actions/UserActions.js'
 import { getPlaybackInfoRequested, playSongRequested, setSelectedSong } from '../redux/Actions/PlaybackActions.js'
 import { Button } from '@material-ui/core'
+import { SkeletonCard } from '../../../components/Skeleton'
 
 
 const Discover = (props) => {
-    const {searchSongs, getPlaybackInfo, token, searchedSongs, currentlyPlaying,userId, setSelectedSong} = props
-    const [searchValue, setSearchValue] = useState('') 
+    const {searchSongs, getPlaybackInfo, token, searchedSongs, currentlyPlaying,userId, setSelectedSong, playbackInfo} = props
+    const [searchValue, setSearchValue] = useState('')
+    const [playbackLoaded, setPlaybackLoaded] = useState(false)
+    const playbackInfoRef = useRef(playbackInfo)
+    useEffect(() => {
+        if (playbackInfoRef.current !== playbackInfo) {
+            setPlaybackLoaded(true)
+        }
+        playbackInfoRef.current = playbackInfo
+    }, [playbackInfo])
     useEffect(() => {
         getPlaybackInfo(token)
         if(searchValue){
@@ -19,7 +28,7 @@ const Discover = (props) => {
     },[searchValue])
     return(
         <div className={styles.container}>
-            {currentlyPlaying &&
+            {currentlyPlaying ? (
                 <div className={styles.nowPlaying}>
                     <img alt="" src={currentlyPlaying?.album?.images[1]?.url} className={styles.pic}/>
                     <div className={styles.nowPlayingMeta}>
@@ -27,7 +36,9 @@ const Discover = (props) => {
                         <span className={styles.header}>{currentlyPlaying?.name}</span>
                     </div>
                 </div>
-            }
+            ) : !playbackLoaded ? (
+                <SkeletonCard width="100%" height="120px" borderRadius="16px" />
+            ) : null}
 
             <div className={styles.searchBar}>
                 <SearchBar setSearchValue={setSearchValue}/>
@@ -78,6 +89,7 @@ const mapStateToProps = (state) => {
         token:state.User.token,
         searchedSongs:state.User.searchedSongs,
         availableDevices: state.Player.availableDevices.devices,
+        playbackInfo: state.Player.playbackInfo,
         currentlyPlaying: state.Player.playbackInfo?.item,
         userId: state.User.databaseUser.userId,
     }

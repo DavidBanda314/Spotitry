@@ -9,9 +9,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faListUl } from '@fortawesome/free-solid-svg-icons'
 import DisplayCard from '../../../components/DisplayCard';
 import CreatePlaylistModal from '../../../components/CreatePlaylistModal'
+import { SkeletonGrid } from '../../../components/Skeleton';
 
 const History = (props) => {
-    const {token,history, StoreToken, setSelectedSong, selectedSong, userId} = props
+    const {token,history, StoreToken, setSelectedSong, selectedSong, userId, loading} = props
     const [myHistory, setMyHistory] = useState(history)
     const [searchValue,setSearchValue] = useState('')
     const [showPlaylistModal, setShowPlaylistModal] = useState(false)
@@ -71,7 +72,9 @@ const History = (props) => {
             </div>
 
             <div className={styles.cardGrid}>
-                { myHistory.length !== 0 && myHistory.slice(0,20).map((track,key) => {
+                {loading && history.length === 0 ? (
+                    <SkeletonGrid count={6} cardHeight="240px" />
+                ) : myHistory.slice(0,20).map((track,key) => {
                     var song = track.track
                     var album = song?.album
                     var artist = song?.artists[0]
@@ -111,7 +114,8 @@ const mapStateToProps = (state) => {
       history: state.Player.recentlyPlayed,
       token:state.User.token,
       selectedSong:state.Player.selectedSong,
-      userId: state.User.profile?.id
+      userId: state.User.profile?.id,
+      loading: state.User.loading
   }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(History);
