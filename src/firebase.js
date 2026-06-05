@@ -65,6 +65,9 @@ export async function getTimestamps(userId){
 export async function setProfilePublic(userId, isPublic) {
   try {
     await db.ref('users/' + userId + '/isPublic').set(isPublic);
+    if (!isPublic) {
+      await db.ref('users/' + userId + '/publicProfile').remove();
+    }
   } catch (error) {
     console.log(error);
   }
@@ -80,15 +83,12 @@ export async function updatePublicProfile(userId, profileData) {
 
 export async function fetchPublicProfile(userId) {
   try {
-    const snapshot = await db.ref('users/' + userId).get();
-    if (snapshot.exists()) {
-      const data = snapshot.val();
-      if (data.isPublic) {
-        return { isPublic: true, publicProfile: data.publicProfile || null };
-      }
-      return { isPublic: false };
+    const isPublicSnap = await db.ref('users/' + userId + '/isPublic').get();
+    if (isPublicSnap.exists() && isPublicSnap.val()) {
+      const profileSnap = await db.ref('users/' + userId + '/publicProfile').get();
+      return { isPublic: true, publicProfile: profileSnap.exists() ? profileSnap.val() : null };
     }
-    return null;
+    return { isPublic: false };
   } catch (error) {
     console.log(error);
     return null;
