@@ -7,6 +7,8 @@ const InitialState =
     topArtists: [],
     topTracks: [],
     searchedSongs: [],
+    searchLoading: false,
+    searchError: null,
     token: '',
     loading:false,
     errors:{},
@@ -110,20 +112,26 @@ function userReducer(state = InitialState, action){
         case UserDataActions.searchSongsRequested: {
             return {
                 ...state,
+                searchLoading: true,
+                searchError: null,
             }
         }
         case UserDataActions.searchSongsSucceeded: {
             const { searchedSongs } = action
             return {
                 ...state,
-                searchedSongs
+                searchedSongs,
+                searchLoading: false,
+                searchError: null,
             }
         }
         case UserDataActions.searchSongsFailed: {
             const { errors } = action 
             return {
                 ...state,
-                errors:errors
+                errors:errors,
+                searchLoading: false,
+                searchError: errors,
             }
         }
         default:{
