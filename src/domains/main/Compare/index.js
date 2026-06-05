@@ -10,8 +10,10 @@ function parseUserId(input) {
     if (trimmed.includes('/profile/')) {
         var parts = trimmed.split('/profile/')
         var id = parts[parts.length - 1].replace(/\/+$/, '')
-        return id || null
+        if (!id) return null
+        trimmed = id
     }
+    if (/[/.#$[\]]/.test(trimmed)) return null
     return trimmed
 }
 
@@ -31,8 +33,9 @@ function findSharedArtists(myArtists, theirArtists) {
         } else if (a.name && theirNames[a.name.toLowerCase()]) {
             match = a
         }
-        if (match && !seen[match.name]) {
-            seen[match.name] = true
+        var artistKey = match ? (match.id || match.name || '').toLowerCase() : null
+        if (match && artistKey && !seen[artistKey]) {
+            seen[artistKey] = true
             shared.push(match)
         }
     })
@@ -59,8 +62,9 @@ function findSharedTracks(myTracks, theirTracks) {
                 match = t
             }
         }
-        if (match && !seen[match.name]) {
-            seen[match.name] = true
+        var dedupKey = match ? ((match.name || '').toLowerCase() + '::' + ((match.artists && match.artists[0] && match.artists[0].name) || '').toLowerCase()) : null
+        if (match && dedupKey && !seen[dedupKey]) {
+            seen[dedupKey] = true
             shared.push(match)
         }
     })
