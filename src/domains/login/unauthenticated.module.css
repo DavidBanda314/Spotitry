@@ -26,7 +26,6 @@
   height: 80px;
   pointer-events: none;
   margin-bottom: 32px;
-  filter: brightness(0) invert(1);
 }
 
 .heroTitle {
