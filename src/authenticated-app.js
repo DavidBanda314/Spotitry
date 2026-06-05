@@ -9,6 +9,7 @@ import Discover from './domains/main/Discover';
 import History from './domains/main/History';
 import Stats from './domains/main/Stats';
 import Share from './domains/main/Share';
+import Compare from './domains/main/Compare';
 import { StoreToken } from './domains/main/redux/Actions/UserActions.js'
 import { getPlaybackInfoRequested } from './domains/main/redux/Actions/PlaybackActions.js'
 import { connect } from 'react-redux'
@@ -215,6 +216,9 @@ const AuthenticatedApp = (props) => {
             </Route>
             <Route exact path='/share'>
               <Share/>
+            </Route>
+            <Route exact path='/compare'>
+              <Compare/>
             </Route>
           </Switch>
         </CSSTransition>
