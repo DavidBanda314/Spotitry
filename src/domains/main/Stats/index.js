@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import styles from './index.module.css';
 import { TOP_TRACKS_ENDPOINT, TOP_ARTISTS_ENDPOINT } from '../../../utils/constants';
 
@@ -11,6 +12,7 @@ const TIME_RANGES = [
 
 const Stats = () => {
   const token = useSelector((state) => state.User.token);
+  const history = useHistory();
 
   const [tracksRange, setTracksRange] = useState('short_term');
   const [artistsRange, setArtistsRange] = useState('short_term');
@@ -146,7 +148,7 @@ const Stats = () => {
       {!loadingArtists && !errorArtists && (
         <div className={styles.list}>
           {topArtists.map((artist, i) => (
-            <div className={styles.listItem} key={artist.id}>
+            <div className={styles.listItem} key={artist.id} onClick={() => history.push('/artist/' + artist.id)} style={{cursor: 'pointer'}}>
               <span className={styles.rank}>{i + 1}</span>
               {artist.images && artist.images.length > 0 && (
                 <img

@@ -1,4 +1,5 @@
 import React from 'react'
+import { withRouter } from 'react-router-dom'
 import styles from './index.module.css'
 import { playSongRequested , setSelectedSong, getPlaybackInfoRequested} from '../redux/Actions/PlaybackActions.js'
 import { connect } from 'react-redux'
@@ -21,7 +22,7 @@ function getRecentTimestamps(timestamps) {
 }
 
 const Home = (props) => {
-    var { token, topTracks, topArtists, setSelectedSong, selectedSong, getPlaybackInfo, playSong, timestamps, loading } = props
+    var { token, topTracks, topArtists, setSelectedSong, selectedSong, getPlaybackInfo, playSong, timestamps, loading, history } = props
     var recentTimestamps = getRecentTimestamps(timestamps);
     const isTracksLoading = loading && topTracks.length === 0
     const isArtistsLoading = loading && topArtists.length === 0
@@ -103,8 +104,7 @@ const Home = (props) => {
                             className={styles.card}
                             key={key}
                             onClick={() => {
-                                setSelectedSong(Math.floor(Math.random() * 10),artist.uri,artist);
-                                getPlaybackInfo(token,0,0);
+                                history.push('/artist/' + artist.id);
                             }}
                         >
                             <img className={`${styles.cardImage} ${styles.artistImage}`} alt="Artist Pic" src={artist.images[0].url}/>
@@ -137,4 +137,4 @@ const mapStateToProps = (state) => {
         loading: state.User.loading,
     }
 }
-export default connect(mapStateToProps,mapDispatchToProps)(Home);
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Home));
