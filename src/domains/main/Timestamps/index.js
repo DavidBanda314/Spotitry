@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState, useMemo, useCallback } from 'react'
 import styles from '../Timestamps/index.module.css'
 import { connect } from 'react-redux'
 import { getProfileRequested } from '../redux/Actions/UserActions'
@@ -6,9 +6,15 @@ import { playSongRequested, setSelectedSong } from '../redux/Actions/PlaybackAct
 import { InputGroup, InputGroupAddon, Input, Button } from 'reactstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch, faListUl, faLink } from '@fortawesome/free-solid-svg-icons'
+import { faSearch, faListUl, faLink, faPlus } from '@fortawesome/free-solid-svg-icons'
 import CreatePlaylistModal from '../../../components/CreatePlaylistModal'
 import { SkeletonGrid } from '../../../components/Skeleton'
+import {
+    createCollection as fbCreateCollection,
+    addTimestampToCollection as fbAddTimestampToCollection,
+    deleteCollection as fbDeleteCollection,
+    fetchCollections as fbFetchCollections,
+} from '../../../firebase'
 
 
 const Timestamps = (props) => {
@@ -18,6 +24,15 @@ const Timestamps = (props) => {
     const [allTimeStampsBySong,setAllTimeStampsBySong] = useState([])
     const [showPlaylistModal, setShowPlaylistModal] = useState(false)
     const [copiedId, setCopiedId] = useState(null)
+
+    // Collections state
+    const [collections, setCollections] = useState({})
+    const [activeCollection, setActiveCollection] = useState(null)
+    const [showNewCollInput, setShowNewCollInput] = useState(false)
+    const [newCollName, setNewCollName] = useState('')
+    const [collectionDropdownId, setCollectionDropdownId] = useState(null)
+    const [addedConfirmId, setAddedConfirmId] = useState(null)
+    const [deleteConfirm, setDeleteConfirm] = useState(false)
 
     const handleShare = (trackUri, positionMs, note, id) => {
         const baseUrl = window.location.origin
@@ -42,17 +57,110 @@ const Timestamps = (props) => {
         })
         return Array.from(uris)
     }, [timestamps])
-    useEffect(() => {   
-        if(!searchValue && timestamps){
-            var tempArr2 = []
-            var tempArr = Object?.values(timestamps)
-            tempArr.map((timestamps) => (
-                tempArr2.push(Object?.values(timestamps))
-            ))
-               setTimeStampsBySong(tempArr2)
-               setAllTimeStampsBySong(tempArr2)
+
+    // Fetch collections on mount
+    useEffect(() => {
+        if (userId) {
+            fbFetchCollections(userId).then(function (data) {
+                setCollections(data || {})
+            })
         }
-    },[timestamps,searchValue])
+    }, [userId])
+
+    // Process raw timestamps into allTimeStampsBySong with keys preserved
+    useEffect(() => {
+        if (timestamps) {
+            var tempArr2 = []
+            Object.entries(timestamps).forEach(function (entry) {
+                var songKey = entry[0]
+                var songGroup = entry[1]
+                var items = Object.entries(songGroup).map(function (inner) {
+                    var pushId = inner[0]
+                    var ts = inner[1]
+                    return Object.assign({}, ts, { _songKey: songKey, _pushId: pushId })
+                })
+                tempArr2.push(items)
+            })
+            setAllTimeStampsBySong(tempArr2)
+        } else {
+            setAllTimeStampsBySong([])
+        }
+    }, [timestamps])
+
+    // Apply search + collection filters
+    useEffect(() => {
+        var filtered = allTimeStampsBySong
+
+        if (searchValue) {
+            filtered = filtered.filter(function (group) {
+                var name = group[0] && group[0].song && group[0].song.name
+                return name && name.toLowerCase().includes(searchValue.toLowerCase())
+            })
+        }
+
+        if (activeCollection && collections[activeCollection]) {
+            var collTs = collections[activeCollection].timestamps || {}
+            var keys = new Set()
+            Object.values(collTs).forEach(function (t) {
+                keys.add(t.songName + '|' + t.timestampKey)
+            })
+            filtered = filtered
+                .map(function (group) {
+                    return group.filter(function (ts) {
+                        return keys.has(ts._songKey + '|' + ts._pushId)
+                    })
+                })
+                .filter(function (group) { return group.length > 0 })
+        }
+
+        setTimeStampsBySong(filtered)
+    }, [allTimeStampsBySong, searchValue, activeCollection, collections])
+
+    // Collection handlers
+    const handleCreateCollection = useCallback(async function () {
+        if (!newCollName.trim() || !userId) return
+        var key = await fbCreateCollection(userId, newCollName.trim())
+        if (key) {
+            setCollections(function (prev) {
+                var next = Object.assign({}, prev)
+                next[key] = { name: newCollName.trim() }
+                return next
+            })
+            setNewCollName('')
+            setShowNewCollInput(false)
+        }
+    }, [newCollName, userId])
+
+    const handleDeleteCollection = useCallback(async function () {
+        if (!activeCollection || !userId) return
+        await fbDeleteCollection(userId, activeCollection)
+        setCollections(function (prev) {
+            var next = Object.assign({}, prev)
+            delete next[activeCollection]
+            return next
+        })
+        setActiveCollection(null)
+        setDeleteConfirm(false)
+    }, [activeCollection, userId])
+
+    const handleAddToCollection = useCallback(async function (collectionId, timestamp) {
+        if (!userId) return
+        var data = {
+            songName: timestamp._songKey,
+            timestampKey: timestamp._pushId,
+            position_ms: timestamp.position_ms,
+            song: timestamp.song,
+        }
+        if (timestamp.note) { data.note = timestamp.note }
+        await fbAddTimestampToCollection(userId, collectionId, data)
+        var updated = await fbFetchCollections(userId)
+        setCollections(updated || {})
+        var confirmKey = collectionDropdownId
+        setCollectionDropdownId(null)
+        setAddedConfirmId(confirmKey)
+        setTimeout(function () { setAddedConfirmId(null) }, 1500)
+    }, [userId, collectionDropdownId])
+
     function millisToMinutesAndSeconds(millis) {
         var minutes = Math.floor(millis / 60000);
         var seconds = ((millis % 60000) / 1000).toFixed(0);
@@ -77,6 +185,67 @@ const Timestamps = (props) => {
                 userId={userId}
                 trackUris={uniqueTrackUris}
             />
+
+            {/* Collections */}
+            <div className={styles.collectionsSection}>
+                <div className={styles.collectionsRow}>
+                    <button
+                        className={!activeCollection ? styles.chipActive : styles.chip}
+                        onClick={() => { setActiveCollection(null); setDeleteConfirm(false) }}
+                    >
+                        All
+                    </button>
+                    {Object.entries(collections).map(function (entry) {
+                        var id = entry[0]
+                        var col = entry[1]
+                        return (
+                            <button
+                                className={activeCollection === id ? styles.chipActive : styles.chip}
+                                key={id}
+                                onClick={() => { setActiveCollection(activeCollection === id ? null : id); setDeleteConfirm(false) }}
+                            >
+                                {col.name}
+                            </button>
+                        )
+                    })}
+                    {showNewCollInput ? (
+                        <span className={styles.newCollInputWrap}>
+                            <input
+                                className={styles.newCollInput}
+                                value={newCollName}
+                                onChange={(e) => setNewCollName(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') handleCreateCollection()
+                                    if (e.key === 'Escape') { setShowNewCollInput(false); setNewCollName('') }
+                                }}
+                                placeholder="Collection name..."
+                                autoFocus
+                            />
+                            <button className={styles.newCollSaveBtn} onClick={handleCreateCollection}>Create</button>
+                            <button className={styles.newCollCancelBtn} onClick={() => { setShowNewCollInput(false); setNewCollName('') }}>{'×'}</button>
+                        </span>
+                    ) : (
+                        <button className={styles.newCollBtn} onClick={() => setShowNewCollInput(true)}>+ New Collection</button>
+                    )}
+                </div>
+            </div>
+
+            {/* Collection header when active */}
+            {activeCollection && collections[activeCollection] && (
+                <div className={styles.collectionHeader}>
+                    <span className={styles.collectionName}>{collections[activeCollection].name}</span>
+                    {!deleteConfirm ? (
+                        <button className={styles.deleteCollBtn} onClick={() => setDeleteConfirm(true)}>Delete Collection</button>
+                    ) : (
+                        <span className={styles.deleteConfirmWrap}>
+                            <span className={styles.deleteConfirmText}>Delete?</span>
+                            <button className={styles.deleteConfirmYes} onClick={handleDeleteCollection}>Yes</button>
+                            <button className={styles.deleteConfirmNo} onClick={() => setDeleteConfirm(false)}>No</button>
+                        </span>
+                    )}
+                </div>
+            )}
+
             <div className={styles.searchWrapper}>
                 <InputGroup>
                     <InputGroupAddon addonType="append">
@@ -85,8 +254,6 @@ const Timestamps = (props) => {
                         </Button>
                     </InputGroupAddon>
                     <Input placeholder = "Search timestamps..." onChange={(event) => {
-                        var temp = allTimeStampsBySong?.filter((timestamps) => (timestamps[0].song.name.toLowerCase().includes(event.target.value.toLowerCase())))
-                        setTimeStampsBySong(temp)
                         setSearchValue(event.target.value)
                     }}></Input>
                 </InputGroup>
@@ -97,11 +264,16 @@ const Timestamps = (props) => {
                 </div>
             ) : (!timestampsBySong || timestampsBySong.length === 0) ? (
                 <div className={styles.emptyState}>
-                    <span className={styles.emptyIcon}>♪</span>
+                    <span className={styles.emptyIcon}>&#9834;</span>
                     {searchValue ? (
                         <>
                             <span className={styles.emptyTitle}>No timestamps match your search</span>
                             <span className={styles.emptySubtitle}>Try a different song name.</span>
+                        </>
+                    ) : activeCollection ? (
+                        <>
+                            <span className={styles.emptyTitle}>No timestamps in this collection</span>
+                            <span className={styles.emptySubtitle}>Add timestamps using the + button on any timestamp.</span>
                         </>
                     ) : (
                         <>
@@ -151,7 +323,7 @@ const Timestamps = (props) => {
                                                             }
                                                         }}
                                                     >
-                                                        <span className={styles.playIcon}>▶</span>
+                                                        <span className={styles.playIcon}>&#9654;</span>
                                                         <span className={styles.timeLabel}>{millisToMinutesAndSeconds(timeSet)} / {millisToMinutesAndSeconds(totalTime)}</span>
                                                     </button>
                                                     <button
@@ -159,8 +331,38 @@ const Timestamps = (props) => {
                                                         onClick={() => handleShare(track?.uri, timeSet, timestamp.note, shareId)}
                                                         title="Copy share link"
                                                     >
-                                                        {copiedId === shareId ? '✓' : <FontAwesomeIcon icon={faLink} />}
+                                                        {copiedId === shareId ? '\u2713' : <FontAwesomeIcon icon={faLink} />}
                                                     </button>
+                                                    <div className={styles.addToCollWrap}>
+                                                        <button
+                                                            className={styles.addToCollBtn}
+                                                            onClick={() => setCollectionDropdownId(collectionDropdownId === shareId ? null : shareId)}
+                                                            title="Add to collection"
+                                                        >
+                                                            {addedConfirmId === shareId ? '\u2713' : <FontAwesomeIcon icon={faPlus} />}
+                                                        </button>
+                                                        {collectionDropdownId === shareId && (
+                                                            <div className={styles.collDropdown}>
+                                                                {Object.keys(collections).length === 0 ? (
+                                                                    <span className={styles.collDropdownEmpty}>No collections yet</span>
+                                                                ) : (
+                                                                    Object.entries(collections).map(function (cEntry) {
+                                                                        var cId = cEntry[0]
+                                                                        var col = cEntry[1]
+                                                                        return (
+                                                                            <button
+                                                                                key={cId}
+                                                                                className={styles.collDropdownItem}
+                                                                                onClick={() => handleAddToCollection(cId, timestamp)}
+                                                                            >
+                                                                                {col.name}
+                                                                            </button>
+                                                                        )
+                                                                    })
+                                                                )}
+                                                            </div>
+                                                        )}
+                                                    </div>
                                                 </div>
                                                 {timestamp.note && (
                                                     <span className={styles.note}>"{timestamp.note}"</span>
