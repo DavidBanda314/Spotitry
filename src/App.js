@@ -30,6 +30,7 @@ const App = (props) => {
         window.history.replaceState({}, document.title, window.location.pathname);
       }).catch(() => {
         setIsExchanging(false);
+        window.history.replaceState({}, document.title, window.location.pathname);
       });
     }
   }, [authCode]);
