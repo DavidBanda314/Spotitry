@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import styles from './index.module.css'
 import { useHistory, useLocation } from 'react-router-dom';
 import { connect } from 'react-redux'
@@ -22,13 +22,16 @@ const NavBar = (props) => {
     const current = location.pathname.replace('/', '').toLowerCase()
 
     const [saved, setSaved] = useState(false)
+    const savedTimer = useRef(null)
+    useEffect(() => () => clearTimeout(savedTimer.current), [])
 
     const canSave = !!(token && userId && selectedSong?.songURI)
     const handleCreate = () => {
         if (canSave) {
             getPlaybackInfo(token, 1, userId)
             setSaved(true)
-            setTimeout(() => setSaved(false), 2000)
+            clearTimeout(savedTimer.current)
+            savedTimer.current = setTimeout(() => setSaved(false), 2000)
         }
     }
 
