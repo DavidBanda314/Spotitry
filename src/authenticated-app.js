@@ -6,6 +6,7 @@ import Timestamps from './domains/main/Timestamps';
 import Account from './domains/main/Account';
 import Discover from './domains/main/Discover';
 import History from './domains/main/History';
+import Stats from './domains/main/Stats';
 import { StoreToken } from './domains/main/redux/Actions/UserActions.js'
 import { getPlaybackInfoRequested } from './domains/main/redux/Actions/PlaybackActions.js'
 import { connect } from 'react-redux'
@@ -198,6 +199,11 @@ const AuthenticatedApp = (props) => {
           exact path='/history'
         >
           <History/>
+        </Route>
+        <Route
+          exact path='/stats'
+        >
+          <Stats/>
         </Route>
       </Switch>
       </main>
