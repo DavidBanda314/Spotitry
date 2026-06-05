@@ -18,30 +18,51 @@ const UnauthenticatedApp = () => {
     console.log(redirectUri)
     return (
       <div className={styles.App}>
-            <Tabs
-              className={styles.header}
-              value={false}
-              centered
-            >
-              <Tab style={{fontSize: '36px'}}label="Spotitry" />
-            </Tabs>
+            <div className={styles.header}>
+              <span style={{fontSize: '24px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.02em'}}>Spotitry</span>
+            </div>
         <header className={styles.AppHeader}>
         
         <img src={spotifyLogo} className={styles.AppLogo} alt="Spotify Logo" />
-        <br></br>
-        <Box display="flex" justifyContent="space-between">
+        <h1 className={styles.heroTitle}>The ultimate home for music</h1>
+        <p className={styles.heroSubtitle}>
+          Discover your top tracks, explore your listening history, and create timestamps for your favorite moments.
+        </p>
+        <div className={styles.buttonGroup}>
           {!accessToken && (
-            <Button style={{height: '50px', width: '100px', margin: "20px"}} className={styles.dumb} variant="contained" href={`${authEndpoint}client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`}>
-              Login
-            </Button>
+            <a className={styles.loginButton} href={`${authEndpoint}client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`}>
+              Log in with Spotify
+            </a>
           )}
           {!accessToken && (
-            <Button style={{height: '50px', width: '100px', margin: "20px"}} variant="contained" href={`${signUp}`}>
-              Sign Up
-            </Button>
+            <a className={styles.signUpButton} href={`${signUp}`}>
+              Sign up free
+            </a>
           )}
-        </Box>
+        </div>
         </header>
+
+        <section className={styles.features}>
+          <h2 className={styles.featuresTitle}>Everything you need to explore your music</h2>
+          <div className={styles.featureGrid}>
+            <div className={styles.featureCard}>
+              <div className={styles.featureCardTitle}>Top Songs & Artists</div>
+              <div className={styles.featureCardDesc}>See your most played tracks and favorite artists, all in one place.</div>
+            </div>
+            <div className={styles.featureCard}>
+              <div className={styles.featureCardTitle}>Listening History</div>
+              <div className={styles.featureCardDesc}>Browse and search through your recently played tracks with ease.</div>
+            </div>
+            <div className={styles.featureCard}>
+              <div className={styles.featureCardTitle}>Timestamps</div>
+              <div className={styles.featureCardDesc}>Save and revisit your favorite moments in any song.</div>
+            </div>
+          </div>
+        </section>
+
+        <div className={styles.footer}>
+          &copy; 2024 Spotitry &middot; Powered by Spotify
+        </div>
       </div>
     );
   }

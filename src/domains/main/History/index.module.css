@@ -1,20 +1,12 @@
-.tabs {
-    background-color: black;
-    color: #1DB954
-}
-
 .container {
-    border: 12px;
-    padding: 50px;
-    align-content: center;
-    background-color: #282c34;
-    min-height: 94.2vh;
+    padding: 32px 48px 120px;
+    background-color: #000000;
+    min-height: calc(100vh - 48px);
     display: flex;
     flex-direction: column;
-    font-size: calc(10px + 2vmin);
-    color:  #1DB954;
+    color: #FFFFFF;
 }
 
 .outerDiv {
-    margin: auto;
+    margin: 12px;
 }

@@ -34,10 +34,13 @@ const AuthenticatedApp = (props) => {
       >
         <SpotifyPlayer
             styles={{
-              bgColor:'#282c34',
-              color:'#1DB954',
-              trackNameColor:'#1DB954',
-              trackArtistColor:'white',
+              bgColor:'#000000',
+              color:'#FFFFFF',
+              trackNameColor:'#FFFFFF',
+              trackArtistColor:'rgba(255, 255, 255, 0.6)',
+              sliderColor:'#1DB954',
+              sliderHandleColor:'#FFFFFF',
+              sliderTrackColor:'rgba(255, 255, 255, 0.2)',
             }}
             token={token}
             uris={[songURI]}

@@ -34,7 +34,7 @@ const Discover = (props) => {
                             searchedSongs.map((song, key) => (
                                 <div 
                                     className={styles.row} key={key} 
-                                    style={{cursor:'pointer', backgroundColor: 'white', borderRadius:'20px', width: '375px'}}
+                                    style={{cursor:'pointer', backgroundColor: '#1a1a1a', borderRadius:'8px', width: '375px', border: '1px solid rgba(255,255,255,0.06)'}}
                                     onClick={() => { 
                                         setSelectedSong(song.track_number-1,song.album.uri,song)
                                     }}
@@ -42,7 +42,7 @@ const Discover = (props) => {
 
                                     <img src={song.album.images[0].url} className={styles.smallPic}/>
                                     <p
-                                    style={{cursor:'pointer', marginTop:'10px', marginLeft:'20px'}}>{song.name}</p>
+                                    style={{cursor:'pointer', marginTop:'10px', marginLeft:'20px', color: '#FFFFFF'}}>{song.name}</p>
                                 </div>
                             ))
                         }

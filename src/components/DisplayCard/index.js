@@ -15,14 +15,14 @@ const DisplayCard = (props) => {
                     setSelectedSong(track.track_number-1,track.album?.uri,track);        
             }}
         >
-            <Card style={{cursor:'pointer', width: '210px', height: "500px"}}>
-                <CardImg top width="100%" alt="Album Cover" style={{width:'210px'}} src={albumCover}/>
-                <CardHeader>
-                    <CardTitle tag="h5">{trackName}</CardTitle>
+            <Card style={{cursor:'pointer', width: '210px', height: "500px", backgroundColor: '#1a1a1a', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '12px', overflow: 'hidden'}}>
+                <CardImg top width="100%" alt="Album Cover" style={{width:'210px', borderRadius: '0'}} src={albumCover}/>
+                <CardHeader style={{backgroundColor: 'transparent', borderBottom: '1px solid rgba(255,255,255,0.06)'}}>
+                    <CardTitle tag="h5" style={{color: '#FFFFFF', fontWeight: 700, fontSize: '14px'}}>{trackName}</CardTitle>
                 </CardHeader>
                 <CardBody>
-                    <CardSubtitle tag="h6" className="mb-2 text-muted">{artistName}</CardSubtitle>
-                    <CardSubtitle tag="h6" className="mb-2 text-muted">{albumName}</CardSubtitle>
+                    <CardSubtitle tag="h6" style={{color: 'rgba(255,255,255,0.6)', fontSize: '13px', marginBottom: '4px'}}>{artistName}</CardSubtitle>
+                    <CardSubtitle tag="h6" style={{color: 'rgba(255,255,255,0.4)', fontSize: '12px'}}>{albumName}</CardSubtitle>
                 </CardBody>
             </Card>
         </Col>

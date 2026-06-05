@@ -74,7 +74,7 @@ const Timestamps = (props) => {
                                             return(
                                                 <div className="column" key={key}>
                                                     <Button
-                                                        style={{backgroundColor:'#282c34', color: '#1DB954', marginBottom:'10px', height: '50px', fontSize:'13px', borderRadius: '10px'}}
+                                                        style={{backgroundColor:'#1a1a1a', color: '#FFFFFF', marginBottom:'10px', height: '50px', fontSize:'13px', borderRadius: '500px', border: '1px solid rgba(255,255,255,0.1)', fontWeight: 600}}
                                                         onClick={() => {
                                                             if(!selectedSong) {
                                                                 // setSelectedSong(0,track?.uri,track);

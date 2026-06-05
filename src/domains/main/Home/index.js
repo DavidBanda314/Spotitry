@@ -12,16 +12,14 @@ const Home = (props) => {
     return(
 
         <div className={styles.container}>
-            <div class="card d-flex justify-content-center">
-                <div class="card-body">
-                    <h4 class="card-title">Your Top Songs</h4>
-                </div>
+            <div className={styles.sectionHeader}>
+                <h4 className={styles.sectionTitle}>Your Top Songs</h4>
             </div>
             <div>
-                <Row style={{height: '800px', marginBottom: "20px"}}>
+                <Row style={{marginBottom: "20px"}}>
                 {topTracks.slice(0,10)?.map((track,key) => {
                     return(
-                        <Col style={{height: '50%', display: 'flex', marginTop: "10px", }}
+                        <Col style={{display: 'flex', marginTop: "16px"}}
                             onClick={() => (
                                 (selectedSong?.song?.album?.uri == track.album.uri ?
                                 (setSelectedSong(0,track.uri,track), getPlaybackInfo(token,0,0) )
@@ -33,14 +31,14 @@ const Home = (props) => {
                                 ) 
                             )}
                         >
-                            <Card style={{cursor:'pointer', width: '210px'}}>
-                                <CardImg top width="100%" src="" alt="Album Cover" style={{width:'210px'}} src={track.album.images[0].url}/>
-                                <CardHeader style={{}}>
-                                    <CardTitle tag="h5">{key+1}.  {track.name}</CardTitle>
+                            <Card style={{cursor:'pointer', width: '210px', backgroundColor: '#1a1a1a', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '12px', overflow: 'hidden', transition: 'border-color 0.2s ease'}}>
+                                <CardImg top width="100%" src="" alt="Album Cover" style={{width:'210px', borderRadius: '0'}} src={track.album.images[0].url}/>
+                                <CardHeader style={{backgroundColor: 'transparent', borderBottom: '1px solid rgba(255,255,255,0.06)'}}>
+                                    <CardTitle tag="h5" style={{color: '#FFFFFF', fontWeight: 700, fontSize: '14px'}}>{key+1}.  {track.name}</CardTitle>
                                 </CardHeader>
                                 <CardBody>
-                                    <CardSubtitle tag="h6" className="mb-2 text-muted">{track.artists[0].name}</CardSubtitle>
-                                    <CardSubtitle tag="h6" className="mb-2 text-muted">{track.album.name}</CardSubtitle>
+                                    <CardSubtitle tag="h6" style={{color: 'rgba(255,255,255,0.6)', fontSize: '13px', marginBottom: '4px'}}>{track.artists[0].name}</CardSubtitle>
+                                    <CardSubtitle tag="h6" style={{color: 'rgba(255,255,255,0.4)', fontSize: '12px'}}>{track.album.name}</CardSubtitle>
                                 </CardBody>
                             </Card>
                         </Col>
@@ -48,24 +46,22 @@ const Home = (props) => {
                 })}
                 </Row>
             </div>
-            <div class="card d-flex" style={{marginTop: '10px'}}>
-                <div class="card-body">
-                    <h4 class="card-title">Your Top Artists</h4>
-                </div>
+            <div className={styles.sectionHeader}>
+                <h4 className={styles.sectionTitle}>Your Top Artists</h4>
             </div>
             <div>
                 <Row style={{justifyContent: 'center'}}>
                 {topArtists.slice(0,10)?.map((artist,key) => {
                     return(
                         <Col style={{ display: 'flex', margin:'15px'}}>
-                            <Card style={{height:'300px', width:'200px', cursor: 'pointer'}} 
+                            <Card style={{height:'300px', width:'200px', cursor: 'pointer', backgroundColor: '#1a1a1a', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '12px', overflow: 'hidden'}} 
                                 onClick={() => (
                                     setSelectedSong(Math.floor(Math.random() * 10),artist.uri,artist), 
                                     getPlaybackInfo(token,0,0) 
                                     )}>
-                                <CardImg alt="Artist Pic" style={{width:'200px', height: '200px'}} src={artist.images[0].url}/>
-                                <CardHeader style={{height:'100px'}}>
-                                    <CardTitle tag="h5">{key+1}.  {artist.name}</CardTitle>
+                                <CardImg alt="Artist Pic" style={{width:'200px', height: '200px', borderRadius: '0'}} src={artist.images[0].url}/>
+                                <CardHeader style={{height:'100px', backgroundColor: 'transparent'}}>
+                                    <CardTitle tag="h5" style={{color: '#FFFFFF', fontWeight: 700, fontSize: '14px'}}>{key+1}.  {artist.name}</CardTitle>
                                 </CardHeader>
                             </Card>
                         </Col>
