@@ -56,7 +56,7 @@ const Discover = (props) => {
                         >
                             <img alt="" src={song.album.images[0].url} className={styles.smallPic}/>
                             <div className={styles.rowMeta}>
-                                <span className={styles.rowTitle}>{song.name}</span>
+                                <span className={styles.rowTitle}>#{String(key+1).padStart(2,'0')} {song.name}</span>
                                 <span className={styles.rowSubtitle}>{song.artists?.[0]?.name}</span>
                             </div>
                         </div>

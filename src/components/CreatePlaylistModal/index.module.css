@@ -4,7 +4,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.85);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -12,8 +12,9 @@
 }
 
 .modal {
-    background: #1a1a1a;
-    border-radius: 12px;
+    background: #000000;
+    border: 1px solid var(--line);
+    border-radius: 0;
     padding: 24px;
     width: 90%;
     max-width: 380px;
@@ -23,37 +24,42 @@
 }
 
 .title {
-    color: #FFFFFF;
-    font-size: 20px;
+    color: var(--fg-bright);
+    font-size: 18px;
     font-weight: 700;
     margin: 0;
+    text-transform: uppercase;
 }
 
 .subtitle {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 14px;
+    color: var(--fg);
+    font-size: 13px;
     margin: 0;
+    text-transform: uppercase;
 }
 
 .label {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 13px;
+    color: var(--fg);
+    font-size: 12px;
+    text-transform: uppercase;
 }
 
 .input {
     background: #000;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 500px;
-    color: #FFFFFF;
+    border: 1px solid var(--line);
+    border-radius: 0;
+    color: var(--fg-bright);
     padding: 10px 16px;
     font-size: 14px;
+    font-family: var(--mono);
+    text-transform: uppercase;
     outline: none;
     width: 100%;
     box-sizing: border-box;
 }
 
 .input:focus {
-    border-color: #1DB954;
+    border-color: var(--fg-bright);
 }
 
 .toggleRow {
@@ -63,50 +69,55 @@
 }
 
 .toggleLabel {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 14px;
+    color: var(--fg);
+    font-size: 13px;
+    text-transform: uppercase;
 }
 
 .toggle {
     width: 44px;
     height: 24px;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.15);
-    border: none;
+    border-radius: 0;
+    background: #000000;
+    border: 1px solid var(--line);
     cursor: pointer;
     position: relative;
-    transition: background 0.2s;
+    transition: background 0.12s;
     padding: 0;
 }
 
 .toggleOn {
-    background: #1DB954;
+    background: var(--yellow);
+    border-color: var(--yellow);
 }
 
 .toggleKnob {
     display: block;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: #FFFFFF;
+    width: 16px;
+    height: 16px;
+    border-radius: 0;
+    background: var(--fg);
     position: absolute;
     top: 3px;
     left: 3px;
-    transition: transform 0.2s;
+    transition: transform 0.12s, background 0.12s;
 }
 
 .toggleOn .toggleKnob {
-    transform: translateX(20px);
+    transform: translateX(22px);
+    background: #000000;
 }
 
 .createBtn {
-    background: #1DB954;
-    color: #FFFFFF;
-    border: none;
-    border-radius: 500px;
+    background: var(--yellow);
+    color: #000000;
+    border: 1px solid var(--yellow);
+    border-radius: 0;
     padding: 12px;
     font-size: 14px;
     font-weight: 700;
+    font-family: var(--mono);
+    text-transform: uppercase;
     cursor: pointer;
     width: 100%;
 }
@@ -118,29 +129,38 @@
 
 .closeBtn {
     background: transparent;
-    color: rgba(255, 255, 255, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 500px;
+    color: var(--fg);
+    border: 1px solid var(--line);
+    border-radius: 0;
     padding: 10px;
     font-size: 14px;
+    font-family: var(--mono);
+    text-transform: uppercase;
     cursor: pointer;
     width: 100%;
+}
+
+.closeBtn:hover {
+    color: var(--fg-bright);
+    border-color: var(--fg-bright);
 }
 
 .spotifyLink {
     display: block;
     text-align: center;
-    background: #1DB954;
-    color: #FFFFFF;
-    border-radius: 500px;
+    background: var(--yellow);
+    color: #000000;
+    border-radius: 0;
     padding: 12px;
     font-size: 14px;
     font-weight: 700;
+    text-transform: uppercase;
     text-decoration: none;
 }
 
 .errorText {
-    color: #ff4444;
-    font-size: 14px;
+    color: var(--red);
+    font-size: 13px;
     margin: 0;
+    text-transform: uppercase;
 }

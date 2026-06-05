@@ -1,18 +1,18 @@
 .card {
-    background-color: #1a1a1a;
-    border-radius: 12px;
+    background-color: #000000;
     cursor: pointer;
-    transition: border-color 0.2s ease, transform 0.15s ease;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: background 0.12s ease;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
     overflow: hidden;
 }
 
 .card:hover {
-    border-color: rgba(255, 255, 255, 0.18);
+    background-color: #0a0a0a;
 }
 
-.card:active {
-    transform: scale(0.98);
+.card:hover .cardTitle {
+    color: var(--fg-bright);
 }
 
 .cardImage {
@@ -20,30 +20,39 @@
     aspect-ratio: 1;
     object-fit: cover;
     display: block;
+    filter: grayscale(1) contrast(1.05);
+    transition: filter 0.15s ease;
+}
+
+.card:hover .cardImage {
+    filter: grayscale(0);
 }
 
 .cardTitle {
-    color: #FFFFFF;
-    font-size: 14px;
+    color: var(--fg);
+    font-size: 13px;
     font-weight: 700;
     margin: 10px 12px 4px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    text-transform: uppercase;
+    transition: color 0.12s ease;
 }
 
 .cardSubtitle {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 13px;
+    color: var(--fg);
+    font-size: 12px;
     font-weight: 400;
     margin: 0 12px 2px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    text-transform: uppercase;
 }
 
 .cardSubtitle:last-child {
     margin-bottom: 14px;
-    color: rgba(255, 255, 255, 0.4);
-    font-size: 12px;
+    color: var(--fg);
+    font-size: 11px;
 }

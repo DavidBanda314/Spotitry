@@ -1,7 +1,8 @@
 .card {
-    background-color: #1a1a1a;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 12px;
+    background-color: #000000;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    border-radius: 0;
     overflow: hidden;
 }
 
@@ -14,7 +15,7 @@
 .imageCircle {
     width: calc(100% - 32px);
     margin: 16px auto 0;
-    border-radius: 50%;
+    border-radius: 0;
 }
 
 .body {
@@ -26,15 +27,15 @@
 
 .line {
     height: 10px;
-    border-radius: 4px;
+    border-radius: 0;
 }
 
 .shimmer {
     background: linear-gradient(
         90deg,
-        #1a1a1a 25%,
-        #2a2a2a 37%,
-        #1a1a1a 63%
+        #0a0a0a 25%,
+        #1a1a1a 37%,
+        #0a0a0a 63%
     );
     background-size: 400% 100%;
     animation: shimmer 1.4s ease-in-out infinite;
@@ -48,13 +49,14 @@
 .grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    gap: 0;
+    border-top: 1px solid var(--line);
 }
 
 @media (min-width: 600px) {
     .grid {
         grid-template-columns: repeat(3, 1fr);
-        gap: 16px;
+        gap: 0;
     }
 }
 
@@ -67,6 +69,6 @@
 @media (prefers-reduced-motion: reduce) {
     .shimmer {
         animation: none;
-        background: #242424;
+        background: #1a1a1a;
     }
 }
