@@ -1,29 +1,21 @@
-import * as React from "react";
-import App from './App'
-// This testing is using the Jest frame work with the React Testing Library to use specialized tools
+import { parseSpecialCharacters } from './utils/constants';
 
+// parseSpecialCharacters derives a Firebase-safe key from a Spotify user id by
+// stripping every non-alphanumeric character.
+describe('parseSpecialCharacters', () => {
+  test('removes spaces and punctuation', () => {
+    expect(parseSpecialCharacters('a.b c-d!')).toBe('abcd');
+  });
 
-test('renders the app', () => {
-  // const root = document.createElement("div");
-  const component = renderer(<App />);
-  let tree = component.toJSON();
-  expect(tree).toMatchSnapshot();
-});
+  test('keeps letters and digits', () => {
+    expect(parseSpecialCharacters('User_123')).toBe('User123');
+  });
 
-test('opening the login page', () =>{
-  const root = document.createElement("div");
-  render (<unauthenticated-app />, root);
+  test('returns an empty string when there is nothing alphanumeric', () => {
+    expect(parseSpecialCharacters('!@#$%^&*()')).toBe('');
+  });
 
-});
-
-test("search bar test", () =>{
-  const root = document.createElement("div");
-  render (<Discover/>, root);
-  expect(root.querySelector(styles.searchBar)).toBe("Search Bar");
-});
-
-test("testing the time stamps", () =>{
-  const root = document.createElement("div");
-  render (<Timestamps/>, root);
-  expect(root.isPrototypeOf('Timestamps'));
+  test('leaves an already-clean string unchanged', () => {
+    expect(parseSpecialCharacters('spotitry')).toBe('spotitry');
+  });
 });
