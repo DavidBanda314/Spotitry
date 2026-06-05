@@ -47,38 +47,6 @@
     color: #FFFFFF;
 }
 
-.searchField {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background-color: #1a1a1a;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 500px;
-    padding: 0 16px;
-    height: 44px;
-    width: 100%;
-}
-
-.searchIcon {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 14px;
-    flex-shrink: 0;
-}
-
-.searchInput {
-    flex: 1;
-    background: transparent;
-    border: none;
-    outline: none;
-    color: #FFFFFF;
-    font-size: 15px;
-    font-family: inherit;
-}
-
-.searchInput::placeholder {
-    color: rgba(255, 255, 255, 0.4);
-}
-
 .searchResults {
     display: flex;
     flex-direction: column;
@@ -107,12 +75,50 @@
     transform: scale(0.99);
 }
 
+.row:hover .rowTitle {
+    color: #1DB954;
+}
+
+.rowSelected {
+    border-color: #1DB954;
+}
+
 .smallPic {
     width: 48px;
     height: 48px;
     border-radius: 8px;
     object-fit: cover;
     flex-shrink: 0;
+}
+
+.smallPicFallback {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #2a2a2a;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 20px;
+}
+
+.playingTag {
+    margin-left: auto;
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #1DB954;
+}
+
+.placeholder {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 14px;
+    padding: 24px 12px;
 }
 
 .rowMeta {
