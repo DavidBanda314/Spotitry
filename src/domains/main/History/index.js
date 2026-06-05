@@ -6,7 +6,7 @@ import { playSongRequested, setSelectedSong } from '../redux/Actions/PlaybackAct
 import { InputGroup, InputGroupAddon,Input, Button } from 'reactstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch, faListUl } from '@fortawesome/free-solid-svg-icons'
+import { faSearch, faListUl, faMusic } from '@fortawesome/free-solid-svg-icons'
 import DisplayCard from '../../../components/DisplayCard';
 import CreatePlaylistModal from '../../../components/CreatePlaylistModal'
 import { SkeletonGrid } from '../../../components/Skeleton';
@@ -36,7 +36,8 @@ const History = (props) => {
             setMyHistory(history)
         }
     },[searchValue, history])
-    console.log(myHistory)
+    const isLoading = loading && (!history || history.length === 0)
+    const isEmpty = !isLoading && (!myHistory || myHistory.length === 0)
     return(
         <>
         <div className={styles.container}>
@@ -71,10 +72,23 @@ const History = (props) => {
                 </InputGroup>
             </div>
 
+            {isLoading ? (
+                <SkeletonGrid count={10} className={styles.cardGrid} lines={3} />
+            ) : isEmpty ? (
+                <div className={styles.emptyState}>
+                    <FontAwesomeIcon icon={faMusic} className={styles.emptyIcon} />
+                    <p className={styles.emptyTitle}>
+                        {searchValue ? 'No matches found' : 'No listening history yet'}
+                    </p>
+                    <p className={styles.emptySubtitle}>
+                        {searchValue
+                            ? `Nothing in your history matches “${searchValue}”.`
+                            : 'Play some songs on Spotify and your recently played tracks will show up here.'}
+                    </p>
+                </div>
+            ) : (
             <div className={styles.cardGrid}>
-                {loading && history.length === 0 ? (
-                    <SkeletonGrid count={6} cardHeight="240px" />
-                ) : myHistory.slice(0,20).map((track,key) => {
+                {myHistory.slice(0,20).map((track,key) => {
                     var song = track.track
                     var album = song?.album
                     var artist = song?.artists[0]
@@ -95,7 +109,8 @@ const History = (props) => {
                         />
                     )
                 })}
-            </div> 
+            </div>
+            )}
         </div>
         </>
     )
