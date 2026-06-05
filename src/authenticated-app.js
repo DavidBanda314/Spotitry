@@ -15,7 +15,7 @@ import Profile from './domains/main/Profile';
 import Compare from './domains/main/Compare';
 import Artist from './domains/main/Artist';
 import { StoreToken } from './domains/main/redux/Actions/UserActions.js'
-import { getPlaybackInfoRequested } from './domains/main/redux/Actions/PlaybackActions.js'
+import { getPlaybackInfoRequested, setSelectedSong as setSelectedSongAction } from './domains/main/redux/Actions/PlaybackActions.js'
 import { connect } from 'react-redux'
 import SpotifyPlayer from 'react-spotify-web-playback';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -32,7 +32,7 @@ function formatMs(ms) {
 }
 
 const AuthenticatedApp = (props) => {
-  var {token, storeToken, selectedSong, getPlaybackInfo, userId} = props
+  var {token, storeToken, selectedSong, getPlaybackInfo, userId, updateSelectedSong} = props
   const {position_ms, song, songURI} = selectedSong
   const [timestampSaved, setTimestampSaved] = useState(false)
   const [showNoteInput, setShowNoteInput] = useState(false)
@@ -112,10 +112,26 @@ const AuthenticatedApp = (props) => {
         method: 'POST',
         headers: { 'Authorization': 'Bearer ' + token },
       })
+      // Fetch updated playback state after a short delay so Spotify reflects the skip
+      setTimeout(async () => {
+        try {
+          var res = await fetch(PLAYER_ENDPOINT, {
+            headers: { 'Authorization': 'Bearer ' + token },
+          })
+          if (res.ok) {
+            var data = await res.json()
+            if (data.item) {
+              updateSelectedSong(data.progress_ms || 0, data.item.uri, data.item)
+              setProgressMs(data.progress_ms || 0)
+              setDurationMs(data.item.duration_ms || 0)
+            }
+          }
+        } catch (e) { /* ignore */ }
+      }, 500)
     } catch (err) {
       // ignore network errors
     }
-  }, [token])
+  }, [token, updateSelectedSong])
 
     return(
       <div>
@@ -334,6 +350,7 @@ const mapDispatchToProps = (dispatch) => {
   return{
       storeToken: (token) => dispatch(StoreToken(token)),
       getPlaybackInfo: (token, create, userId, note) => dispatch(getPlaybackInfoRequested(token, create, userId, note)),
+      updateSelectedSong: (position_ms, songURI, song) => dispatch(setSelectedSongAction(position_ms, songURI, song)),
   }
 }
 const mapStateToProps = (state) => {
