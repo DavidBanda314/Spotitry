@@ -21,7 +21,7 @@ export const Firebase = firebase;
 //Spotify API 
 export const authEndpoint = 'https://accounts.spotify.com/authorize?';
 export const signUp = 'https://www.spotify.com/signup/'
-export const spotifyLogo = 'https://1000logos.net/wp-content/uploads/2017/08/Spotify-Logo.png'
+export const spotifyLogo = 'https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_RGB_White.png'
 export const clientId = "4604d772bd3e4fe69399830809371aa4";
 export const redirectUri = `${window.location.href}home`
 export const scopes = [
@@ -48,7 +48,88 @@ export const TOP_TRACKS_ENDPOINT = 'https://api.spotify.com/v1/me/top/tracks'
 export const SEARCH_ENDPOINT = 'https://api.spotify.com/v1/search'
 export const PLAYER_ENDPOINT = 'https://api.spotify.com/v1/me/player'
 
-// Get the hash of the url
+// PKCE helpers
+function generateRandomString(length) {
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const values = crypto.getRandomValues(new Uint8Array(length));
+  return values.reduce((acc, x) => acc + possible[x % possible.length], '');
+}
+
+async function sha256(plain) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(plain);
+  return window.crypto.subtle.digest('SHA-256', data);
+}
+
+function base64urlencode(arrayBuffer) {
+  let str = '';
+  const bytes = new Uint8Array(arrayBuffer);
+  for (let i = 0; i < bytes.byteLength; i++) {
+    str += String.fromCharCode(bytes[i]);
+  }
+  return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+export async function generatePKCEChallenge() {
+  const codeVerifier = generateRandomString(64);
+  const hashed = await sha256(codeVerifier);
+  const codeChallenge = base64urlencode(hashed);
+  sessionStorage.setItem('code_verifier', codeVerifier);
+  return codeChallenge;
+}
+
+export async function exchangeCodeForToken(code) {
+  const codeVerifier = sessionStorage.getItem('code_verifier');
+  const redirectUri = window.location.origin + '/home';
+  const body = new URLSearchParams({
+    client_id: clientId,
+    grant_type: 'authorization_code',
+    code: code,
+    redirect_uri: redirectUri,
+    code_verifier: codeVerifier,
+  });
+  const response = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: body,
+  });
+  const data = await response.json();
+  if (data.access_token) {
+    localStorage.setItem('token', data.access_token);
+    localStorage.setItem('expiration', (new Date().getTime() + data.expires_in * 1000));
+    if (data.refresh_token) {
+      localStorage.setItem('refresh_token', data.refresh_token);
+    }
+    sessionStorage.removeItem('code_verifier');
+  }
+  return data;
+}
+
+export async function refreshAccessToken() {
+  const refreshToken = localStorage.getItem('refresh_token');
+  if (!refreshToken) return null;
+  const body = new URLSearchParams({
+    client_id: clientId,
+    grant_type: 'refresh_token',
+    refresh_token: refreshToken,
+  });
+  const response = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: body,
+  });
+  const data = await response.json();
+  if (data.access_token) {
+    localStorage.setItem('token', data.access_token);
+    localStorage.setItem('expiration', (new Date().getTime() + data.expires_in * 1000));
+    if (data.refresh_token) {
+      localStorage.setItem('refresh_token', data.refresh_token);
+    }
+  }
+  return data;
+}
+
+// Legacy hash parser (kept for backward compatibility during transition)
 export const hash = window.location.hash
 .substring(1)
 .split("&")

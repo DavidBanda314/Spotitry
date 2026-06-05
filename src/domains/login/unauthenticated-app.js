@@ -1,6 +1,6 @@
 import styles from  './unauthenticated.module.css'
-import React, { useEffect, useState} from "react";
-import { spotifyLogo, clientId, redirectUri, hash, scopes, signUp, authEndpoint} from '../../utils/constants'
+import React, { useEffect, useState, useCallback} from "react";
+import { spotifyLogo, clientId, hash, scopes, signUp, authEndpoint, generatePKCEChallenge} from '../../utils/constants'
 import {Tabs, Tab, Button, Box} from '@material-ui/core'
 
 const UnauthenticatedApp = () => {
@@ -14,8 +14,13 @@ const UnauthenticatedApp = () => {
         });
       }
     },[hash.access_token])
-    const redirectUri = `${window.location.href}home`
-    console.log(redirectUri)
+    const redirectUri = window.location.origin + '/home'
+
+    const handleLogin = useCallback(async () => {
+      const codeChallenge = await generatePKCEChallenge();
+      window.location.href = `${authEndpoint}client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scopes.join("%20")}&response_type=code&code_challenge_method=S256&code_challenge=${codeChallenge}&show_dialog=true`;
+    }, [redirectUri]);
+
     return (
       <div className={styles.App}>
             <Tabs
@@ -31,7 +36,7 @@ const UnauthenticatedApp = () => {
         <br></br>
         <Box display="flex" justifyContent="space-between">
           {!accessToken && (
-            <Button style={{height: '50px', width: '100px', margin: "20px"}} className={styles.dumb} variant="contained" href={`${authEndpoint}client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`}>
+            <Button style={{height: '50px', width: '100px', margin: "20px"}} className={styles.dumb} variant="contained" onClick={handleLogin}>
               Login
             </Button>
           )}
