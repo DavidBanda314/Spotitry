@@ -35,13 +35,17 @@ function sanitizeKey(key){
   return String(key).replace(/[.#$/[\]]/g, '_').trim() || 'unknown'
 }
 
-export async function saveTimestamp(userId,song,progress_ms){
+export async function saveTimestamp(userId,song,progress_ms,note){
   try{
       const ref = db.ref('users/' + userId + `/timestamps/${sanitizeKey(song.name)}`)
-      await ref.push({
+      const data = {
         position_ms:progress_ms,
         song:song
-      });
+      };
+      if (note) {
+        data.note = note;
+      }
+      await ref.push(data);
   }
   catch(error){
     console.log(error)

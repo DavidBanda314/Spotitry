@@ -12,12 +12,13 @@ export const playbackActions = {
     setSelectedSong: 'Set Selected Song'
 }
 
-export function getPlaybackInfoRequested(token,createTimestamp,userId){
+export function getPlaybackInfoRequested(token,createTimestamp,userId,note){
     return{
         type: playbackActions.getPlaybackInfoRequested,
         token,
         createTimestamp,
-        userId
+        userId,
+        note
     }
 }
 

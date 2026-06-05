@@ -72,7 +72,7 @@ const Timestamps = (props) => {
                                             return(
                                                 <div className="column" key={key}>
                                                     <Button
-                                                        style={{backgroundColor:'#1a1a1a', color: '#FFFFFF', marginBottom:'10px', height: '50px', fontSize:'13px', borderRadius: '500px', border: '1px solid rgba(255,255,255,0.1)', fontWeight: 600}}
+                                                        style={{backgroundColor:'#1a1a1a', color: '#FFFFFF', marginBottom:'4px', height: '50px', fontSize:'13px', borderRadius: '500px', border: '1px solid rgba(255,255,255,0.1)', fontWeight: 600}}
                                                         onClick={() => {
                                                             if(!selectedSong) {
                                                             }
@@ -85,7 +85,17 @@ const Timestamps = (props) => {
                                                     >
                                                         Timestamp #{key+1} {millisToMinutesAndSeconds(timeSet)} of {millisToMinutesAndSeconds(totalTime)}
                                                     </Button>
-
+                                                    {timestamp.note && (
+                                                        <div style={{
+                                                            color: 'rgba(255,255,255,0.5)',
+                                                            fontSize: '12px',
+                                                            fontStyle: 'italic',
+                                                            marginBottom: '10px',
+                                                            paddingLeft: '12px',
+                                                        }}>
+                                                            "{timestamp.note}"
+                                                        </div>
+                                                    )}
                                                 </div>
                                             )
                                         })
