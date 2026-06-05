@@ -166,22 +166,7 @@ const AuthenticatedApp = (props) => {
               persistDeviceSelection={true}
             />
           </div>
-          <button
-            onClick={handleTimestamp}
-            title="Save timestamp"
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              padding: '8px 16px',
-              fontSize: '20px',
-              color: timestampSaved ? '#1DB954' : 'rgba(255,255,255,0.7)',
-              transition: 'color 0.2s ease',
-              flexShrink: 0,
-            }}
-          >
-            {timestampSaved ? '✓ Saved' : '⏱'}
-          </button>
+
         </div>
       </div>
       }
