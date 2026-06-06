@@ -81,10 +81,13 @@ const AuthenticatedApp = (props) => {
     setNoteText('');
   };
 
-  // Local timer fallback: increment progressMs every second while playing
+  // Local timer fallback: increment progressMs every second while playing.
+  // Runs whether or not the player is expanded so the expanded synced-lyrics
+  // view tracks the music smoothly; the 5s sync and SpotifyPlayer callback
+  // correct any drift by overwriting progressMs with the real position.
   const timerRef = useRef(null)
   useEffect(() => {
-    if (play && !expanded) {
+    if (play) {
       timerRef.current = setInterval(() => {
         setProgressMs((prev) => {
           if (durationMs && prev >= durationMs) return prev
@@ -95,7 +98,7 @@ const AuthenticatedApp = (props) => {
       clearInterval(timerRef.current)
     }
     return () => clearInterval(timerRef.current)
-  }, [play, expanded, durationMs])
+  }, [play, durationMs])
 
   // Periodic sync: poll Spotify player state to keep timer accurate
   const syncRef = useRef(null)
@@ -187,6 +190,7 @@ const AuthenticatedApp = (props) => {
           <NowPlaying
             song={displaySong}
             saved={timestampSaved}
+            progressMs={progressMs}
             onCollapse={() => setExpanded(false)}
             onSave={handleTimestamp}
           />

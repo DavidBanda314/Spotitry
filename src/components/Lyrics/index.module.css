@@ -1,0 +1,51 @@
+.container {
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+    overflow-y: auto;
+    padding: 24px 16px 48px 16px;
+    text-align: center;
+    -webkit-overflow-scrolling: touch;
+}
+
+.line {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin: 0 0 14px 0;
+    color: var(--text-secondary);
+    opacity: 0.55;
+    transition: color 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+}
+
+.past {
+    opacity: 0.4;
+}
+
+.active {
+    color: var(--text);
+    opacity: 1;
+    transform: scale(1.04);
+}
+
+.plainLine {
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.5;
+    margin: 0 0 8px 0;
+    color: var(--text);
+}
+
+.message {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 24px;
+    color: var(--text-secondary);
+    font-size: 16px;
+    font-weight: 500;
+}
