@@ -187,6 +187,7 @@ const AuthenticatedApp = (props) => {
           <NowPlaying
             song={displaySong}
             saved={timestampSaved}
+            progressMs={progressMs}
             onCollapse={() => setExpanded(false)}
             onSave={handleTimestamp}
           />

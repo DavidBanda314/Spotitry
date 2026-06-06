@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from './index.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
+import Lyrics from '../Lyrics'
 
 const NowPlaying = (props) => {
-    const { song, onCollapse, onSave, saved } = props
+    const { song, onCollapse, onSave, saved, progressMs } = props
+    const [showLyrics, setShowLyrics] = useState(false)
 
     const images = song?.album?.images || []
     const artUrl = images[0]?.url
@@ -23,23 +25,40 @@ const NowPlaying = (props) => {
             </button>
 
             <div className={styles.body}>
-                {artUrl ? (
-                    <img src={artUrl} alt={song?.name || 'Album art'} className={styles.art} />
+                {showLyrics ? (
+                    <Lyrics song={song} progressMs={progressMs} />
                 ) : (
-                    <div className={`${styles.art} ${styles.artPlaceholder}`} />
+                    <>
+                        {artUrl ? (
+                            <img src={artUrl} alt={song?.name || 'Album art'} className={styles.art} />
+                        ) : (
+                            <div className={`${styles.art} ${styles.artPlaceholder}`} />
+                        )}
+                        <div className={styles.meta}>
+                            <span className={styles.title}>{song?.name}</span>
+                            <span className={styles.artist}>{artistNames}</span>
+                        </div>
+                    </>
                 )}
-                <div className={styles.meta}>
-                    <span className={styles.title}>{song?.name}</span>
-                    <span className={styles.artist}>{artistNames}</span>
+
+                <div className={styles.actions}>
+                    <button
+                        type="button"
+                        className={styles.toggle}
+                        onClick={() => setShowLyrics((prev) => !prev)}
+                        aria-pressed={showLyrics}
+                    >
+                        {showLyrics ? 'Cover' : 'Lyrics'}
+                    </button>
+                    <button
+                        type="button"
+                        className={styles.save}
+                        onClick={onSave}
+                        aria-label="Save timestamp"
+                    >
+                        {saved ? '✓ Saved' : '⏱ Save Timestamp'}
+                    </button>
                 </div>
-                <button
-                    type="button"
-                    className={styles.save}
-                    onClick={onSave}
-                    aria-label="Save timestamp"
-                >
-                    {saved ? '✓ Saved' : '⏱ Save Timestamp'}
-                </button>
             </div>
         </div>
     )

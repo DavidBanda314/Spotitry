@@ -77,6 +77,35 @@
     color: var(--text-secondary);
 }
 
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.toggle {
+    background-color: transparent;
+    color: var(--text);
+    border: 1px solid var(--border-strong-2);
+    border-radius: 500px;
+    padding: 14px 26px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.toggle:hover {
+    background-color: var(--surface-3);
+}
+
+.toggle:active {
+    transform: scale(0.96);
+}
+
 .save {
     background-color: var(--accent);
     color: var(--on-accent);
