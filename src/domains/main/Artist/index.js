@@ -252,6 +252,7 @@ const Artist = () => {
                                     artistName={artist.name}
                                     value={ts.memberId ? { memberId: ts.memberId, memberName: ts.memberName, memberColor: ts.memberColor } : null}
                                     onChange={(member) => handleSetMember(ts, member)}
+                                    onRosterChange={() => dispatch(getProfileRequested(token))}
                                 />
                             </div>
                         </div>

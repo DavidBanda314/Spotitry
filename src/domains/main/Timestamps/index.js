@@ -571,6 +571,7 @@ const Timestamps = (props) => {
                                                         artistName={artistName}
                                                         value={timestamp.memberId ? { memberId: timestamp.memberId, memberName: timestamp.memberName, memberColor: timestamp.memberColor } : null}
                                                         onChange={(member) => handleSetMember(timestamp, member)}
+                                                        onRosterChange={() => { if (refetchUser) refetchUser(token) }}
                                                     />
                                                 </div>
                                             </div>

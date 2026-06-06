@@ -60,6 +60,43 @@ export async function saveTimestamp(userId,song,progress_ms,note,member){
   }
 }
 
+// Propagate a roster change to every saved moment that references `memberId`.
+// Pass member = { name, color } to update the denormalized name/color, or
+// null to clear the member fields (used when a member is deleted). This keeps
+// the denormalized copies on each timestamp in sync with the roster.
+export async function updateTimestampsForMember(userId, memberId, member) {
+  try {
+    if (!memberId) return;
+    const snapshot = await db.ref('users/' + userId + '/timestamps').get();
+    if (!snapshot.exists()) return;
+    const timestamps = snapshot.val();
+    const updates = {};
+    Object.entries(timestamps).forEach(function (songEntry) {
+      const songKey = songEntry[0];
+      Object.entries(songEntry[1]).forEach(function (tsEntry) {
+        const pushId = tsEntry[0];
+        const ts = tsEntry[1];
+        if (ts && ts.memberId === memberId) {
+          const base = songKey + '/' + pushId;
+          if (member) {
+            updates[base + '/memberName'] = member.name || '';
+            updates[base + '/memberColor'] = member.color || '';
+          } else {
+            updates[base + '/memberId'] = null;
+            updates[base + '/memberName'] = null;
+            updates[base + '/memberColor'] = null;
+          }
+        }
+      });
+    });
+    if (Object.keys(updates).length > 0) {
+      await db.ref('users/' + userId + '/timestamps').update(updates);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 // Assign (or clear) which band member a saved moment belongs to.
 // Pass member = { memberId, name, color } to set, or null/undefined to clear.
 export async function setTimestampMember(userId, songKey, pushId, member) {

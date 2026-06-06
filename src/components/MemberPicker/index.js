@@ -5,6 +5,7 @@ import {
     addArtistMember as fbAddArtistMember,
     updateArtistMember as fbUpdateArtistMember,
     deleteArtistMember as fbDeleteArtistMember,
+    updateTimestampsForMember as fbUpdateTimestampsForMember,
 } from '../../firebase'
 
 // A small fixed palette so members get distinct, readable chip colors.
@@ -23,7 +24,7 @@ function rosterToList(roster) {
 // Renders the current member chip and, on click, a dropdown to assign a
 // member or manage the band's roster (add / rename / recolor / delete).
 const MemberPicker = (props) => {
-    const { userId, artistId, artistName, value, onChange } = props
+    const { userId, artistId, artistName, value, onChange, onRosterChange } = props
 
     const [members, setMembers] = useState([])
     const [open, setOpen] = useState(false)
@@ -80,10 +81,13 @@ const MemberPicker = (props) => {
         if (!name || !canUse) return
         if (editingId) {
             await fbUpdateArtistMember(userId, artistId, editingId, { name, color: draftColor })
-            // If the currently selected member was edited, propagate the change.
+            // Keep every timestamp tagged with this member in sync with the new
+            // name/color (their denormalized copies would otherwise go stale).
+            await fbUpdateTimestampsForMember(userId, editingId, { name, color: draftColor })
             if (value && value.memberId === editingId && onChange) {
                 onChange({ memberId: editingId, name, color: draftColor })
             }
+            if (onRosterChange) onRosterChange()
         } else {
             await fbAddArtistMember(userId, artistId, { name, color: draftColor }, artistName)
         }
@@ -100,8 +104,12 @@ const MemberPicker = (props) => {
     const handleDeleteMember = async (member) => {
         if (!canUse) return
         await fbDeleteArtistMember(userId, artistId, member.memberId)
+        // Clear this member off every timestamp that referenced it so no stale
+        // chips remain on moments other than the current one.
+        await fbUpdateTimestampsForMember(userId, member.memberId, null)
         if (value && value.memberId === member.memberId) handleClear()
         if (editingId === member.memberId) resetDraft()
+        if (onRosterChange) onRosterChange()
         await loadMembers()
     }
 
