@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faListUl, faLink, faPlus, faMinus, faTrash, faCopy, faShareAlt } from '@fortawesome/free-solid-svg-icons'
 import CreatePlaylistModal from '../../../components/CreatePlaylistModal'
 import { SkeletonGrid } from '../../../components/Skeleton'
+import MemberPicker from '../../../components/MemberPicker'
 import {
     createCollection as fbCreateCollection,
     addTimestampToCollection as fbAddTimestampToCollection,
@@ -17,6 +18,7 @@ import {
     fetchCollections as fbFetchCollections,
     updateTimestampNote as fbUpdateTimestampNote,
     deleteTimestamp as fbDeleteTimestamp,
+    setTimestampMember as fbSetTimestampMember,
 } from '../../../firebase'
 
 
@@ -73,6 +75,13 @@ const Timestamps = (props) => {
         setNoteEditingId(null)
         setNoteDraft('')
     }, [userId, noteDraft, refetchUser, token])
+
+    // Tag (or clear) which band member sings this saved moment.
+    const handleSetMember = useCallback(async (ts, member) => {
+        if (!userId) return
+        await fbSetTimestampMember(parseSpecialCharacters(userId), ts._songKey, ts._pushId, member)
+        if (refetchUser) refetchUser(token)
+    }, [userId, refetchUser, token])
 
     const buildShareUrl = (song, positionMs, note) => {
         const baseUrl = window.location.origin
@@ -395,6 +404,7 @@ const Timestamps = (props) => {
                         var songName = song?.name
                         var albumCover = album?.images[0]?.url
                         var artistName = entries[0]?.song.artists[0]?.name ? entries[0].song.artists[0].name : entries[0].song.album.artists[0].name
+                        var artistId = song?.artists?.[0]?.id || song?.album?.artists?.[0]?.id
                         return(
                             <div className={styles.card} key={cardIndex}>
                                 <div className={styles.cardHeader}>
@@ -554,6 +564,16 @@ const Timestamps = (props) => {
                                                         + Add note
                                                     </button>
                                                 )}
+                                                <div className={styles.memberRow} onClick={(e) => e.stopPropagation()}>
+                                                    <MemberPicker
+                                                        userId={userId ? parseSpecialCharacters(userId) : undefined}
+                                                        artistId={artistId}
+                                                        artistName={artistName}
+                                                        value={timestamp.memberId ? { memberId: timestamp.memberId, memberName: timestamp.memberName, memberColor: timestamp.memberColor } : null}
+                                                        onChange={(member) => handleSetMember(timestamp, member)}
+                                                        onRosterChange={() => { if (refetchUser) refetchUser(token) }}
+                                                    />
+                                                </div>
                                             </div>
                                         )
                                     })}

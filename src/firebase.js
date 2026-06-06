@@ -35,7 +35,7 @@ function sanitizeKey(key){
   return String(key).replace(/[.#$/[\]]/g, '_').trim() || 'unknown'
 }
 
-export async function saveTimestamp(userId,song,progress_ms,note){
+export async function saveTimestamp(userId,song,progress_ms,note,member){
   try{
       const songKey = sanitizeKey(song.name)
       const ref = db.ref('users/' + userId + `/timestamps/${songKey}`)
@@ -46,12 +46,73 @@ export async function saveTimestamp(userId,song,progress_ms,note){
       if (note) {
         data.note = note;
       }
+      if (member && member.memberId) {
+        data.memberId = member.memberId;
+        data.memberName = member.name || '';
+        data.memberColor = member.color || '';
+      }
       const newRef = await ref.push(data);
       return { songKey, pushId: newRef.key }
   }
   catch(error){
     console.log(error)
     return null
+  }
+}
+
+// Propagate a roster change to every saved moment that references `memberId`.
+// Pass member = { name, color } to update the denormalized name/color, or
+// null to clear the member fields (used when a member is deleted). This keeps
+// the denormalized copies on each timestamp in sync with the roster.
+export async function updateTimestampsForMember(userId, memberId, member) {
+  try {
+    if (!memberId) return;
+    const snapshot = await db.ref('users/' + userId + '/timestamps').get();
+    if (!snapshot.exists()) return;
+    const timestamps = snapshot.val();
+    const updates = {};
+    Object.entries(timestamps).forEach(function (songEntry) {
+      const songKey = songEntry[0];
+      Object.entries(songEntry[1]).forEach(function (tsEntry) {
+        const pushId = tsEntry[0];
+        const ts = tsEntry[1];
+        if (ts && ts.memberId === memberId) {
+          const base = songKey + '/' + pushId;
+          if (member) {
+            updates[base + '/memberName'] = member.name || '';
+            updates[base + '/memberColor'] = member.color || '';
+          } else {
+            updates[base + '/memberId'] = null;
+            updates[base + '/memberName'] = null;
+            updates[base + '/memberColor'] = null;
+          }
+        }
+      });
+    });
+    if (Object.keys(updates).length > 0) {
+      await db.ref('users/' + userId + '/timestamps').update(updates);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// Assign (or clear) which band member a saved moment belongs to.
+// Pass member = { memberId, name, color } to set, or null/undefined to clear.
+export async function setTimestampMember(userId, songKey, pushId, member) {
+  try {
+    const base = 'users/' + userId + '/timestamps/' + songKey + '/' + pushId;
+    if (member && member.memberId) {
+      await db.ref(base + '/memberId').set(member.memberId);
+      await db.ref(base + '/memberName').set(member.name || '');
+      await db.ref(base + '/memberColor').set(member.color || '');
+    } else {
+      await db.ref(base + '/memberId').remove();
+      await db.ref(base + '/memberName').remove();
+      await db.ref(base + '/memberColor').remove();
+    }
+  } catch (error) {
+    console.log(error);
   }
 }
 export async function updateTimestampNote(userId, songKey, pushId, note) {
@@ -186,5 +247,64 @@ export async function fetchCollections(userId) {
   } catch (error) {
     console.log(error);
     return {};
+  }
+}
+
+// --- Band member rosters ---------------------------------------------------
+// A roster is defined once per band (keyed by the Spotify artist id that is
+// already stored on every saved song) and reused across all that band's songs.
+
+function membersBase(userId, artistId) {
+  return 'users/' + userId + '/artistMembers/' + sanitizeKey(artistId);
+}
+
+export async function getArtistMembers(userId, artistId) {
+  try {
+    const snapshot = await db.ref(membersBase(userId, artistId)).get();
+    if (snapshot.exists()) {
+      return snapshot.val();
+    }
+    return {};
+  } catch (error) {
+    console.log(error);
+    return {};
+  }
+}
+
+export async function addArtistMember(userId, artistId, member, artistName) {
+  try {
+    const base = db.ref(membersBase(userId, artistId));
+    if (artistName) {
+      await base.child('artistName').set(artistName);
+    }
+    const newRef = await base.child('members').push({
+      name: (member && member.name) || '',
+      color: (member && member.color) || '',
+    });
+    return newRef.key;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+export async function updateArtistMember(userId, artistId, memberId, member) {
+  try {
+    const ref = db.ref(membersBase(userId, artistId) + '/members/' + memberId);
+    await ref.update({
+      name: (member && member.name) || '',
+      color: (member && member.color) || '',
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function deleteArtistMember(userId, artistId, memberId) {
+  try {
+    const ref = db.ref(membersBase(userId, artistId) + '/members/' + memberId);
+    await ref.remove();
+  } catch (error) {
+    console.log(error);
   }
 }
