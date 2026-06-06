@@ -62,6 +62,15 @@ function buildResult(data) {
   }
 }
 
+// In-memory cache keyed by artist+track+album+duration so collapsing and
+// re-expanding the player (which remounts the Lyrics component) doesn't refetch
+// the same track from LRCLIB.
+const lyricsCache = new Map()
+
+function cacheKey({ artist, track, album, durationMs }) {
+  return [artist, track, album || '', durationMs || ''].join('|').toLowerCase()
+}
+
 async function fetchJson(url, signal) {
   const res = await fetch(url, {
     headers: { 'Accept': 'application/json' },
@@ -77,6 +86,9 @@ async function fetchJson(url, signal) {
 export async function getLyrics({ artist, track, album, durationMs } = {}, signal) {
   if (!artist || !track) return { found: false }
 
+  const key = cacheKey({ artist, track, album, durationMs })
+  if (lyricsCache.has(key)) return lyricsCache.get(key)
+
   const params = new URLSearchParams({ artist_name: artist, track_name: track })
   if (album) params.set('album_name', album)
   if (durationMs) params.set('duration', String(Math.round(durationMs / 1000)))
@@ -85,7 +97,10 @@ export async function getLyrics({ artist, track, album, durationMs } = {}, signa
     const exact = await fetchJson(`${LRCLIB_BASE}/get?${params.toString()}`, signal)
     if (exact) {
       const result = buildResult(exact)
-      if (result.found) return result
+      if (result.found) {
+        lyricsCache.set(key, result)
+        return result
+      }
     }
   } catch (err) {
     if (err && err.name === 'AbortError') throw err
@@ -98,7 +113,9 @@ export async function getLyrics({ artist, track, album, durationMs } = {}, signa
     if (Array.isArray(results) && results.length > 0) {
       // Prefer a result that has synced lyrics, otherwise the first hit.
       const withSynced = results.find((r) => r.syncedLyrics)
-      return buildResult(withSynced || results[0])
+      const result = buildResult(withSynced || results[0])
+      if (result.found) lyricsCache.set(key, result)
+      return result
     }
   } catch (err) {
     if (err && err.name === 'AbortError') throw err
