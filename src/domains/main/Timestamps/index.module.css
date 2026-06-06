@@ -304,6 +304,12 @@
     padding-left: 4px;
 }
 
+.memberRow {
+    display: flex;
+    align-items: center;
+    padding: 4px 0 2px 4px;
+}
+
 .addNoteLink:hover,
 .noteEditLink:hover {
     color: var(--accent);
